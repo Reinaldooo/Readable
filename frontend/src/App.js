@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import moment from 'moment';
 
 const headers = {
   'Accept': 'application/json',
@@ -11,6 +11,32 @@ const headers = {
 
 class App extends Component { 
   
+  state = {
+    posts: [
+      {
+        id: '8xf0y6ziyjabvozdd253nd',
+        timestamp: 1467166872634,
+        title: 'Udacity is the best place to learn React',
+        body: 'Everyone says so after all.',
+        author: 'thingtwo',
+        category: 'react',
+        voteScore: 6,
+        deleted: false,
+        Edited: false
+      },
+      {
+        id: '6ni6ok3ym7mf1p33lnez',
+        timestamp: 1468479767190,
+        title: 'Learn Redux in 10 minutes!',
+        body: 'Just kidding. It takes more than 10 minutes to learn technology. jhsjdhfsdghhsgfjksdhfksdhfkjsdhfkjhsdkjfhskjdfsdkjjhsdhgsgfsgdyfgsygdfysdgf',
+        author: 'thingone',
+        category: 'redux',
+        voteScore: -5,
+        deleted: false,
+        Edited: true
+      }
+    ]
+  }
 
   Post = (post) =>
   fetch(`http://localhost:3001/posts/8xf0y6ziyjabvozdd253nd`, {
@@ -45,18 +71,48 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
+      <div className="container-fluid">
+        <header>
         </header>
-        <p className="App-intro" onClick={post => this.Post({
-          title: "Really Edited",
-          body: "The same",
-          Edited: true
-        })}>
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <div className="row">
+        <div className="col-10 list-group">
+        {this.state.posts.map(post => 
+              <a key={post.id}href="/" className="list-group-item list-group-item-action flex-column align-items-start">
+              <div className="d-flex w-100 justify-content-between">
+                <h5 className="mb-1">{post.title}</h5>
+                {post.Edited ? <small>{moment.utc(post.timestamp).format("dddd, MMMM Do YYYY, h:mm:ss a")}<strong> - Edited</strong></small> : <small>{moment.utc(post.timestamp).format("dddd, MMMM Do YYYY, h:mm:ss a")}</small>}
+                
+                </div>
+                {post.body.length > 75 ? <p className="mb-1">{post.body.substring(0, 75)}... <small>Read more.</small></p> : <p className="mb-1">{post.body}</p>  } 
+                <small>Author: <strong>{post.author}</strong> | Score: <strong>{post.voteScore}</strong></small>
+                
+                </a>
+          )}
+          </div>
+              <div className="col list-group">
+              <a href="/" className="list-group-item list-group-item-action flex-column align-items-start">
+              <div className="d-flex w-100 justify-content-between">
+                <h5 className="mb-1">Categories</h5>
+                </div>
+                </a>
+              <a href="/" className="list-group-item list-group-item-action flex-column align-items-start">
+              <div className="d-flex w-100 justify-content-between">
+                <h6 className="mb-1">React</h6>
+                </div>
+                </a>
+              <a href="/" className="list-group-item list-group-item-action flex-column align-items-start">
+              <div className="d-flex w-100 justify-content-between">
+                <h6 className="mb-1">Redux</h6>
+                </div>
+                </a>
+              <a href="/" className="list-group-item list-group-item-action flex-column align-items-start">
+              <div className="d-flex w-100 justify-content-between">
+                <h6 className="mb-1">Udacity</h6>
+                </div>
+                </a>
+              
+              </div>
+        </div>
       </div>
     );
   }
