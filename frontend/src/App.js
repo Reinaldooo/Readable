@@ -9,8 +9,7 @@ const headers = {
 }
 
 
-class App extends Component { 
-  
+class App extends Component {   
   state = {
     posts: [
       {
@@ -35,7 +34,8 @@ class App extends Component {
         deleted: false,
         Edited: true
       }
-    ]
+    ],
+    nextId: 0
   }
 
   Post = (post) =>
@@ -68,6 +68,13 @@ class App extends Component {
   //   body: 'tste',
   //   author: 'test',
   //   category: 'tes' }
+  updateId = (arg) => {
+    console.log(arg)
+      this.setState((state) => ({
+          nextId: this.state.nextId + 1 
+      }))
+  }
+
 
   render() {
     return (
@@ -77,14 +84,14 @@ class App extends Component {
         <div className="row">
         <div className="col-10 list-group">
         {this.state.posts.map(post => 
-              <a key={post.id}href="/" className="list-group-item list-group-item-action flex-column align-items-start">
+              <a key={post.id} onClick={this.updateId} className="list-group-item list-group-item-action flex-column align-items-start">
               <div className="d-flex w-100 justify-content-between">
                 <h5 className="mb-1">{post.title}</h5>
                 {post.Edited ? <small>{moment.utc(post.timestamp).format("dddd, MMMM Do YYYY, h:mm:ss a")}<strong> - Edited</strong></small> : <small>{moment.utc(post.timestamp).format("dddd, MMMM Do YYYY, h:mm:ss a")}</small>}
                 
                 </div>
                 {post.body.length > 75 ? <p className="mb-1">{post.body.substring(0, 75)}... <small>Read more.</small></p> : <p className="mb-1">{post.body}</p>  } 
-                <small>Author: <strong>{post.author}</strong> | Score: <strong>{post.voteScore}</strong></small>
+                <small>Author: <strong>{post.author}</strong> | Score: <strong>{post.voteScore}</strong> Hue: {this.state.nextId}</small>
                 
                 </a>
           )}
