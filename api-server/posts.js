@@ -11,7 +11,8 @@ const defaultData = {
     author: 'thingtwo',
     category: 'react',
     voteScore: 6,
-    deleted: false
+    deleted: false,
+    Edited: false
   },
   "6ni6ok3ym7mf1p33lnez": {
     id: '6ni6ok3ym7mf1p33lnez',
@@ -21,7 +22,8 @@ const defaultData = {
     author: 'thingone',
     category: 'redux',
     voteScore: -5,
-    deleted: false
+    deleted: false,
+    Edited: false
   }
 }
 
@@ -74,7 +76,8 @@ function add (token, post) {
       author: post.author,
       category: post.category,
       voteScore: 1,
-      deleted: false
+      deleted: false,
+      Edited: false
     }
 
     res(posts[post.id])

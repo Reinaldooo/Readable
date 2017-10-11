@@ -12,18 +12,18 @@ const headers = {
 class App extends Component { 
   
 
+  Post = (post) =>
+  fetch(`http://localhost:3001/posts/8xf0y6ziyjabvozdd253nd`, {
+    method: 'PUT',
+    headers,
+    body: JSON.stringify(post)
+  }).then(res => res.json()).then(res => console.log(res))
+
   // Post = (post) =>
   // fetch(`http://localhost:3001/posts`, {
-  //   method: 'POST',
-  //   headers,
-  //   body: JSON.stringify(post)
+  //   method: 'GET',
+  //   headers
   // }).then(res => res.json()).then(res => console.log(res))
-
-  Post = (post) =>
-  fetch(`http://localhost:3001/posts`, {
-    method: 'GET',
-    headers
-  }).then(res => res.json()).then(res => console.log(res))
   
 
   // savePost = (post) =>
@@ -50,7 +50,11 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
         </header>
-        <p className="App-intro" onClick={this.Post}>
+        <p className="App-intro" onClick={post => this.Post({
+          title: "Really Edited",
+          body: "The same",
+          Edited: true
+        })}>
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
       </div>
