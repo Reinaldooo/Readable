@@ -43,11 +43,9 @@ body {
   padding: 1em;
   margin: 1em;
 }
-.col {
-}
-
-.author {
-  text-align: right
+.read-more {
+  color: blue;
+  font-size: .8em
 }
 
 a {
