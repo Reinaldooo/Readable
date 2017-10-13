@@ -3,8 +3,8 @@ const clone = require('clone')
 let db = {}
 
 const defaultData = {
-  "8xf0y6ziyjabvozdd253nd": {
-    id: '8xf0y6ziyjabvozdd253nd',
+  "1": {
+    id: '1',
     timestamp: 1467166872634,
     title: 'Udacity is the best place to learn React',
     body: 'Everyone says so after all.',
@@ -12,10 +12,10 @@ const defaultData = {
     category: 'react',
     voteScore: 6,
     deleted: false,
-    Edited: false
+    edited: false
   },
-  "6ni6ok3ym7mf1p33lnez": {
-    id: '6ni6ok3ym7mf1p33lnez',
+  "2": {
+    id: '2',
     timestamp: 1468479767190,
     title: 'Learn Redux in 10 minutes!',
     body: 'Just kidding. It takes more than 10 minutes to learn technology.',
@@ -23,7 +23,29 @@ const defaultData = {
     category: 'redux',
     voteScore: -5,
     deleted: false,
-    Edited: false
+    edited: false
+  },
+  "3": {
+    id: '3',
+    timestamp: 1507907893799,
+    title: 'Should the reviewer approve my project?',
+    body: "I hope so! I'll add some non-sense text here just so you can see that if a post is too long, it will show up cropped.",
+    author: 'Student',
+    category: 'udacity',
+    voteScore: 12,
+    deleted: false,
+    edited: true
+  },
+  "4": {
+    id: '4',
+    timestamp: 1507907000000,
+    title: 'I added two more posts on the server',
+    body: 'I hope thats allowed!',
+    author: 'Student',
+    category: 'udacity',
+    voteScore: 32,
+    deleted: false,
+    edited: true
   }
 }
 
@@ -77,7 +99,7 @@ function add (token, post) {
       category: post.category,
       voteScore: 1,
       deleted: false,
-      Edited: false
+      edited: false
     }
 
     res(posts[post.id])
