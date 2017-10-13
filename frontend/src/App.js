@@ -111,24 +111,14 @@ class App extends Component {
         <div className="row">
         <div className="col-10 list-group">
         {this.state.posts.map(post => 
-<<<<<<< HEAD
               <a key={post.id} className="list-group-item list-group-item-action flex-column align-items-start">
-=======
-              <a key={post.id} onClick={this.updateId} className="list-group-item list-group-item-action flex-column align-items-start">
->>>>>>> c76f9bdbabe2704f953cbe146171a38f149cc490
               <div className="d-flex w-100 justify-content-between">
                 <h5 className="mb-1">{post.title}</h5>
                 {post.edited ? <small>{moment.utc(post.timestamp).format("ddd, MMMM Do YYYY, h:mm a")}<strong> - Edited</strong></small> : <small onClick={this.poste}>{moment.utc(post.timestamp).format("ddd, MMMM Do YYYY, h:mm a")}</small>}
                 
                 </div>
-<<<<<<< HEAD
                 {post.body.length > 75 ? <p className="mb-1">{post.body.substring(0, 75)}... <small><span className="read-more">Read more.</span></small></p> : <p className="mb-1">{post.body}</p>  } 
                 <small onClick={this.post}>Author: <strong>{post.author}</strong> • Score: <strong>{post.voteScore}</strong> • #{post.category}</small>
-=======
-                {post.body.length > 75 ? <p className="mb-1">{post.body.substring(0, 75)}... <small>Read more.</small></p> : <p className="mb-1">{post.body}</p>  } 
-                <small>Author: <strong>{post.author}</strong> | Score: <strong>{post.voteScore}</strong> Hue: {this.state.nextId}</small>
-                
->>>>>>> c76f9bdbabe2704f953cbe146171a38f149cc490
                 </a>
           )}
           </div>
