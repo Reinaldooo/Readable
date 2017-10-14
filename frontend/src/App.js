@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import './App.css'
 import moment from 'moment'
-import sortBy from 'sort-by'
-import { connect } from 'react-redux'
-import { postsFetchData } from './actions'
+// import sortBy from 'sort-by'
+import {connect} from 'react-redux'
+import {postsFetchData, categoryChanger} from './actions'
 
 const headers = {
   'Accept': 'application/json',
@@ -13,39 +13,27 @@ const headers = {
 
 const api = "http://localhost:3001"
 
+class App extends Component {
+state = {}
 
-class App extends Component {   
-  state = {
-  }
+savePost = (post) => fetch(`${api}/posts`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(post)
+  })
+  .then(posts => posts.json())
 
-  post = () =>
-  fetch(`${api}/posts`, {
-    method: 'GET',
-    headers
-    //body: JSON.stringify(post)
-  }).then(posts => posts.json()).then(posts => {
-    this.setState({posts: posts.sort(sortBy('-voteScore'))});
-  console.log(this.state.posts) }
-  )
-
-  poste = () =>
-  fetch(`${api}/posts/2/comments`, {
-    method: 'GET',
-    headers
-    //body: JSON.stringify(post)
-  }).then(posts => posts.json()).then(posts => console.log(posts)
-  )
-
-  componentDidMount() {
+componentDidMount() {
     this.props.fetchData(`${api}/posts`)
 }
 
-  saveComment = (post) =>
-   fetch(`${api}/comments`, {
-    method: 'POST',
-    headers: headers,
-    body: JSON.stringify(post)
-   }).then(res => {res.json();
+saveComment = (post) =>
+  fetch(`${api}/comments`, {
+   method: 'POST',
+   headers: headers,
+   body: JSON.stringify(post)
+  })
+  .then(res => {res.json();
   console.log(res)})
   
   // Post = (post) =>
@@ -71,15 +59,7 @@ class App extends Component {
   //   body: 'tste',
   //   author: 'test',
   //   category: 'tes' }
-  updateId = (arg) => {
-    console.log(arg)
-      this.setState((state) => ({
-          nextId: this.state.nextId + 1 
-      }))
-  }
-
-
-
+  
   render() {
     return (
       <div className="container-fluid">
@@ -94,11 +74,11 @@ class App extends Component {
               <a key={post.id} className="list-group-item list-group-item-action flex-column align-items-start">
               <div className="d-flex w-100 justify-content-between">
                 <h5 className="mb-1">{post.title}</h5>
-                {post.edited ? <small>{moment.utc(post.timestamp).format("ddd, MMMM Do YYYY, h:mm a")}<strong> - Edited</strong></small> : <small>{moment.utc(post.timestamp).format("ddd, MMMM Do YYYY, h:mm a")}</small>}
+                {post.edited ? <small>{moment.utc(post.timestamp).format("ddd, MMM Do YYYY, h:mm a")}<strong><span className="blue-focus"> - Edited</span></strong></small> : <small>{moment.utc(post.timestamp).format("ddd, MMMM Do YYYY, h:mm a")}</small>}
                 
                 </div>
-                {post.body.length > 75 ? <p className="mb-1">{post.body.substring(0, 75)}... <small><span className="read-more">Read more.</span></small></p> : <p className="mb-1">{post.body}</p>  } 
-                <small>Author: <strong>{post.author}</strong> • Score: <strong>{post.voteScore}</strong> • #{post.category}</small>
+                {post.body.length > 75 ? <p className="mb-1">{post.body.substring(0, 75)}... <small><span className="blue-focus">Read more.</span></small></p> : <p className="mb-1">{post.body}</p>  } 
+                <small>Author: <strong>{post.author}</strong> • Score: <strong>{post.voteScore}</strong> • <span className="blue-focus">#{post.category}</span></small>
                 </a>
           )}
           </div>
@@ -108,19 +88,24 @@ class App extends Component {
                 <h5 className="mb-1">Categories</h5>
                 </div>
                 </a>
-              <a href="/" className="list-group-item list-group-item-action flex-column align-items-start">
+                <a onClick={() => this.props.fetchData(`${api}/posts`)} className="list-group-item list-group-item-action flex-column align-items-start">
               <div className="d-flex w-100 justify-content-between">
-                <h6 className="mb-1">React</h6>
+                <h6 className="mb-1 blue-focus">#all</h6>
                 </div>
                 </a>
-              <a href="/" className="list-group-item list-group-item-action flex-column align-items-start">
+              <a onClick={() => this.props.categoryChanger("react")} className="list-group-item list-group-item-action flex-column align-items-start">
               <div className="d-flex w-100 justify-content-between">
-                <h6 className="mb-1">Redux</h6>
+                <h6 className="mb-1 blue-focus">#react</h6>
                 </div>
                 </a>
-              <a href="/" className="list-group-item list-group-item-action flex-column align-items-start">
+              <a onClick={() => this.props.categoryChanger("redux")} className="list-group-item list-group-item-action flex-column align-items-start">
               <div className="d-flex w-100 justify-content-between">
-                <h6 className="mb-1">Udacity</h6>
+                <h6 className="mb-1 blue-focus">#redux</h6>
+                </div>
+                </a>
+              <a onClick={() => this.props.categoryChanger("udacity")} className="list-group-item list-group-item-action flex-column align-items-start">
+              <div className="d-flex w-100 justify-content-between">
+                <h6 className="mb-1 blue-focus">#udacity</h6>
                 </div>
                 </a>
               
@@ -142,7 +127,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      fetchData: (url) => dispatch(postsFetchData(url))
+      fetchData: (url) => dispatch(postsFetchData(url)),
+      categoryChanger: (category) => dispatch(categoryChanger(category))
   };
 };
 
