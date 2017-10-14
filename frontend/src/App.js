@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import './App.css'
 import moment from 'moment'
 import sortBy from 'sort-by'
+import { connect } from 'react-redux'
+import { postsFetchData } from './actions'
 
 const headers = {
   'Accept': 'application/json',
@@ -14,31 +16,6 @@ const api = "http://localhost:3001"
 
 class App extends Component {   
   state = {
-    posts: [
-      {
-        id: '8xf0y6ziyjabvozdd253nd',
-        timestamp: 1467166872634,
-        title: 'Udacity is the best place to learn React',
-        body: 'Everyone says so after all.',
-        author: 'thingtwo',
-        category: 'react',
-        voteScore: 6,
-        deleted: false,
-        Edited: false
-      },
-      {
-        id: '6ni6ok3ym7mf1p33lnez',
-        timestamp: 1468479767190,
-        title: 'Learn Redux in 10 minutes!',
-        body: 'Just kidding. It takes more than 10 minutes to learn technology. jhsjdhfsdghhsgfjksdhfksdhfkjsdhfkjhsdkjfhskjdfsdkjjhsdhgsgfsgdyfgsygdfysdgf',
-        author: 'thingone',
-        category: 'redux',
-        voteScore: 8,
-        deleted: false,
-        edited: true
-      }
-    ],
-    nextId: 0
   }
 
   post = () =>
@@ -60,10 +37,9 @@ class App extends Component {
   )
 
   componentDidMount() {
-    this.setState({
-      posts: this.state.posts.sort(sortBy('timestamp'))
-    })
+    this.props.fetchData(`${api}/posts`)
 }
+
   saveComment = (post) =>
    fetch(`${api}/comments`, {
     method: 'POST',
@@ -103,35 +79,33 @@ class App extends Component {
   }
 
 
+
   render() {
     return (
       <div className="container-fluid">
-        <header>
-        </header>
+        {this.props.isLoading ? 
+        <div className="spinner">
+        <div className="cube1"></div>
+        <div className="cube2"></div>
+        </div> :
         <div className="row">
         <div className="col-10 list-group">
-        {this.state.posts.map(post => 
+        {this.props.posts[0] && this.props.posts.map(post => 
               <a key={post.id} className="list-group-item list-group-item-action flex-column align-items-start">
               <div className="d-flex w-100 justify-content-between">
                 <h5 className="mb-1">{post.title}</h5>
-                {post.edited ? <small>{moment.utc(post.timestamp).format("ddd, MMMM Do YYYY, h:mm a")}<strong> - Edited</strong></small> : <small onClick={this.poste}>{moment.utc(post.timestamp).format("ddd, MMMM Do YYYY, h:mm a")}</small>}
+                {post.edited ? <small>{moment.utc(post.timestamp).format("ddd, MMMM Do YYYY, h:mm a")}<strong> - Edited</strong></small> : <small>{moment.utc(post.timestamp).format("ddd, MMMM Do YYYY, h:mm a")}</small>}
                 
                 </div>
                 {post.body.length > 75 ? <p className="mb-1">{post.body.substring(0, 75)}... <small><span className="read-more">Read more.</span></small></p> : <p className="mb-1">{post.body}</p>  } 
-                <small onClick={this.post}>Author: <strong>{post.author}</strong> • Score: <strong>{post.voteScore}</strong> • #{post.category}</small>
+                <small>Author: <strong>{post.author}</strong> • Score: <strong>{post.voteScore}</strong> • #{post.category}</small>
                 </a>
           )}
           </div>
               <div className="col list-group">
               <a className="list-group-item list-group-item-action flex-column align-items-start">
               <div className="d-flex w-100 justify-content-between">
-                <h5 onClick={()=> this.saveComment({
-                  id: "53",
-                  timestamp: 8375230593537458,
-                  body: "njdgbdjfgndlkfg",
-                  author: "LOL",
-                  parentId: "2"
-                })} className="mb-1">Categories</h5>
+                <h5 className="mb-1">Categories</h5>
                 </div>
                 </a>
               <a href="/" className="list-group-item list-group-item-action flex-column align-items-start">
@@ -152,9 +126,24 @@ class App extends Component {
               
               </div>
         </div>
+        }
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+      posts: state.posts,
+      hasErrored: state.itemsHasErrored,
+      isLoading: state.itemsIsLoading
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+      fetchData: (url) => dispatch(postsFetchData(url))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
