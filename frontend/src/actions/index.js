@@ -5,6 +5,7 @@ const headers = {
     'Authorization': 'User',
     'Content-Type': 'application/json'
   }
+const api = "http://localhost:3001"
 
 export function itemsHasErrored(bool) {
     return {
@@ -40,24 +41,46 @@ export function postsFetchData(url) {
                     throw Error(response.statusText);
                 }
 
-                dispatch(itemsIsLoading(false));
+                // dispatch(itemsIsLoading(false));
 
                 return response;
             })
             .then((response) => response.json())
-            .then((posts) => dispatch(postsFetchDataSuccess(posts.sort(sortBy('-voteScore')))))
+            .then((posts) => dispatch(postsFetchComments(posts.sort(sortBy('-voteScore')))))
             .catch(() => dispatch(itemsHasErrored(true)));
     };
 }
+
+export function postsFetchComments(posts) {
+
+        posts.map((p) => 
+    
+        fetch(`${api}/posts/${p.id}/comments`, {
+            method: 'GET',
+            headers
+          }).then((response) => {
+            if (!response.ok) {
+                throw Error(response.statusText);
+            }
+
+            // dispatch(itemsIsLoading(false));
+
+            return response;
+        })
+        .then((response) => response.json()).then((response) => console.log(response))
+    )
+    
+        }
+
 
 export function categoryChanger(category) {
     return (dispatch) => {
         dispatch(itemsIsLoading(true));
 
         fetch("http://localhost:3001/posts", {
-            method: 'GET',
-            headers
-          })
+                method: 'GET',
+                headers
+            })
             .then((response) => {
                 if (!response.ok) {
                     throw Error(response.statusText);

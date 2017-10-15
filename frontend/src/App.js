@@ -10,11 +10,9 @@ const headers = {
   'Authorization': 'User',
   'Content-Type': 'application/json'
 }
-
 const api = "http://localhost:3001"
 
 class App extends Component {
-state = {}
 
 savePost = (post) => fetch(`${api}/posts`, {
     method: 'POST',
@@ -36,30 +34,6 @@ saveComment = (post) =>
   .then(res => {res.json();
   console.log(res)})
   
-  // Post = (post) =>
-  // fetch(`http://localhost:3001/posts`, {
-  //   method: 'GET',
-  //   headers
-  // }).then(res => res.json()).then(res => console.log(res))
-  
-
-  // savePost = (post) =>
-  // fetch(`${api}/posts`, {
-  //  method: 'POST',
-  //  headers: headers,
-  //  body: JSON.stringify(post)
-  // }).then(res => res.json())
-
-// Example Post
-
-  // {
-  //   id: '8xf0y6ziyjabvozddfyhfghsdff',
-  //   timestamp: 14671668758512,
-  //   title: 'test',
-  //   body: 'tste',
-  //   author: 'test',
-  //   category: 'tes' }
-  
   render() {
     return (
       <div className="container-fluid">
@@ -75,7 +49,6 @@ saveComment = (post) =>
               <div className="d-flex w-100 justify-content-between">
                 <h5 className="mb-1">{post.title}</h5>
                 {post.edited ? <small>{moment.utc(post.timestamp).format("ddd, MMM Do YYYY, h:mm a")}<strong><span className="blue-focus"> - Edited</span></strong></small> : <small>{moment.utc(post.timestamp).format("ddd, MMMM Do YYYY, h:mm a")}</small>}
-                
                 </div>
                 {post.body.length > 75 ? <p className="mb-1">{post.body.substring(0, 75)}... <small><span className="blue-focus">Read more.</span></small></p> : <p className="mb-1">{post.body}</p>  } 
                 <small>Author: <strong>{post.author}</strong> • Score: <strong>{post.voteScore}</strong> • <span className="blue-focus">#{post.category}</span></small>
