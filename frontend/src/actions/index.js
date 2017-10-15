@@ -41,7 +41,7 @@ export function postsFetchData(url) {
                     throw Error(response.statusText);
                 }
 
-                // dispatch(itemsIsLoading(false));
+                //dispatch(itemsIsLoading(false));
 
                 return response;
             })
@@ -52,25 +52,26 @@ export function postsFetchData(url) {
 }
 
 export function postsFetchComments(posts) {
-
-        posts.map((p) => 
-    
+    return (dispatch) => {
+        posts.forEach((p) => 
         fetch(`${api}/posts/${p.id}/comments`, {
             method: 'GET',
             headers
-          }).then((response) => {
-            if (!response.ok) {
-                throw Error(response.statusText);
-            }
+          })
+            .then((response) => {
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                }
 
-            // dispatch(itemsIsLoading(false));
-
-            return response;
-        })
-        .then((response) => response.json()).then((response) => console.log(response))
-    )
-    
-        }
+                //dispatch(itemsIsLoading(false));
+                
+                return response;
+            })
+            .then((response) => response.json())
+            .then((response) => console.log(response))
+            .catch(() => dispatch(itemsHasErrored(true))));
+    };
+}
 
 
 export function categoryChanger(category) {
