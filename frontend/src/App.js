@@ -5,11 +5,11 @@ import moment from 'moment'
 import {connect} from 'react-redux'
 import {getPosts, categoryChanger, rateUp} from './actions'
 
-const headers = {
-  'Accept': 'application/json',
-  'Authorization': 'User',
-  'Content-Type': 'application/json'
-}
+// const headers = {
+//   'Accept': 'application/json',
+//   'Authorization': 'User',
+//   'Content-Type': 'application/json'
+// }
 const api = "http://localhost:3001"
 
 class App extends Component {
@@ -51,11 +51,10 @@ componentDidMount() {
                 <h5 className="mb-1">{post.title}</h5>
                 {post.edited ? <small>{moment.utc(post.timestamp).format("ddd, MMM Do YYYY, h:mm a")}<strong><span className="blue-focus"> - Edited</span></strong></small> : <small>{moment.utc(post.timestamp).format("ddd, MMMM Do YYYY, h:mm a")}</small>}
                 </div>
-                
                 {post.body.length > 75 ? <p className="mb-1">{post.body.substring(0, 75)}... <small><span className="blue-focus">Read more.</span></small></p> : <p className="mb-1">{post.body}</p>  } 
                 <small>Author: <strong>{post.author}</strong> • Score: <strong>{post.voteScore}</strong> • <span className="blue-focus">#{post.category}</span> • {post.comments.length} comment(s)  </small>
-                <i onClick={() => this.props.rateUp({option: "upVote"}, post.id, index)}className="fa fa-arrow-up" aria-hidden="true"></i><i className="fa fa-arrow-down" aria-hidden="true"></i>
-                <div className="btn-group btn-custom" role="group" aria-label="Edit & Delete">
+                <i onClick={() => this.props.rateUp({option: "upVote"}, post, index)}className="fa fa-arrow-up" aria-hidden="true"></i><i className="fa fa-arrow-down" aria-hidden="true"></i>
+                <div className="btn-group btn-custom" role="group" aria-label="Edit and Delete">
                   <button type="button" className="btn btn-outline-info btn-sm">Edit</button>
                   <button type="button" className="btn btn-outline-danger btn-sm">Delete</button>
                 </div>

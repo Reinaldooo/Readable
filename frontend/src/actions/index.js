@@ -1,4 +1,5 @@
 import sortBy from 'sort-by'
+// import axios from 'axios'
 
 const headers = {
     'Accept': 'application/json',
@@ -84,8 +85,6 @@ export function getPosts() {
                             throw Error(posts.statusText);
                         }
         
-                        //dispatch(itemsIsLoading(false));
-        
                         return posts;
                     })
                     .then((posts) => posts.json())
@@ -158,22 +157,24 @@ export function categoryChanger(category) {
     };
 } */
 
-export function rateUp(rate, id, index) {
+export function rateUp(rate, post, index) {
     return (dispatch) => {
 
-        fetch(`${api}/posts/${id}`, {
+        fetch(`${api}/posts/${post.id}`, {
             method: 'POST',
             headers,
             body: JSON.stringify(rate)
           })
-            .then(() => dispatch(rateUpSuccess(rate, index)))
+            .then(() => dispatch(rateUpSuccess(index, post)))
             .catch(() => dispatch(itemsHasErrored(true)));
             
     };
 }
-export function rateUpSuccess(rate, index) {
+export function rateUpSuccess(index, post) {
+    post.voteScore = post.voteScore + 1
     return {
-        type: 'RATEUP',
+        type: 'RATE_UP',
+        post,
         index
     };
 }
