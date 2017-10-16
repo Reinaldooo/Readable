@@ -103,12 +103,13 @@ export function getPosts() {
                             return comments;
                             })
                             .then((comments) => comments.json())
-                            .then(comments => post.comments = comments)
+                            .then(comments => post.comments = comments.sort(sortBy('-voteScore')))
                             .then(() => post)
                     )
                 )
             )
-            .then(posts => dispatch({ type: 'POSTS_FETCH_DATA_SUCCESS', posts }))
+            //.then(posts => dispatch({ type: 'POSTS_FETCH_DATA_SUCCESS', posts }))
+            .then((posts) => dispatch(postsFetchDataSuccess(posts.sort(sortBy('-voteScore')))))
             .then(() => dispatch(itemsIsLoading(false)));
     };
 }
@@ -156,3 +157,24 @@ export function categoryChanger(category) {
             );
     };
 } */
+
+export function rateUp(rate, id, index) {
+    return (dispatch) => {
+
+        fetch(`${api}/posts/${id}`, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify(rate)
+          })
+            .then(() => dispatch(rateUpSuccess(rate, index)))
+            .catch(() => dispatch(itemsHasErrored(true)));
+            
+    };
+}
+export function rateUpSuccess(rate, index) {
+    return {
+        type: 'RATEUP',
+        index
+    };
+}
+

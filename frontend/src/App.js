@@ -3,13 +3,13 @@ import './App.css'
 import moment from 'moment'
 // import sortBy from 'sort-by'
 import {connect} from 'react-redux'
-import {getPosts, categoryChanger} from './actions'
+import {getPosts, categoryChanger, rateUp} from './actions'
 
-// const headers = {
-//   'Accept': 'application/json',
-//   'Authorization': 'User',
-//   'Content-Type': 'application/json'
-// }
+const headers = {
+  'Accept': 'application/json',
+  'Authorization': 'User',
+  'Content-Type': 'application/json'
+}
 const api = "http://localhost:3001"
 
 class App extends Component {
@@ -24,6 +24,7 @@ class App extends Component {
 componentDidMount() {
     this.props.getPosts()
 }
+
 
 // saveComment = (post) =>
 //   fetch(`${api}/comments`, {
@@ -44,7 +45,7 @@ componentDidMount() {
         </div> :
         <div className="row">
         <div className="col-10 list-group">
-        {this.props.posts[0] && this.props.posts.map(post => 
+        {this.props.posts[0] && this.props.posts.map((post, index) => 
               <a key={post.id} className="list-group-item list-group-item-action flex-column align-items-start">
               <div className="d-flex w-100 justify-content-between">
                 <h5 className="mb-1">{post.title}</h5>
@@ -52,7 +53,12 @@ componentDidMount() {
                 </div>
                 
                 {post.body.length > 75 ? <p className="mb-1">{post.body.substring(0, 75)}... <small><span className="blue-focus">Read more.</span></small></p> : <p className="mb-1">{post.body}</p>  } 
-                <small>Author: <strong>{post.author}</strong> • Score: <strong>{post.voteScore}</strong> • <span className="blue-focus">#{post.category}</span> • {post.comments.length} comment(s)</small>
+                <small>Author: <strong>{post.author}</strong> • Score: <strong>{post.voteScore}</strong> • <span className="blue-focus">#{post.category}</span> • {post.comments.length} comment(s)  </small>
+                <i onClick={() => this.props.rateUp({option: "upVote"}, post.id, index)}className="fa fa-arrow-up" aria-hidden="true"></i><i className="fa fa-arrow-down" aria-hidden="true"></i>
+                <div className="btn-group btn-custom" role="group" aria-label="Edit & Delete">
+                  <button type="button" className="btn btn-outline-info btn-sm">Edit</button>
+                  <button type="button" className="btn btn-outline-danger btn-sm">Delete</button>
+                </div>
                 </a>
           )}
           </div>
@@ -102,6 +108,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
       getPosts: () => dispatch(getPosts()),
+      rateUp: (rate, id, index) => dispatch(rateUp(rate, id, index)),
       categoryChanger: (category) => dispatch(categoryChanger(category))
   };
 };

@@ -6,7 +6,12 @@ body {
 .container-nav {
   padding: 1em 6.5em;
 }
-
+.btn-custom {
+  float: right
+}
+.fa-arrow-up, .fa-arrow-down {
+  margin: 0 4px;
+}
 .App {
   text-align: center;
 }

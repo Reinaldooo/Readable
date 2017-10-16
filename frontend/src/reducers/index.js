@@ -25,6 +25,9 @@ export function posts(state = {}, action) {
         case 'POSTS_FETCH_DATA_SUCCESS':
         return action.posts
 
+        case 'RATEUP':
+        return state.posts[action.index].voteScore + 1
+
         default:
             return state;
     }

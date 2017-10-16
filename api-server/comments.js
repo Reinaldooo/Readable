@@ -22,7 +22,18 @@ const defaultData = {
     voteScore: -5,
     deleted: false,
     parentDeleted: false
+  },  
+  "8tu4bsun805n8un48ve90": {
+    id: '8tu4bsun805n8un48ve90',
+    parentId: "2",
+    timestamp: 1469470000000,
+    body: 'Comments are cool indeed!',
+    author: 'thingthree',
+    voteScore: 2,
+    deleted: false,
+    parentDeleted: false
   }
+
 }
 
 function getData (token) {
