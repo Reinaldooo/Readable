@@ -5,34 +5,34 @@ import moment from 'moment'
 import {connect} from 'react-redux'
 import {postsFetchData, categoryChanger} from './actions'
 
-const headers = {
-  'Accept': 'application/json',
-  'Authorization': 'User',
-  'Content-Type': 'application/json'
-}
+// const headers = {
+//   'Accept': 'application/json',
+//   'Authorization': 'User',
+//   'Content-Type': 'application/json'
+// }
 const api = "http://localhost:3001"
 
 class App extends Component {
 
-savePost = (post) => fetch(`${api}/posts`, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify(post)
-  })
-  .then(posts => posts.json())
+// savePost = (post) => fetch(`${api}/posts`, {
+//     method: 'POST',
+//     headers,
+//     body: JSON.stringify(post)
+//   })
+//   .then(posts => posts.json())
 
 componentDidMount() {
-    this.props.fetchData(`${api}/posts`)
+    this.props.fetchData()
 }
 
-saveComment = (post) =>
-  fetch(`${api}/comments`, {
-   method: 'POST',
-   headers: headers,
-   body: JSON.stringify(post)
-  })
-  .then(res => {res.json();
-  console.log(res)})
+// saveComment = (post) =>
+//   fetch(`${api}/comments`, {
+//    method: 'POST',
+//    headers: headers,
+//    body: JSON.stringify(post)
+//   })
+//   .then(res => {res.json();
+//   console.log(res)})
   
   render() {
     return (
@@ -50,8 +50,9 @@ saveComment = (post) =>
                 <h5 className="mb-1">{post.title}</h5>
                 {post.edited ? <small>{moment.utc(post.timestamp).format("ddd, MMM Do YYYY, h:mm a")}<strong><span className="blue-focus"> - Edited</span></strong></small> : <small>{moment.utc(post.timestamp).format("ddd, MMMM Do YYYY, h:mm a")}</small>}
                 </div>
+                {console.log(post)}
                 {post.body.length > 75 ? <p className="mb-1">{post.body.substring(0, 75)}... <small><span className="blue-focus">Read more.</span></small></p> : <p className="mb-1">{post.body}</p>  } 
-                <small>Author: <strong>{post.author}</strong> • Score: <strong>{post.voteScore}</strong> • <span className="blue-focus">#{post.category}</span> • {console.log(post.comments)}comments</small>
+                <small>Author: <strong>{post.author}</strong> • Score: <strong>{post.voteScore}</strong> • <span className="blue-focus">#{post.category}</span> • comment(s)</small>
                 </a>
           )}
           </div>

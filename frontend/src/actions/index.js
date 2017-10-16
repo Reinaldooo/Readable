@@ -28,11 +28,11 @@ export function postsFetchDataSuccess(posts) {
     };
 }
 
-export function postsFetchData(url) {
+export function postsFetchData() {
     return (dispatch) => {
         dispatch(itemsIsLoading(true));
 
-        fetch(url, {
+        fetch("http://localhost:3001/posts", {
             method: 'GET',
             headers
           })
@@ -59,12 +59,13 @@ export function postsFetchComments(posts) {
             headers
           })
             .then((response) => {
-                dispatch(itemsIsLoading(false));                
+                                
                 return response;
             })
             .then((response) => response.json())
-            .then((response) => p.comments = response)
-            .then((response) => dispatch(postsFetchDataSuccess(posts.sort(sortBy('-voteScore'))))))
+            .then((response) => p.comments = response.length)
+            .then(() => dispatch(postsFetchDataSuccess(posts.sort(sortBy('voteScore')))))
+            .then(() => dispatch(itemsIsLoading(false))))
     };
 }
 
