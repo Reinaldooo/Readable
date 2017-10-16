@@ -58,14 +58,58 @@ export function postsFetchComments(posts) {
             method: 'GET',
             headers
           })
-            .then((response) => {
-                                
-                return response;
+          .then((response) => {
+            if (!response.ok) {
+                throw Error(response.statusText);
+            }
+            return response;
             })
             .then((response) => response.json())
-            .then((response) => p.comments = response.length)
-            .then(() => dispatch(postsFetchDataSuccess(posts.sort(sortBy('voteScore')))))
+            .then((response) => p.comments = response)
+            .then(() => dispatch(postsFetchDataSuccess(posts.sort(sortBy('-voteScore')))))
             .then(() => dispatch(itemsIsLoading(false))))
+    };
+}
+
+export function getPosts() {
+    return dispatch => {
+        dispatch(itemsIsLoading(true));
+        
+                fetch("http://localhost:3001/posts", {
+                    method: 'GET',
+                    headers
+                  })
+                    .then((posts) => {
+                        if (!posts.ok) {
+                            throw Error(posts.statusText);
+                        }
+        
+                        //dispatch(itemsIsLoading(false));
+        
+                        return posts;
+                    })
+                    .then((posts) => posts.json())
+            .then(posts =>
+                Promise.all(
+                    posts.map(post =>
+                        fetch(`${api}/posts/${post.id}/comments`, {
+                            method: 'GET',
+                            headers
+                          })
+                          .then((comments) => {
+                            if (!comments.ok) {
+                                throw Error(comments.statusText);
+                            }
+                            return comments;
+                            })
+                            .then((comments) => comments.json())
+                            .then(comments => post.comments = comments)
+                            .then(() => post)
+                    )
+                )
+            )
+            .then(posts => dispatch({ type: 'POSTS_FETCH_DATA_SUCCESS', posts }))
+            .then(() => dispatch(itemsIsLoading(false)));
     };
 }
 
@@ -92,3 +136,23 @@ export function categoryChanger(category) {
             .catch(() => dispatch(itemsHasErrored(true)));
     };
 }
+
+/* export function Example() {
+    return dispatch => {
+        ReadableAPI
+            .getPosts()
+            .then(posts =>
+                Promise.all(
+                    posts.map(post =>
+                        ReadableAPI
+                            .getComments(post.id)
+                            .then(comments => post.comments = comments)
+                            .then(() => post)
+                    )
+                )
+            )
+            .then(posts =>
+                dispatch({ type: GET_POSTS, posts })
+            );
+    };
+} */

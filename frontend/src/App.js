@@ -3,7 +3,7 @@ import './App.css'
 import moment from 'moment'
 // import sortBy from 'sort-by'
 import {connect} from 'react-redux'
-import {postsFetchData, categoryChanger} from './actions'
+import {getPosts, categoryChanger} from './actions'
 
 // const headers = {
 //   'Accept': 'application/json',
@@ -22,7 +22,7 @@ class App extends Component {
 //   .then(posts => posts.json())
 
 componentDidMount() {
-    this.props.fetchData()
+    this.props.getPosts()
 }
 
 // saveComment = (post) =>
@@ -50,9 +50,9 @@ componentDidMount() {
                 <h5 className="mb-1">{post.title}</h5>
                 {post.edited ? <small>{moment.utc(post.timestamp).format("ddd, MMM Do YYYY, h:mm a")}<strong><span className="blue-focus"> - Edited</span></strong></small> : <small>{moment.utc(post.timestamp).format("ddd, MMMM Do YYYY, h:mm a")}</small>}
                 </div>
-                {console.log(post)}
+                
                 {post.body.length > 75 ? <p className="mb-1">{post.body.substring(0, 75)}... <small><span className="blue-focus">Read more.</span></small></p> : <p className="mb-1">{post.body}</p>  } 
-                <small>Author: <strong>{post.author}</strong> • Score: <strong>{post.voteScore}</strong> • <span className="blue-focus">#{post.category}</span> • comment(s)</small>
+                <small>Author: <strong>{post.author}</strong> • Score: <strong>{post.voteScore}</strong> • <span className="blue-focus">#{post.category}</span> • {post.comments.length} comment(s)</small>
                 </a>
           )}
           </div>
@@ -101,7 +101,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      fetchData: (url) => dispatch(postsFetchData(url)),
+      getPosts: () => dispatch(getPosts()),
       categoryChanger: (category) => dispatch(categoryChanger(category))
   };
 };
