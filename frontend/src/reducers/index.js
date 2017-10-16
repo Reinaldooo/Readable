@@ -26,7 +26,38 @@ export function posts(state = {}, action) {
         return action.posts
 
         case 'RATEUP':
-        return state.posts[action.index].voteScore + 1
+        return {
+            ...state,
+            posts: [...state.posts,
+            [action.index]: ...state.posts[action.index],
+            voteScore: voteScore + 1
+            ]
+        }
+
+        var projects = [
+            {
+                value: "jquery",
+                label: "jQuery",
+                desc: "the write less, do more, JavaScript library",
+                icon: "jquery_32x32.png"
+            },
+            {
+                value: "jquery-ui",
+                label: "jQuery UI",
+                desc: "the official user interface library for jQuery",
+                icon: "jqueryui_32x32.png"
+            },
+            {
+                value: "sizzlejs",
+                label: "Sizzle JS",
+                desc: "a pure-JavaScript CSS selector engine",
+                icon: "sizzlejs_32x32.png"
+            }
+        ];
+
+// using higher-order functions to avoiding mutation
+index = projects.findIndex(x => x.value === 'jquery-ui');
+[... projects.slice(0,index), {'x': 'xxxx'}, ...projects.slice(index + 1, projects.length)];
 
         default:
             return state;
