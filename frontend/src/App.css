@@ -1,7 +1,7 @@
 body {
   height: 100vh;
   width: 100vw;
-  background-color: #ECEFF1
+  background-color: #424242
 }
 .container-nav {
   padding: 1em 6.5em;
@@ -10,7 +10,21 @@ body {
   float: right
 }
 .btn-group {
-  margin-left: 2.5em
+  margin-left: .5em
+}
+.button {
+  padding: 0.25em;
+  background-color: #616161;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  margin: .2em;
+  font-size: .9em;
+  cursor: pointer;
+  font-weight: 500;
+}
+.button:hover {
+opacity: .7
 }
 .fa-arrow-up, .fa-arrow-down {
   margin: 0 4px;
@@ -52,8 +66,20 @@ body {
   margin: 1em;
 }
 .blue-focus {
-  color: #64B5F6;
+  color: #FF8A65;
   font-size: 1em
+}
+.post-details {
+  padding: .5em;
+  background-color: #616161;
+  color: white;
+  border-radius: 3px
+}
+.score {
+  padding: .5em;
+  background-color: #757575;
+  color: white;
+  border-radius: 3px
 }
 
 a {
@@ -69,7 +95,6 @@ a:active {
 a:hover {
   text-decoration: none;
   color: white;
-  opacity: .8
 }
 
 .spinner {

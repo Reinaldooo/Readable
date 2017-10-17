@@ -30,20 +30,22 @@ render() {
         {this.props.posts[0] && this.props.posts.map((post, index) => 
               <a key={post.id} className="list-group-item list-group-item-action flex-column align-items-start">
                 <div className="d-flex w-100 justify-content-between">
-                  <h5 className="mb-1">{post.title}</h5>
+                  <h5 className="mb-1"><i class="fa fa-angle-right" aria-hidden="true"></i> {post.title}</h5>
                   {post.edited ? <small>{moment.utc(post.timestamp).format("ddd, MMM Do YYYY, h:mm a")}<strong><span className="blue-focus"> - Edited</span></strong></small>
                   :
                   <small>{moment.utc(post.timestamp).format("ddd, MMMM Do YYYY, h:mm a")}</small>}
                 </div>
-                {post.body.length > 75 ? <p className="mb-1">{post.body.substring(0, 75)}... <small><span className="blue-focus">Read more.</span></small></p> : <p className="mb-1">{post.body}</p>  } 
-                <small>Author: <strong>{post.author}</strong> • Score: <strong>{post.voteScore}</strong> • <span className="blue-focus">#{post.category}</span> • {post.comments.length} comment(s)</small>
+                {post.body.length > 75 ? <p className="mb-1">{post.body.substring(0, 75)}... <small><span className="blue-focus">Read more.</span></small></p>
+                :
+                <p className="mb-1">{post.body}</p>  } 
+                <small className="post-details">Author: <strong>{post.author}</strong> • <strong className="score">Score: {post.voteScore}</strong> • <strong><span className="blue-focus"><i class="fa fa-tag" aria-hidden="true"></i> {post.category}</span></strong> • {post.comments.length} comment(s)</small>
                 <div className="btn-group" role="group" aria-label="up and downvote">
-                  <button onClick={() => this.props.ratePost(UP, post, index)} type="button" className="btn btn-info btn-sm"><i className="fa fa-arrow-up" aria-hidden="true"></i></button>
-                  <button onClick={() => this.props.ratePost(DN, post, index)} type="button" className="btn btn-info btn-sm"><i className="fa fa-arrow-down" aria-hidden="true"></i></button>
+                  <button onClick={() => this.props.ratePost(UP, post, index)} type="button" className="button"><i className="fa fa-arrow-up" aria-hidden="true"></i></button>
+                  <button onClick={() => this.props.ratePost(DN, post, index)} type="button" className="button"><i className="fa fa-arrow-down" aria-hidden="true"></i></button>
                 </div>                
                 <div className="btn-group btn-custom" role="group" aria-label="Edit and Delete">
-                  <button type="button" className="btn btn-info btn-sm">Edit</button>
-                  <button type="button" className="btn btn-info btn-sm">Delete</button>
+                  <button type="button" className="button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                  <button type="button" className="button"><i class="fa fa-eraser" aria-hidden="true"></i></button>
                 </div>
               </a>
           )}
