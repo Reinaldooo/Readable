@@ -11,9 +11,9 @@ export function postsHasErrored(state = false, action) {
     }
 }
 
-export function postsIsLoading(state = false, action) {
+export function postsAreLoading(state = false, action) {
     switch (action.type) {
-        case 'POSTS_IS_LOADING':
+        case 'POSTS_ARE_LOADING':
             return action.isLoading; 
 
         default:
@@ -31,9 +31,9 @@ export function categoriesHasErrored(state = false, action) {
     }
 }
 
-export function categoriesIsLoading(state = false, action) {
+export function categoriesAreLoading(state = false, action) {
     switch (action.type) {
-        case 'CATEGORIES_IS_LOADING':
+        case 'CATEGORIES_ARE_LOADING':
             return action.isLoading; 
 
         default:
@@ -81,8 +81,8 @@ export function categories(state = {}, action) {
 export default combineReducers({
     posts,
     postsHasErrored,
-    postsIsLoading,
+    postsAreLoading,
     categories,
     categoriesHasErrored,
-    categoriesIsLoading
+    categoriesAreLoading
 });

@@ -16,9 +16,9 @@ export function postsHasErrored(bool) {
     };
 }
 
-export function postsIsLoading(bool) {
+export function postsAreLoading(bool) {
     return {
-        type: 'POSTS_IS_LOADING',
+        type: 'POSTS_ARE_LOADING',
         isLoading: bool
     };
 }
@@ -30,16 +30,16 @@ export function categoriesHasErrored(bool) {
     };
 }
 
-export function categoriesIsLoading(bool) {
+export function categoriesAreLoading(bool) {
     return {
-        type: 'CATEGORIES_IS_LOADING',
+        type: 'CATEGORIES_ARE_LOADING',
         isLoading: bool
     };
 }
 
 export function getPosts() {
     return dispatch => {
-        dispatch(postsIsLoading(true));
+        dispatch(postsAreLoading(true));
         
                 fetch("http://localhost:3001/posts", {
                     method: 'GET',
@@ -73,15 +73,15 @@ export function getPosts() {
                 )
             )
             //.then(posts => dispatch({ type: 'POSTS_FETCH_DATA_SUCCESS', posts }))
-            .then((posts) => dispatch({ type: 'POSTS_FETCH_SUCCESS', posts: posts.sort(sortBy('-voteScore')) }))
-            .then(() => dispatch(postsIsLoading(false)));
+            .then((posts) => dispatch({ type: 'POSTS_FETCH_SUCCESS', posts: posts.filter((post) => post.deleted === false).sort(sortBy('-voteScore')) }))
+            .then(() => dispatch(postsAreLoading(false)));
     };
 }
 
 
 export function getCategories() {
     return (dispatch) => {
-        dispatch(categoriesIsLoading(true));
+        dispatch(categoriesAreLoading(true));
 
         fetch("http://localhost:3001/categories", {
                 method: 'GET',
@@ -91,7 +91,7 @@ export function getCategories() {
                 if (!response.ok) {
                     throw Error(response.statusText);
                 }
-                dispatch(categoriesIsLoading(false));
+                dispatch(categoriesAreLoading(false));
                 return response;
             })
             .then((response) => response.json())
