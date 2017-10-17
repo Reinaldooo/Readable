@@ -33,14 +33,14 @@ render() {
               <a key={post.id} className="list-group-item list-group-item-action flex-column align-items-start">
                 <div className="d-flex w-100 justify-content-between">
                   <h5 className="mb-1"><i className="fa fa-angle-right" aria-hidden="true"></i> {post.title}</h5>
-                  {post.edited ? <small>{moment.utc(post.timestamp).format("ddd, MMM Do YYYY, h:mm a")}<strong><span className="blue-focus"> - Edited</span></strong></small>
+                  {post.edited ? <small>{moment.utc(post.timestamp).format("ddd, MMM Do YYYY, h:mm a")}<strong><span className="orange-focus"> - Edited</span></strong></small>
                   :
                   <small>{moment.utc(post.timestamp).format("ddd, MMMM Do YYYY, h:mm a")}</small>}
                 </div>
-                {post.body.length > 75 ? <p className="mb-1">{post.body.substring(0, 75)}... <small><span className="blue-focus">Read more.</span></small></p>
+                {post.body.length > 75 ? <p className="mb-1">{post.body.substring(0, 75)}... <small><span className="orange-focus">Read more.</span></small></p>
                 :
                 <p className="mb-1">{post.body}</p>  } 
-                <small className="post-details">Author: <strong>{post.author}</strong> • <strong className="score">Score: {post.voteScore}</strong> • <strong><span className="blue-focus"><i className="fa fa-tag" aria-hidden="true"></i> {post.category}</span></strong> • {post.comments.length} comment(s)</small>
+                <small className="post-details">Author: <strong>{post.author}</strong> • <strong className="score">Score: {post.voteScore}</strong> • <strong><span className="orange-focus"><i className="fa fa-tag" aria-hidden="true"></i> {post.category}</span></strong> • {post.comments.length} comment(s)</small>
                 <div className="btn-group" role="group" aria-label="up and downvote">
                   <button onClick={() => this.props.ratePost(UP, post, index)} type="button" className="button"><i className="fa fa-thumbs-up" aria-hidden="true"></i></button>
                   <button onClick={() => this.props.ratePost(DN, post, index)} type="button" className="button"><i className="fa fa-thumbs-down" aria-hidden="true"></i></button>
@@ -61,7 +61,7 @@ render() {
                   </a>
                   <a className="list-group-item list-group-item-action flex-column align-items-start">
                     <div className="d-flex w-100 justify-content-between">
-                      <h6 className="mb-1 blue-focus"><i className="fa fa-tag" aria-hidden="true"></i> all • <span className="post-count">{this.props.posts.length} post(s)</span></h6>
+                      <h6 className="mb-1 orange-focus"><i className="fa fa-tag" aria-hidden="true"></i> all • <span className="post-count">{this.props.posts.length} post(s)</span></h6>
                     </div>
                   </a>
                   {this.props.categoriesIsLoading ?         
@@ -74,7 +74,7 @@ render() {
                   {this.props.categories[0] && this.props.categories.map((category, index) =>
                   <a key={index} className="list-group-item list-group-item-action flex-column align-items-start">
                     <div className="d-flex w-100 justify-content-between">
-                      <h6 className="mb-1 blue-focus"><i className="fa fa-tag" aria-hidden="true"></i> {category.name} • <span className="post-count">{this.props.posts.filter(post => post.category === category.name).length} post(s)</span></h6>
+                      <h6 className="mb-1 orange-focus"><i className="fa fa-tag" aria-hidden="true"></i> {category.name} • <span className="post-count">{this.props.posts.filter(post => post.category === category.name).length} post(s)</span></h6>
                     </div>
                   </a>  
                   )}
