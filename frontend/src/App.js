@@ -3,16 +3,17 @@ import './App.css'
 import moment from 'moment'
 // import sortBy from 'sort-by'
 import {connect} from 'react-redux'
-import {getPosts, getCategories, ratePost} from './actions'
-
-// const api = "http://localhost:3001"
+import {getPosts, getCategories, ratePost, deletePost} from './actions'
 
 class App extends Component {
+
+state = {
+  user: "Guest"
+}  
 
 componentDidMount() {
     this.props.getPosts();
     this.props.getCategories();
-
 }
   
 render() {    
@@ -29,6 +30,7 @@ render() {
         </div> :
         <div className="row">
         <div className="col-10 list-group">
+          {console.log(this.props.posts)}
         {this.props.posts[0] && this.props.posts.map((post, index) => 
               <a key={post.id} className="list-group-item list-group-item-action flex-column align-items-start">
                 <div className="d-flex w-100 justify-content-between">
@@ -47,7 +49,7 @@ render() {
                 </div>                
                 <div className="btn-group btn-custom" role="group" aria-label="Edit and Delete">
                   <button type="button" className="button"><i className="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                  <button type="button" className="button"><i className="fa fa-eraser" aria-hidden="true"></i></button>
+                  <button onClick={() => this.props.deletePost(post.id)}type="button" className="button delete"><i className="fa fa-trash-o" aria-hidden="true"></i></button>
                 </div>
               </a>
           )}
@@ -56,12 +58,12 @@ render() {
                 <div className="col list-group">
                   <a className="list-group-item list-group-item-action flex-column align-items-start">
                     <div className="d-flex w-100 justify-content-between">
-                      <h5 className="mb-1">Categories</h5>
+                      <h6 className="mb-1">Welcome, <strong>{this.state.user}</strong></h6>
                     </div>
                   </a>
                   <a className="list-group-item list-group-item-action flex-column align-items-start">
                     <div className="d-flex w-100 justify-content-between">
-                      <h6 className="mb-1 orange-focus"><i className="fa fa-tag" aria-hidden="true"></i> all • <span className="post-count">{this.props.posts.length} {this.props.posts.length === 1 ? "post" : "posts"}</span></h6>
+                      <h6 className="mb-1 orange-focus"><i className="fa fa-tag" aria-hidden="true"></i> all</h6>
                     </div>
                   </a>
                   {this.props.categoriesAreLoading ?         
@@ -104,7 +106,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
       getPosts: () => dispatch(getPosts()),
       getCategories: () => dispatch(getCategories()),
-      ratePost: (rate, id, index) => dispatch(ratePost(rate, id, index))
+      ratePost: (rate, id, index) => dispatch(ratePost(rate, id, index)),
+      deletePost: (id) => dispatch(deletePost(id))
       //categoryChanger: (category) => dispatch(categoryChanger(category))
   };
 };

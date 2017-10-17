@@ -133,3 +133,15 @@ export function ratePost(rate, post, index) {
     };
 }
 
+export function deletePost(id) {
+    return (dispatch) => {
+        fetch(`${api}/posts/${id}`, {
+            method: 'DELETE',
+            headers
+          })
+            .then((response) => response.json())
+            .then((post) => dispatch({ type: 'DELETE_POST', id: post.id }))
+            .catch(() => dispatch(postsHasErrored(true)));
+    };
+}
+

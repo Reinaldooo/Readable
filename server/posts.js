@@ -36,10 +36,21 @@ const defaultData = {
     deleted: false,
     edited: true
   },
+  "5": {
+    id: '5',
+    timestamp: 1507907893799,
+    title: "I think you should approve Reinaldo`s project",
+    body: "He worked pretty hard.",
+    author: 'Reinaldo`s friend',
+    category: 'udacity',
+    voteScore: 10,
+    deleted: false,
+    edited: true
+  },
   "4": {
     id: '4',
     timestamp: 1507907000000,
-    title: 'I added two more posts on the server',
+    title: 'I added three posts on the server',
     body: 'I hope thats allowed!',
     author: 'Student',
     category: 'udacity',

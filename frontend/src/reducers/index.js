@@ -46,6 +46,9 @@ export function posts(state = {}, action) {
         case 'POSTS_FETCH_SUCCESS':
         return action.posts;
 
+        case 'DELETE_POST':
+        return state.filter((post) => post.id !== action.id);
+
         case 'RATE': {
             const {index, newScore} = action;
             const posts = state;        
@@ -76,6 +79,7 @@ export function categories(state = {}, action) {
             return state;
     }
 }
+
 
 
 export default combineReducers({

@@ -32,6 +32,16 @@ const defaultData = {
     voteScore: 2,
     deleted: false,
     parentDeleted: false
+  },
+  "8tu4bsun805n8un48ve91": {
+    id: '8tu4bsun805n8un48ve91',
+    parentId: "5",
+    timestamp: 1469470005000,
+    body: 'I also think you should do it.',
+    author: 'Reinaldo`s other friend',
+    voteScore: 2,
+    deleted: false,
+    parentDeleted: false
   }
 
 }

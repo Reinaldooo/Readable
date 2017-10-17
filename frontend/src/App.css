@@ -21,6 +21,10 @@ body {
 opacity: .7
 }
 
+.delete {
+  background-color: #EF5350
+}
+
 .btn-custom {
   float: right
 }
@@ -53,8 +57,8 @@ opacity: .7
   padding: .5em;
   background-color: #757575;
   color: white;
-  border-radius: 3px
-}
+  border-radius: 3px;
+  }
 
 a {
   text-decoration: none;
