@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 import sortBy from 'sort-by'
 
-export function itemsHasErrored(state = false, action) {
+export function postsHasErrored(state = false, action) {
     switch (action.type) {
-        case 'ITEMS_HAS_ERRORED':
+        case 'POSTS_HAS_ERRORED':
             return action.hasErrored;
 
         default:
@@ -11,9 +11,29 @@ export function itemsHasErrored(state = false, action) {
     }
 }
 
-export function itemsIsLoading(state = false, action) {
+export function postsIsLoading(state = false, action) {
     switch (action.type) {
-        case 'ITEMS_IS_LOADING':
+        case 'POSTS_IS_LOADING':
+            return action.isLoading; 
+
+        default:
+            return state;
+    }
+}
+
+export function categoriesHasErrored(state = false, action) {
+    switch (action.type) {
+        case 'CATEGORIES_HAS_ERRORED':
+            return action.hasErrored;
+
+        default:
+            return state;
+    }
+}
+
+export function categoriesIsLoading(state = false, action) {
+    switch (action.type) {
+        case 'CATEGORIES_IS_LOADING':
             return action.isLoading; 
 
         default:
@@ -23,7 +43,7 @@ export function itemsIsLoading(state = false, action) {
 
 export function posts(state = {}, action) {
     switch (action.type) {
-        case 'POSTS_FETCH_DATA_SUCCESS':
+        case 'POSTS_FETCH_SUCCESS':
         return action.posts;
 
         case 'RATE': {
@@ -47,9 +67,22 @@ export function posts(state = {}, action) {
     }
 }
 
+export function categories(state = {}, action) {
+    switch (action.type) {
+        case 'CATEGORIES_FETCH_SUCCESS':
+        return action.categories;
+
+        default:
+            return state;
+    }
+}
+
 
 export default combineReducers({
     posts,
-    itemsHasErrored,
-    itemsIsLoading
+    postsHasErrored,
+    postsIsLoading,
+    categories,
+    categoriesHasErrored,
+    categoriesIsLoading
 });

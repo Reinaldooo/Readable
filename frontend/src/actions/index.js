@@ -9,23 +9,37 @@ const headers = {
 
 const api = "http://localhost:3001"
 
-export function itemsHasErrored(bool) {
+export function postsHasErrored(bool) {
     return {
-        type: 'ITEMS_HAS_ERRORED',
+        type: 'POSTS_HAS_ERRORED',
         hasErrored: bool
     };
 }
 
-export function itemsIsLoading(bool) {
+export function postsIsLoading(bool) {
     return {
-        type: 'ITEMS_IS_LOADING',
+        type: 'POSTS_IS_LOADING',
+        isLoading: bool
+    };
+}
+
+export function categoriesHasErrored(bool) {
+    return {
+        type: 'CATEGORIES_HAS_ERRORED',
+        hasErrored: bool
+    };
+}
+
+export function categoriesIsLoading(bool) {
+    return {
+        type: 'CATEGORIES_IS_LOADING',
         isLoading: bool
     };
 }
 
 export function getPosts() {
     return dispatch => {
-        dispatch(itemsIsLoading(true));
+        dispatch(postsIsLoading(true));
         
                 fetch("http://localhost:3001/posts", {
                     method: 'GET',
@@ -59,17 +73,17 @@ export function getPosts() {
                 )
             )
             //.then(posts => dispatch({ type: 'POSTS_FETCH_DATA_SUCCESS', posts }))
-            .then((posts) => dispatch({ type: 'POSTS_FETCH_DATA_SUCCESS', posts: posts.sort(sortBy('-voteScore')) }))
-            .then(() => dispatch(itemsIsLoading(false)));
+            .then((posts) => dispatch({ type: 'POSTS_FETCH_SUCCESS', posts: posts.sort(sortBy('-voteScore')) }))
+            .then(() => dispatch(postsIsLoading(false)));
     };
 }
 
 
-export function categoryChanger(category) {
+export function getCategories() {
     return (dispatch) => {
-        dispatch(itemsIsLoading(true));
+        dispatch(categoriesIsLoading(true));
 
-        fetch("http://localhost:3001/posts", {
+        fetch("http://localhost:3001/categories", {
                 method: 'GET',
                 headers
             })
@@ -77,14 +91,12 @@ export function categoryChanger(category) {
                 if (!response.ok) {
                     throw Error(response.statusText);
                 }
-
-                dispatch(itemsIsLoading(false));
-
+                dispatch(categoriesIsLoading(false));
                 return response;
             })
             .then((response) => response.json())
-            .then((posts) => dispatch({ type: 'POSTS_FETCH_DATA_SUCCESS', posts: posts.filter((p) => p.category === category).sort(sortBy('-voteScore')) }))
-            .catch(() => dispatch(itemsHasErrored(true)));
+            .then((response) => dispatch({ type: 'CATEGORIES_FETCH_SUCCESS', categories: response.categories }))
+            .catch(() => dispatch(categoriesHasErrored(true)));
     };
 }
 
@@ -117,7 +129,7 @@ export function ratePost(rate, post, index) {
           })
             .then((response) => response.json())
             .then((post) => dispatch({ type: 'RATE', newScore: post.voteScore, index }))
-            .catch(() => dispatch(itemsHasErrored(true)));
+            .catch(() => dispatch(postsHasErrored(true)));
     };
 }
 

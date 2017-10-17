@@ -22,13 +22,16 @@ body {
   font-size: .9em;
   cursor: pointer;
   font-weight: 500;
+  min-width: 2em
 }
 .button:hover {
 opacity: .7
 }
-.fa-arrow-up, .fa-arrow-down {
-  margin: 0 4px;
+
+.post-count {
+  font-size: .7em
 }
+
 .App {
   text-align: center;
 }
