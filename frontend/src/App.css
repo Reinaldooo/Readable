@@ -9,6 +9,9 @@ body {
 .btn-custom {
   float: right
 }
+.btn-group {
+  margin-left: 2.5em
+}
 .fa-arrow-up, .fa-arrow-down {
   margin: 0 4px;
 }

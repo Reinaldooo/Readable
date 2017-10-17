@@ -43,7 +43,7 @@ const defaultData = {
     body: 'I hope thats allowed!',
     author: 'Student',
     category: 'udacity',
-    voteScore: 32,
+    voteScore: 8,
     deleted: false,
     edited: true
   }

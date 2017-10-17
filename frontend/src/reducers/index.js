@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import sortBy from 'sort-by'
 
 export function itemsHasErrored(state = false, action) {
     switch (action.type) {
@@ -13,7 +14,7 @@ export function itemsHasErrored(state = false, action) {
 export function itemsIsLoading(state = false, action) {
     switch (action.type) {
         case 'ITEMS_IS_LOADING':
-            return action.isLoading;
+            return action.isLoading; 
 
         default:
             return state;
@@ -25,17 +26,39 @@ export function posts(state = {}, action) {
         case 'POSTS_FETCH_DATA_SUCCESS':
         return action.posts;
 
-        case 'RATE_UP':{
-        return {
-            ...state,
-            posts: [
-              ...state.posts.slice(0, action.index),
-              action.post,
-              ...state.posts.slice(action.index + 1, state.posts.length),
-            ],
-          };
+        case 'RATE_UP': {
+            const {index, newScore} = action;
+            const posts = state;        
+            const votedPost = posts[index];
+            const updatedVotedPost = {
+              ...votedPost,
+              voteScore: newScore
+            };          
+            const updatedPosts = [
+              ...posts.slice(0, index),
+              updatedVotedPost,
+              ...posts.slice(index + 1, posts.length),
+            ];          
+            return updatedPosts.sort(sortBy('-voteScore'))
+        }
+
+        case 'RATE_DOWN': {
+            const {index, newScore} = action;
+            const posts = state; 
+            const votedPost = posts[index];
+            const updatedVotedPost = {
+              ...votedPost,
+              voteScore: newScore
+            };          
+            const updatedPosts = [
+              ...posts.slice(0, index),
+              updatedVotedPost,
+              ...posts.slice(index + 1, posts.length),
+            ];          
+            return updatedPosts.sort(sortBy('-voteScore'))
         }
           
+        
           
 //         case 'RATEUP':
 //         return {

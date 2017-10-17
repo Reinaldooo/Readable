@@ -165,16 +165,37 @@ export function rateUp(rate, post, index) {
             headers,
             body: JSON.stringify(rate)
           })
-            .then(() => dispatch(rateUpSuccess(index, post)))
+            .then((response) => response.json())
+            .then((post) => dispatch(rateUpSuccess(index, post)))
             .catch(() => dispatch(itemsHasErrored(true)));
-            
     };
 }
 export function rateUpSuccess(index, post) {
-    post.voteScore = post.voteScore + 1
+    const newScore = post.voteScore
     return {
         type: 'RATE_UP',
-        post,
+        newScore,
+        index
+    };
+}
+export function rateDown(rate, post, index) {
+    return (dispatch) => {
+
+        fetch(`${api}/posts/${post.id}`, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify(rate)
+          })
+            .then((response) => response.json())
+            .then((post) => dispatch(rateDownSuccess(index, post)))
+            .catch(() => dispatch(itemsHasErrored(true)));
+    };
+}
+export function rateDownSuccess(index, post) {
+    const newScore = post.voteScore
+    return {
+        type: 'RATE_DOWN',
+        newScore,
         index
     };
 }
