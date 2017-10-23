@@ -4,6 +4,23 @@ import moment from 'moment'
 // import sortBy from 'sort-by'
 import {connect} from 'react-redux'
 import {getPosts, getCategories, ratePost, deletePost} from './actions'
+import uuidv4 from 'uuid/v4'
+
+/*
+TODO:
+
+Modals
+-Edit Post
+-Create Post
+-Enter Name modal
+
+Categories filter
+Detail page design
+-Should have form to add comment.
+Edit comment modal
+
+Start routing
+*/
 
 class App extends Component {
 
@@ -30,7 +47,7 @@ render() {
         </div> :
         <div className="row">
         <div className="col-10 list-group">
-          {console.log(this.props.posts)}
+          {console.log(uuidv4())}
         {this.props.posts[0] && this.props.posts.map((post, index) => 
               <a key={post.id} className="list-group-item list-group-item-action flex-column align-items-start">
                 <div className="d-flex w-100 justify-content-between">
