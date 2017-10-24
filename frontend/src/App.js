@@ -9,21 +9,18 @@ import {getPosts, getCategories, ratePost, deletePost, getPostsCategorized} from
 /*
 TODO:
 
-Modals
--Enter Name modal
--Edit Post
--Create Post
+User name form
 
 Detail page design
 -Should have form to add comment.
-Edit comment modal
+-Form to edit comment
 
-Start routing
+Start routing research
+
 */
 
 class App extends Component {
-
-state = {
+state = { 
   user: "Guest"
 }  
 
@@ -31,13 +28,9 @@ componentDidMount() {
     this.props.getPosts();
     this.props.getCategories();
 }
-closeNameModal = () => {
-  this.setState(() => ({
-    nameModalOpen: false
-  }));
-  console.log(this.state)
-}  
+
 render() {
+
   const UP = {option: "upVote"};
   const DN = {option: "downVote"};
 
@@ -60,7 +53,7 @@ render() {
                 </div>
                 {post.body.length > 75 ? <p className="mb-1">{post.body.substring(0, 75)}... <small><span className="orange-focus">Read more.</span></small></p>
                 :
-                <p className="mb-1">{post.body}</p>  } 
+                <p className="mb-1">{post.body}</p>} 
                 <small className="post-details">Author: <strong>{post.author}</strong> • <strong className="score">{post.voteScore} {post.voteScore === 1 || post.voteScore === -1 ? <span className="post-count">point</span> : <span className="post-count">points</span>}</strong> • <strong><span className="orange-focus"><i className="fa fa-tag" aria-hidden="true"></i> {post.category}</span></strong> • {post.comments.length} {post.comments.length === 1 ? "comment" : "comments"}</small>
                 <div className="btn-group" role="group" aria-label="up and downvote">
                   <button onClick={() => this.props.ratePost(UP, post, index)} type="button" className="button"><i className="fa fa-thumbs-up" aria-hidden="true"></i></button>
@@ -72,8 +65,7 @@ render() {
                 </div>
               </a>
           )}
-          </div>
-                
+          </div>                
                 <div className="col list-group">
                   <a className="list-group-item list-group-item-action flex-column align-items-start">
                     <div className="d-flex w-100 justify-content-between">
@@ -90,7 +82,6 @@ render() {
                   <div className="cube1"></div>
                   <div className="cube2"></div>
                   </div> :
-
                   <div>
                   {this.props.categories[0] && this.props.categories.map((category, index) =>
                   <a key={index} onClick={() => this.props.getPostsCategorized(category.name)} className="list-group-item list-group-item-action flex-column align-items-start">
@@ -100,13 +91,10 @@ render() {
                   </a>  
                   )}
                   </div>
-
                   }
                 </div>
             </div>
-        }
-       
-             
+        }                    
         </div>
     );
   }
