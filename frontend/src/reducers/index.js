@@ -58,7 +58,6 @@ export function posts(state = {}, action) {
         return action.posts;
 
         case 'CATEGORIZED_FETCH_SUCCESS':
-        console.log(action.posts);
         return action.posts;
         
         case 'DELETE_POST':

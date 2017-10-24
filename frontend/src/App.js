@@ -25,7 +25,8 @@ Start routing
 class App extends Component {
 
 state = {
-  user: "Guest"
+  user: "Guest",
+  nameModalOpen: true
 }  
 
 componentDidMount() {
@@ -35,7 +36,8 @@ componentDidMount() {
 closeNameModal = () => {
   this.setState(() => ({
     nameModalOpen: false
-  }))
+  }));
+  console.log(this.state)
 }  
 render() {    
 
@@ -51,7 +53,6 @@ render() {
         </div> :
         <div className="row">
         <div className="col-10 list-group">
-          {console.log(this.props)}
         {this.props.posts[0] && this.props.posts.map((post, index) => 
               <a key={post.id} className="list-group-item list-group-item-action flex-column align-items-start">
                 <div className="d-flex w-100 justify-content-between">
@@ -107,6 +108,19 @@ render() {
                 </div>
             </div>
         }
+       
+       <Modal
+          className='modal'
+          overlayClassName='overlay'
+          isOpen={this.state.nameModalOpen}
+          onRequestClose={this.closeNameModal}
+          contentLabel='Modal'
+        >
+          <div>
+            <h1>Test</h1>
+          </div>
+        </Modal>
+
        
         </div>
     );
