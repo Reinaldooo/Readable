@@ -73,8 +73,11 @@ export function getPosts() {
                 )
             )
             //.then(posts => dispatch({ type: 'POSTS_FETCH_DATA_SUCCESS', posts }))
-            .then((posts) => dispatch({ type: 'POSTS_FETCH_SUCCESS', posts: posts.filter((post) => post.deleted === false).sort(sortBy('-voteScore')) }))
-            .then(() => dispatch(postsAreLoading(false)));
+            .then((posts) => { 
+                dispatch({ type: 'POSTS_FETCH_SUCCESS', posts: posts.filter((post) => post.deleted === false).sort(sortBy('-voteScore')) });
+                dispatch({ type: 'POSTS_COUNT', posts });
+            })
+            .then(() => dispatch(postsAreLoading(false)))
     };
 }
 
@@ -145,3 +148,43 @@ export function deletePost(id) {
     };
 }
 
+export function getPostsCategorized(category) {
+    return dispatch => {
+        dispatch(postsAreLoading(true));
+        
+                fetch("http://localhost:3001/posts", {
+                    method: 'GET',
+                    headers
+                  })
+                    .then((posts) => {
+                        if (!posts.ok) {
+                            throw Error(posts.statusText);
+                        }
+        
+                        return posts;
+                    })
+                    .then((posts) => posts.json())
+            .then(posts =>
+                Promise.all(
+                    posts.map(post =>
+                        fetch(`${api}/posts/${post.id}/comments`, {
+                            method: 'GET',
+                            headers
+                          })
+                          .then((comments) => {
+                            if (!comments.ok) {
+                                throw Error(comments.statusText);
+                            }
+                            return comments;
+                            })
+                            .then((comments) => comments.json())
+                            .then(comments => post.comments = comments.sort(sortBy('-voteScore')))
+                            .then(() => post)
+                    )
+                )
+            )
+            //.then(posts => dispatch({ type: 'POSTS_FETCH_DATA_SUCCESS', posts }))
+            .then((posts) => dispatch({ type: 'CATEGORIZED_FETCH_SUCCESS', posts: posts.filter((post) => post.deleted === false && post.category === category).sort(sortBy('-voteScore')) }))
+            .then(() => dispatch(postsAreLoading(false)));
+    };
+}

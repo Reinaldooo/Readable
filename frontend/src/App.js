@@ -3,18 +3,17 @@ import './App.css'
 import moment from 'moment'
 // import sortBy from 'sort-by'
 import {connect} from 'react-redux'
-import {getPosts, getCategories, ratePost, deletePost} from './actions'
-import uuidv4 from 'uuid/v4'
+import {getPosts, getCategories, ratePost, deletePost, getPostsCategorized} from './actions'
+//import uuidv4 from 'uuid/v4'
 
 /*
 TODO:
 
 Modals
+-Enter Name modal
 -Edit Post
 -Create Post
--Enter Name modal
 
-Categories filter
 Detail page design
 -Should have form to add comment.
 Edit comment modal
@@ -47,7 +46,7 @@ render() {
         </div> :
         <div className="row">
         <div className="col-10 list-group">
-          {console.log(uuidv4())}
+          {console.log(this.props)}
         {this.props.posts[0] && this.props.posts.map((post, index) => 
               <a key={post.id} className="list-group-item list-group-item-action flex-column align-items-start">
                 <div className="d-flex w-100 justify-content-between">
@@ -78,7 +77,7 @@ render() {
                       <h6 className="mb-1">Welcome, <strong>{this.state.user}</strong></h6>
                     </div>
                   </a>
-                  <a className="list-group-item list-group-item-action flex-column align-items-start">
+                  <a onClick={this.props.getPosts} className="list-group-item list-group-item-action flex-column align-items-start">
                     <div className="d-flex w-100 justify-content-between">
                       <h6 className="mb-1 orange-focus"><i className="fa fa-tag" aria-hidden="true"></i> all</h6>
                     </div>
@@ -91,9 +90,9 @@ render() {
 
                   <div>
                   {this.props.categories[0] && this.props.categories.map((category, index) =>
-                  <a key={index} className="list-group-item list-group-item-action flex-column align-items-start">
+                  <a key={index} onClick={() => this.props.getPostsCategorized(category.name)} className="list-group-item list-group-item-action flex-column align-items-start">
                     <div className="d-flex w-100 justify-content-between">
-                      <h6 className="mb-1 orange-focus"><i className="fa fa-tag" aria-hidden="true"></i> {category.name} • <span className="post-count">{this.props.posts.filter(post => post.category === category.name).length} {this.props.posts.filter(post => post.category === category.name).length === 1 ? "post" : "posts"}</span></h6>
+                      <h6 className="mb-1 orange-focus"><i className="fa fa-tag" aria-hidden="true"></i> {category.name} • <span className="post-count">{this.props.postsCount.filter(post => post.category === category.name).length} {this.props.postsCount.filter(post => post.category === category.name).length === 1 ? "post" : "posts"}</span></h6>
                     </div>
                   </a>  
                   )}
@@ -115,17 +114,18 @@ const mapStateToProps = (state) => {
       postsHasErrored: state.postsHasErrored,
       postsAreLoading: state.postsAreLoading,
       categoriesHasErrored: state.categoriesHasErrored,
-      categoriesAreLoading: state.categoriesAreLoading
+      categoriesAreLoading: state.categoriesAreLoading,
+      postsCount: state.postsCount
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
       getPosts: () => dispatch(getPosts()),
+      getPostsCategorized: (category) => dispatch(getPostsCategorized(category)),
       getCategories: () => dispatch(getCategories()),
       ratePost: (rate, id, index) => dispatch(ratePost(rate, id, index)),
       deletePost: (id) => dispatch(deletePost(id))
-      //categoryChanger: (category) => dispatch(categoryChanger(category))
   };
 };
 

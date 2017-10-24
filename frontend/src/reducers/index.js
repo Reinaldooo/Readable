@@ -41,11 +41,26 @@ export function categoriesAreLoading(state = false, action) {
     }
 }
 
+export function postsCount(state = {}, action) {
+    switch (action.type) {
+        case 'POSTS_COUNT':
+            return action.posts;
+
+        default:
+            return state;
+}
+}
+
+
 export function posts(state = {}, action) {
     switch (action.type) {
         case 'POSTS_FETCH_SUCCESS':
         return action.posts;
 
+        case 'CATEGORIZED_FETCH_SUCCESS':
+        console.log(action.posts);
+        return action.posts;
+        
         case 'DELETE_POST':
         return state.filter((post) => post.id !== action.id);
 
@@ -64,6 +79,8 @@ export function posts(state = {}, action) {
             ];          
             return updatedPosts.sort(sortBy('-voteScore'))
         }
+        case 'CATEGORY_CHANGER':
+        return state.filter((post) => post.category === action.category);
 
         default:
             return state;
@@ -88,5 +105,6 @@ export default combineReducers({
     postsAreLoading,
     categories,
     categoriesHasErrored,
-    categoriesAreLoading
+    categoriesAreLoading,
+    postsCount
 });
