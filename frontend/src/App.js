@@ -3,6 +3,7 @@ import './App.css'
 import moment from 'moment'
 // import sortBy from 'sort-by'
 import {connect} from 'react-redux'
+import Modal from 'react-modal'
 import {getPosts, getCategories, ratePost, deletePost, getPostsCategorized} from './actions'
 //import uuidv4 from 'uuid/v4'
 
@@ -31,7 +32,11 @@ componentDidMount() {
     this.props.getPosts();
     this.props.getCategories();
 }
-  
+closeNameModal = () => {
+  this.setState(() => ({
+    nameModalOpen: false
+  }))
+}  
 render() {    
 
   const UP = {option: "upVote"};
@@ -102,6 +107,7 @@ render() {
                 </div>
             </div>
         }
+       
         </div>
     );
   }

@@ -36,8 +36,8 @@ const defaultData = {
     deleted: false,
     edited: true
   },
-  "5": {
-    id: '5',
+  "4": {
+    id: '4',
     timestamp: 1507907893799,
     title: "I think you should approve Reinaldo`s project",
     body: "He worked pretty hard.",
@@ -47,14 +47,25 @@ const defaultData = {
     deleted: false,
     edited: true
   },
-  "4": {
-    id: '4',
+  "5": {
+    id: '5',
     timestamp: 1507907000000,
-    title: 'I added three posts on the server',
+    title: 'I added four posts on the server',
     body: 'I hope thats allowed!',
     author: 'Student',
     category: 'udacity',
     voteScore: 8,
+    deleted: false,
+    edited: true
+  },
+  "6": {
+    id: '6',
+    timestamp: 1507900000000,
+    title: 'Just another post',
+    body: 'To test out the category changer',
+    author: 'Student',
+    category: 'react',
+    voteScore: 9,
     deleted: false,
     edited: true
   }
