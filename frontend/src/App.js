@@ -3,7 +3,6 @@ import './App.css'
 import moment from 'moment'
 // import sortBy from 'sort-by'
 import {connect} from 'react-redux'
-import Modal from 'react-modal'
 import {getPosts, getCategories, ratePost, deletePost, getPostsCategorized} from './actions'
 //import uuidv4 from 'uuid/v4'
 
@@ -25,8 +24,7 @@ Start routing
 class App extends Component {
 
 state = {
-  user: "Guest",
-  nameModalOpen: true
+  user: "Guest"
 }  
 
 componentDidMount() {
@@ -39,8 +37,7 @@ closeNameModal = () => {
   }));
   console.log(this.state)
 }  
-render() {    
-
+render() {
   const UP = {option: "upVote"};
   const DN = {option: "downVote"};
 
@@ -109,19 +106,7 @@ render() {
             </div>
         }
        
-       <Modal
-          className='modal'
-          overlayClassName='overlay'
-          isOpen={this.state.nameModalOpen}
-          onRequestClose={this.closeNameModal}
-          contentLabel='Modal'
-        >
-          <div>
-            <h1>Test</h1>
-          </div>
-        </Modal>
-
-       
+             
         </div>
     );
   }
