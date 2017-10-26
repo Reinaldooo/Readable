@@ -38,7 +38,7 @@ opacity: .7
 }
 
 .container-fluid {
-  padding: 4em 6em;
+  padding: 3em 6em;
   }
 
 .orange-focus {
@@ -126,7 +126,12 @@ a:hover {
 }
 
 .post-detail-page {
-  margin: 2% 0 1% 0
+  margin: 3em auto
+}
+
+.add-comments {
+  padding: .5em;
+  background-color: #FF8A65;
 }
 
 .mb-1-body {
@@ -135,5 +140,26 @@ a:hover {
 }
 
 .comments {
-  max-width: 90%
+  max-width: 95%;
+}
+
+.navbar {
+ background-color: #FF8A65
+}
+
+.navbar h5 {
+  margin: 0 5em 0 3.2em ;
+  padding: 0;
+  color: white;
+  list-style: none
+}
+.navbar h6 {
+  margin: 0 5em 0 3.2em ;
+  padding: 0;
+  color: white;
+  list-style: none
+}
+
+.navbar li {
+  float: left
 }

@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import moment from 'moment'
 import {connect} from 'react-redux'
 import {getPosts, getCategories, ratePost, deletePost, getPostsCategorized} from '../actions'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 //import uuidv4 from 'uuid/v4'
 
 class PostDetail extends Component {
@@ -10,14 +10,14 @@ class PostDetail extends Component {
 componentDidMount() {
     this.props.getPosts();
     this.props.getCategories();
-}
-    
+}    
 
 render() {
   return (      
     <div className="container">
+            {this.props.posts[5] ?
             <div className="post-detail-page">
-            {this.props.posts[5] &&
+              <small className="add-comments">Add Comment</small>        
               <a key={this.props.posts[5].id} className="list-group-item list-group-item-action flex-column align-items-start">
                 <div className="d-flex w-100 justify-content-between">
                   <h5><i className="fa fa-angle-right" aria-hidden="true"></i> {this.props.posts[5].title}</h5>
@@ -38,8 +38,7 @@ render() {
                   <button onClick={() => this.props.deletePost(this.props.posts[5].id)}type="button" className="button delete"><i className="fa fa-trash-o" aria-hidden="true"></i></button>
                 </div>
               </a>
-          }
-            </div>
+              
             <div>
             {this.props.posts[5] && this.props.posts[5].comments[0] ? this.props.posts[5].comments.map((comment, index) => 
               <a key={comment.id} className="list-group-item list-group-item-action flex-column align-items-start comments">
@@ -60,10 +59,17 @@ render() {
               </a>
             ) : 
             <a key="Nocomments" className="list-group-item list-group-item-action flex-column align-items-start comments">
-            <p className="mb-1-body">No comments yet. Click here to add one.</p>
+            <p className="mb-1-body">No comments yet.</p>
             </a>}
             </div>
-        </div>    
+        </div>
+        :
+        <div className="spinner">
+          <div className="cube1"></div>
+          <div className="cube2"></div>
+        </div>
+      }
+    </div>    
     );
   }
 }

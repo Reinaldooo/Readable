@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { ratePost, deletePost } from './actions'
 import Root from './components/Root'
 import PostDetail from './components/PostDetail'
-import { Route } from 'react-router'
+import { Route } from 'react-router-dom'
 //import uuidv4 from 'uuid/v4'
 
 /*
@@ -25,7 +25,7 @@ class App extends Component {
 render() {
 
   return (      
-      <div className="container-fluid">
+      <div>
         <Route exact path='/test' component={PostDetail}/>
         <Route exact path='/' component={Root}/>
       </div>

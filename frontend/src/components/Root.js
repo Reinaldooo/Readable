@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import moment from 'moment'
 import {connect} from 'react-redux'
 import {getPosts, getCategories, ratePost, deletePost, getPostsCategorized} from '../actions'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 
 //import uuidv4 from 'uuid/v4'
 
@@ -22,7 +22,7 @@ render() {
   const DN = {option: "downVote"};
 
   return (      
-      <div>
+      <div className="container-fluid">
         {this.props.postsAreLoading ? 
         <div className="spinner">
           <div className="cube1"></div>
@@ -31,7 +31,7 @@ render() {
         <div className="row">
         <div className="col-10 list-group">
         {this.props.posts[0] && this.props.posts.map((post, index) => 
-              <Link to="/test" key={post.id} className="list-group-item list-group-item-action flex-column align-items-start">
+              <a key={post.id} className="list-group-item list-group-item-action flex-column align-items-start">
                 <div className="d-flex w-100 justify-content-between">
                   <h5 className="mb-1"><i className="fa fa-angle-right" aria-hidden="true"></i> {post.title}</h5>
                   {post.edited ? <small>{moment.utc(post.timestamp).format("ddd, MMM Do YYYY, h:mm a")}<strong><span className="orange-focus"> - Edited</span></strong></small>
@@ -41,7 +41,7 @@ render() {
                 {post.body.length > 75 ? <p className="mb-1">{post.body.substring(0, 75)}... <small><span className="orange-focus">Read more.</span></small></p>
                 :
                 <p className="mb-1">{post.body}</p>} 
-                <small className="post-details">Author: <strong>{post.author}</strong> • <strong className="score">{post.voteScore} {post.voteScore === 1 || post.voteScore === -1 ? <span className="post-count">point</span> : <span className="post-count">points</span>}</strong> • <strong><span className="orange-focus"><i className="fa fa-tag" aria-hidden="true"></i> {post.category}</span></strong> • {post.comments.length} {post.comments.length === 1 ? "comment" : "comments"}</small>
+                <small className="post-details">Author: <strong>{post.author}</strong> • <strong className="score">{post.voteScore} {post.voteScore === 1 || post.voteScore === -1 ? <span className="post-count">point</span> : <span className="post-count">points</span>}</strong> • <strong><span className="orange-focus"><i className="fa fa-tag" aria-hidden="true"></i> {post.category}</span></strong> • <Link to="/test">{post.comments.length} {post.comments.length === 1 ? "comment" : "comments"}</Link></small>
                 <div className="btn-group" role="group" aria-label="up and downvote">
                   <button onClick={() => this.props.ratePost(UP, post, index)} type="button" className="button"><i className="fa fa-thumbs-up" aria-hidden="true"></i></button>
                   <button onClick={() => this.props.ratePost(DN, post, index)} type="button" className="button"><i className="fa fa-thumbs-down" aria-hidden="true"></i></button>
@@ -50,7 +50,7 @@ render() {
                   <button type="button" className="button"><i className="fa fa-pencil-square-o" aria-hidden="true"></i></button>
                   <button onClick={() => this.props.deletePost(post.id)}type="button" className="button delete"><i className="fa fa-trash-o" aria-hidden="true"></i></button>
                 </div>
-              </Link>
+              </a>
           )}
           </div>                
                 <div className="col list-group">
