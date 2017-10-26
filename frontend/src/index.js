@@ -7,16 +7,21 @@ import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import rootReducer from './reducers'
 import { Provider } from 'react-redux'
-import { composeWithDevTools } from 'redux-devtools-extension';
+import { composeWithDevTools } from 'redux-devtools-extension'
+import { BrowserRouter, hashHistory } from 'react-router'
+
 
 const store = createStore(rootReducer, composeWithDevTools(
   applyMiddleware(thunk),
 ));
 
-ReactDOM.render(
+ReactDOM.render(  
+  <BrowserRouter history={hashHistory}>
     <Provider store={store}>
       <App />
-    </Provider>,
+    </Provider>
+  </BrowserRouter>
+  ,
     document.getElementById('root')
   )
   registerServiceWorker()
