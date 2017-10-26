@@ -125,31 +125,15 @@ a:hover {
   }
 }
 
-.overlay {
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-  background-color: rgba(255, 255, 255, 0.9);
+.post-detail-page {
+  margin: 10% 0 1% 0
 }
 
-.modal {
-  position: absolute;
-  top: 40px;
-  left: 200px;
-  right: 200px;
-  bottom: 40px;
-  border: 1px solid rgb(204, 204, 204);
-  background: rgba(255, 255, 255, 1);
-  overflow: auto;
-  border-radius: 4px;
-  outline: none;
-  padding: 20px;
-  box-shadow: 0 3px 8px 0 rgba(0,0,0,.24), 0 3px 12px 0 rgba(0,0,0,.12);
-  min-width: 500px;
+.mb-1-body {
+  text-align: justify;
+  margin: 1.5% 0
 }
 
-.test {
-  background-color: red
+.comments {
+  max-width: 90%
 }
