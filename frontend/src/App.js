@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import './App.css'
 import { connect } from 'react-redux'
-import { ratePost, deletePost } from './actions'
 import Root from './components/Root'
+import {getPosts, getCategories, ratePost, deletePost, getPostsCategorized} from './actions'
 import PostDetail from './components/PostDetail'
 import { Route } from 'react-router-dom'
 //import uuidv4 from 'uuid/v4'
@@ -22,6 +22,11 @@ Start routing research
 
 class App extends Component {
 
+  componentDidMount() {
+    this.props.getPosts();
+    this.props.getCategories();
+}   
+
 render() {
 
   return (      
@@ -35,20 +40,23 @@ render() {
 
 const mapStateToProps = (state) => {
   return {
-      posts:                state.posts,
-      categories:           state.categories,
-      postsHasErrored:      state.postsHasErrored,
-      postsAreLoading:      state.postsAreLoading,
-      categoriesHasErrored: state.categoriesHasErrored,
-      categoriesAreLoading: state.categoriesAreLoading,
-      postsCount:           state.postsCount
+    posts:                state.posts,
+    categories:           state.categories,
+    postsHasErrored:      state.postsHasErrored,
+    postsAreLoading:      state.postsAreLoading,
+    categoriesHasErrored: state.categoriesHasErrored,
+    categoriesAreLoading: state.categoriesAreLoading,
+    postsCount:           state.postsCount
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      ratePost: (rate, id, index)     => dispatch(ratePost(rate, id, index)),
-      deletePost: (id)                => dispatch(deletePost(id))
+    getPosts: ()                    => dispatch(getPosts()),
+    getPostsCategorized: (category) => dispatch(getPostsCategorized(category)),
+    getCategories: ()               => dispatch(getCategories()),
+    ratePost: (rate, id, index)     => dispatch(ratePost(rate, id, index)),
+    deletePost: (id)                => dispatch(deletePost(id))
   };
 };
 

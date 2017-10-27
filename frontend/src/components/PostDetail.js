@@ -1,16 +1,12 @@
 import React, {Component} from 'react'
 import moment from 'moment'
 import {connect} from 'react-redux'
-import {getPosts, getCategories, ratePost, deletePost, getPostsCategorized} from '../actions'
+import { ratePost, deletePost } from '../actions'
 import { Link } from 'react-router-dom'
 //import uuidv4 from 'uuid/v4'
 
 class PostDetail extends Component {
 
-componentDidMount() {
-    this.props.getPosts();
-    this.props.getCategories();
-}    
 
 render() {
   return (      
@@ -18,7 +14,7 @@ render() {
             {this.props.posts[5] ?
             <div className="post-detail-page">
               <small className="add-comments">Add Comment</small>        
-              <a key={this.props.posts[5].id} className="list-group-item list-group-item-action flex-column align-items-start">
+              <a className="list-group-item list-group-item-action flex-column align-items-start">
                 <div className="d-flex w-100 justify-content-between">
                   <h5><i className="fa fa-angle-right" aria-hidden="true"></i> {this.props.posts[5].title}</h5>
                   <Link to="/"><h6>Go back</h6></Link>
@@ -40,7 +36,7 @@ render() {
               </a>
               
             <div>
-            {this.props.posts[5] && this.props.posts[5].comments[0] ? this.props.posts[5].comments.map((comment, index) => 
+            {this.props.posts[5] ? this.props.posts[5].comments.map((comment, index) => 
               <a key={comment.id} className="list-group-item list-group-item-action flex-column align-items-start comments">
                 <div className="d-flex w-100 justify-content-between">
                   <small className="post-details">Comment by: <strong>{comment.author}</strong></small>
@@ -76,21 +72,12 @@ render() {
 
 const mapStateToProps = (state) => {
   return {
-      posts:                state.posts,
-      categories:           state.categories,
-      postsHasErrored:      state.postsHasErrored,
-      postsAreLoading:      state.postsAreLoading,
-      categoriesHasErrored: state.categoriesHasErrored,
-      categoriesAreLoading: state.categoriesAreLoading,
-      postsCount:           state.postsCount
+      posts:                state.posts
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      getPosts: ()                    => dispatch(getPosts()),
-      getPostsCategorized: (category) => dispatch(getPostsCategorized(category)),
-      getCategories: ()               => dispatch(getCategories()),
       ratePost: (rate, id, index)     => dispatch(ratePost(rate, id, index)),
       deletePost: (id)                => dispatch(deletePost(id))
   };
