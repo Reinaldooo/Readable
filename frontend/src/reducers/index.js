@@ -63,6 +63,15 @@ export function posts(state = {}, action) {
         case 'DELETE_POST':
         return state.filter((post) => post.id !== action.id);
 
+        case 'DELETE_COMMENT': {
+            const posts = state;
+            const {indexPost, id} = action;
+            console.log(posts[indexPost].comments);
+            posts[indexPost].comments = posts[indexPost].comments.filter(comment => comment.id !== id );
+            console.log(posts[indexPost].comments);
+            return posts
+        }
+
         case 'RATE': {
             const {index, newScore} = action;
             const posts = state;        
@@ -93,11 +102,9 @@ export function posts(state = {}, action) {
             return updatedPosts.sort(sortBy('-voteScore'))
         }
 
-        case 'SORT_POSTS': {
-        console.log(state.sort(sortBy(action.sortBy)));
-        return state.sort(sortBy(action.sortBy));
-        }
-
+        case 'SORT_POSTS': 
+        return state.sort(sortBy(action.sortFactor));
+        
         default:
             return state;
     }

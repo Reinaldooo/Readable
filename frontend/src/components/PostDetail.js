@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import moment from 'moment'
 import {connect} from 'react-redux'
-import { ratePost, deletePost, rateComment } from '../actions'
+import { ratePost, deletePost, rateComment, deleteComment } from '../actions'
 import { Link } from 'react-router-dom'
 //import uuidv4 from 'uuid/v4'
 
@@ -56,7 +56,7 @@ render() {
                 </div>                
                 <div className="btn-group btn-custom" role="group" aria-label="Edit and Delete">
                   <button type="button" className="button"><i className="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                  <button type="button" className="button delete"><i className="fa fa-trash-o" aria-hidden="true"></i></button>
+                  <button onClick={() => this.props.deleteComment(comment.id, indexPost)} type="button" className="button delete"><i className="fa fa-trash-o" aria-hidden="true"></i></button>
                 </div>
               </a>
             ) : 
@@ -95,7 +95,8 @@ const mapDispatchToProps = (dispatch) => {
         dispatch(deletePost(id));
         setTimeout(function(){ window.location = "/"; }, 500);
       },
-      rateComment: (rate, id, indexComment, indexPost) => dispatch(rateComment(rate, id, indexComment, indexPost))
+      rateComment: (rate, id, indexComment, indexPost) => dispatch(rateComment(rate, id, indexComment, indexPost)),
+      deleteComment: (id, indexPost) => dispatch(deleteComment(id, indexPost))
   };
 };
 

@@ -54,7 +54,7 @@ render() {
           ) : <div className="error">No posts! Why don't you <Link className="error" to="/addpost"><strong>add</strong> one?</Link></div>}
           </div>                
                 <div className="col list-group">
-                  <a onClick={() => this.props.sortPosts("voteScore")} className="list-group-item list-group-item-action flex-column align-items-start cursor">
+                  <a onClick={() => this.props.sortPosts("-timestamp")} className="list-group-item list-group-item-action flex-column align-items-start cursor">
                     <div className="d-flex w-100 justify-content-between">
                     <h6 className="mb-1 orange-focus">Sort By <strong>Time</strong></h6>
                     </div>

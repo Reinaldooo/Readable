@@ -40,7 +40,7 @@ export function categoriesAreLoading(bool) {
 export function sortPosts(sortBy) {
     return {
         type: 'SORT_POSTS',
-        sortBy
+        sortFactor: sortBy
     };
 }
 
@@ -164,6 +164,18 @@ export function deletePost(id) {
           })
             .then((response) => response.json())
             .then((post) => dispatch({ type: 'DELETE_POST', id: post.id }))
+            .catch(() => dispatch(postsHasErrored(true)));
+    };
+}
+
+export function deleteComment(id, indexPost) {
+    return (dispatch) => {
+        fetch(`${api}/comments/${id}`, {
+            method: 'DELETE',
+            headers
+          })
+            .then((response) => response.json())
+            .then((comment) => dispatch({ type: 'DELETE_COMMENT', id: comment.id, indexPost }))
             .catch(() => dispatch(postsHasErrored(true)));
     };
 }
