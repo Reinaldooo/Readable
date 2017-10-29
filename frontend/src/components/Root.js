@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import moment from 'moment'
 import {connect} from 'react-redux'
-import {getPosts, getCategories, ratePost, deletePost, getPostsCategorized} from '../actions'
+import {getPosts, getCategories, ratePost, deletePost, getPostsCategorized, sortPosts } from '../actions'
 import { Link } from 'react-router-dom'
 
 //import uuidv4 from 'uuid/v4'
@@ -43,8 +43,8 @@ render() {
                 <p className="mb-1">{post.body}</p>} 
                 <small className="post-details">Author: <strong>{post.author}</strong> • <strong className="score">{post.voteScore} {post.voteScore === 1 || post.voteScore === -1 ? <span className="post-count">point</span> : <span className="post-count">points</span>}</strong> • <strong><span className="orange-focus"><i className="fa fa-tag" aria-hidden="true"></i> {post.category}</span></strong> • <Link to={`/${post.id}`}>{post.comments.length} {post.comments.length === 1 ? "comment" : "comments"}</Link></small>
                 <div className="btn-group" role="group" aria-label="up and downvote">
-                  <button onClick={() => this.props.ratePost(UP, post, index)} type="button" className="button"><i className="fa fa-thumbs-up" aria-hidden="true"></i></button>
-                  <button onClick={() => this.props.ratePost(DN, post, index)} type="button" className="button"><i className="fa fa-thumbs-down" aria-hidden="true"></i></button>
+                  <button onClick={() => this.props.ratePost(UP, post.id, index)} type="button" className="button"><i className="fa fa-thumbs-up" aria-hidden="true"></i></button>
+                  <button onClick={() => this.props.ratePost(DN, post.id, index)} type="button" className="button"><i className="fa fa-thumbs-down" aria-hidden="true"></i></button>
                 </div>                
                 <div className="btn-group btn-custom" role="group" aria-label="Edit and Delete">
                   <button type="button" className="button"><i className="fa fa-pencil-square-o" aria-hidden="true"></i></button>
@@ -54,12 +54,17 @@ render() {
           ) : <div className="error">No posts! Why don't you <Link className="error" to="/addpost"><strong>add</strong> one?</Link></div>}
           </div>                
                 <div className="col list-group">
-                  <a className="list-group-item list-group-item-action flex-column align-items-start">
+                  <a onClick={() => this.props.sortPosts("timestamp")} className="list-group-item list-group-item-action flex-column align-items-start cursor">
                     <div className="d-flex w-100 justify-content-between">
-                      <h6 className="mb-1">Welcome, <strong>{this.state.user}</strong></h6>
+                    <h6 className="mb-1 orange-focus">Sort By <strong>Time</strong></h6>
                     </div>
                   </a>
-                  <a onClick={this.props.getPosts} className="list-group-item list-group-item-action flex-column align-items-start">
+                  <a onClick={() => this.props.sortPosts("voteScore")} className="list-group-item list-group-item-action flex-column align-items-start cursor">
+                    <div className="d-flex w-100 justify-content-between">
+                      <h6 className="mb-1 orange-focus">Sort By <strong>Score</strong></h6>
+                    </div>
+                  </a>
+                  <a onClick={this.props.getPosts} className="list-group-item list-group-item-action flex-column align-items-start cursor">
                     <div className="d-flex w-100 justify-content-between">
                       <h6 className="mb-1 orange-focus"><i className="fa fa-tag" aria-hidden="true"></i> all</h6>
                     </div>
@@ -71,7 +76,7 @@ render() {
                   </div> :
                   <div>
                   {this.props.categories[0] && this.props.categories.map((category, index) =>
-                  <a key={index} onClick={() => this.props.getPostsCategorized(category.name)} className="list-group-item list-group-item-action flex-column align-items-start">
+                  <a key={index} onClick={() => this.props.getPostsCategorized(category.name)} className="list-group-item list-group-item-action flex-column align-items-start cursor">
                     <div className="d-flex w-100 justify-content-between">
                       <h6 className="mb-1 orange-focus"><i className="fa fa-tag" aria-hidden="true"></i> {category.name} • <span className="post-count">{this.props.postsCount.filter(post => post.category === category.name).length} {this.props.postsCount.filter(post => post.category === category.name).length === 1 ? "post" : "posts"}</span></h6>
                     </div>
@@ -102,6 +107,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
       getPosts: ()                    => dispatch(getPosts()),
+      sortPosts: (sortBy)             => dispatch(sortPosts(sortBy)),
       getPostsCategorized: (category) => dispatch(getPostsCategorized(category)),
       getCategories: ()               => dispatch(getCategories()),
       ratePost: (rate, id, index)     => dispatch(ratePost(rate, id, index)),

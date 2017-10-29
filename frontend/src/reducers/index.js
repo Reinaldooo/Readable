@@ -55,7 +55,7 @@ export function postsCount(state = {}, action) {
 export function posts(state = {}, action) {
     switch (action.type) {
         case 'POSTS_FETCH_SUCCESS':
-        return action.posts;
+        return action.posts.sort(sortBy('-voteScore'));
 
         case 'CATEGORIZED_FETCH_SUCCESS':
         return action.posts;
@@ -78,9 +78,27 @@ export function posts(state = {}, action) {
             ];          
             return updatedPosts.sort(sortBy('-voteScore'))
         }
+
         case 'CATEGORY_CHANGER':
         return state.filter((post) => post.category === action.category);
 
+        case 'RATE_COMMENT': {
+            const {indexPost, indexComment, comment} = action;
+            const posts = state;        
+            const votedPost = posts[indexPost];
+            votedPost.comments[indexComment] = comment;
+            votedPost.comments = votedPost.comments.sort(sortBy('-voteScore'));                      
+            const updatedPosts = [
+              ...posts.slice(0, indexPost),
+              votedPost,
+              ...posts.slice(indexPost + 1, posts.length),
+            ];          
+            return updatedPosts.sort(sortBy('-voteScore'))
+        }
+
+        case 'SORT': 
+        return state.sort(sortBy(`-${action.sortBy}`));
+        
         default:
             return state;
     }

@@ -10,19 +10,6 @@ var Route = ReactRouter.Route
 var Switch = ReactRouter.Switch
 //import uuidv4 from 'uuid/v4'
 
-/*
-TODO:
-
-User name form
-
-Detail page design
--Should have form to add comment.
--Form to edit comment
-
-Start routing research
-
-*/
-
 class App extends Component {
 
   componentDidMount() {

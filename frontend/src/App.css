@@ -169,7 +169,7 @@ a:hover {
 }
 
 .mb-1 {
-  color: black
+  color: black;
 }
 
 .mb-1:hover {
@@ -179,4 +179,8 @@ a:hover {
 .error {
   text-align: center;
   color: grey
+}
+
+.cursor {
+  cursor: pointer;
 }

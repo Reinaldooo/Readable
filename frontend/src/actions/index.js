@@ -37,6 +37,13 @@ export function categoriesAreLoading(bool) {
     };
 }
 
+export function sortPosts(sortBy) {
+    return {
+        type: 'SORT',
+        sortBy
+    };
+}
+
 export function getPosts() {
     return dispatch => {
         dispatch(postsAreLoading(true));
@@ -74,7 +81,7 @@ export function getPosts() {
             )
             //.then(posts => dispatch({ type: 'POSTS_FETCH_DATA_SUCCESS', posts }))
             .then((posts) => { 
-                dispatch({ type: 'POSTS_FETCH_SUCCESS', posts: posts.sort(sortBy('-voteScore')) });
+                dispatch({ type: 'POSTS_FETCH_SUCCESS', posts });
                 dispatch({ type: 'POSTS_COUNT', posts });
             })
             .then(() => dispatch(postsAreLoading(false)))
@@ -123,15 +130,28 @@ export function getCategories() {
     };
 } */
 
-export function ratePost(rate, post, index) {
+export function ratePost(rate, id, index) {
     return (dispatch) => {
-        fetch(`${api}/posts/${post.id}`, {
+        fetch(`${api}/posts/${id}`, {
             method: 'POST',
             headers,
             body: JSON.stringify(rate)
           })
             .then((response) => response.json())
             .then((post) => dispatch({ type: 'RATE', newScore: post.voteScore, index }))
+            .catch(() => dispatch(postsHasErrored(true)));
+    };
+}
+
+export function rateComment(rate, id, indexComment, indexPost) {
+    return (dispatch) => {
+        fetch(`${api}/comments/${id}`, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify(rate)
+          })
+            .then((response) => response.json())
+            .then((comment) => dispatch({ type: 'RATE_COMMENT', comment, indexComment, indexPost }))
             .catch(() => dispatch(postsHasErrored(true)));
     };
 }
