@@ -79,9 +79,6 @@ export function posts(state = {}, action) {
             return updatedPosts.sort(sortBy('-voteScore'))
         }
 
-        case 'CATEGORY_CHANGER':
-        return state.filter((post) => post.category === action.category);
-
         case 'RATE_COMMENT': {
             const {indexPost, indexComment, comment} = action;
             const posts = state;        
@@ -96,9 +93,11 @@ export function posts(state = {}, action) {
             return updatedPosts.sort(sortBy('-voteScore'))
         }
 
-        case 'SORT': 
-        return state.sort(sortBy(`-${action.sortBy}`));
-        
+        case 'SORT_POSTS': {
+        console.log(state.sort(sortBy(action.sortBy)));
+        return state.sort(sortBy(action.sortBy));
+        }
+
         default:
             return state;
     }

@@ -39,7 +39,7 @@ export function categoriesAreLoading(bool) {
 
 export function sortPosts(sortBy) {
     return {
-        type: 'SORT',
+        type: 'SORT_POSTS',
         sortBy
     };
 }
