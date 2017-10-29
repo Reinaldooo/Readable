@@ -4,7 +4,10 @@ import { connect } from 'react-redux'
 import Root from './components/Root'
 import {getPosts, getCategories, ratePost, deletePost, getPostsCategorized} from './actions'
 import PostDetail from './components/PostDetail'
-import { Route } from 'react-router-dom'
+var ReactRouter = require('react-router-dom')
+var Router = ReactRouter.BrowserRouter
+var Route = ReactRouter.Route
+var Switch = ReactRouter.Switch
 //import uuidv4 from 'uuid/v4'
 
 /*
@@ -30,10 +33,15 @@ class App extends Component {
 render() {
 
   return (      
-      <div>
-        <Route exact path='/test' component={PostDetail}/>
-        <Route exact path='/' component={Root}/>
-      </div>
+      <Router>
+        <div> 
+          <Switch>
+            <Route exact path='/' component={Root} />
+            <Route exact path='/:post' component={PostDetail} />
+            <Route render={() => <p className="error">Not found.</p>} />
+          </Switch>
+        </div>
+      </Router>
     );
   }
 }

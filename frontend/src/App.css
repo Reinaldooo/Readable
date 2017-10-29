@@ -134,6 +134,10 @@ a:hover {
   background-color: #FF8A65;
 }
 
+.add-comments:hover {
+  opacity: .8
+}
+
 .mb-1-body {
   text-align: justify;
   margin: 1.5% 0
@@ -162,4 +166,17 @@ a:hover {
 
 .navbar li {
   float: left
+}
+
+.mb-1 {
+  color: black
+}
+
+.mb-1:hover {
+  color: black
+}
+
+.error {
+  text-align: center;
+  color: grey
 }

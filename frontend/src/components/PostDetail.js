@@ -9,34 +9,40 @@ class PostDetail extends Component {
 
 
 render() {
+
+  const post = this.props.posts[0] && this.props.posts.find(post => post.id === this.props.match.params.post)
+  const index = post && this.props.posts.indexOf(post)
+  const UP = {option: "upVote"}
+  const DN = {option: "downVote"}
+
   return (      
     <div className="container">
-            {this.props.posts[5] ?
+            {post ?              
             <div className="post-detail-page">
-              <small className="add-comments">Add Comment</small>        
+              <Link className="add-comments" to="/addcomment"><small>Add Comment</small></Link>      
+              <Link className="add-comments" to="/"><small>Go Back</small></Link>      
               <a className="list-group-item list-group-item-action flex-column align-items-start">
                 <div className="d-flex w-100 justify-content-between">
-                  <h5><i className="fa fa-angle-right" aria-hidden="true"></i> {this.props.posts[5].title}</h5>
-                  <Link to="/"><h6>Go back</h6></Link>
-                  {this.props.posts[5].edited ? <small>{moment.utc(this.props.posts[5].timestamp).format("ddd, MMM Do YYYY, h:mm a")}<strong><span className="orange-focus"> - Edited</span></strong></small>
+                  <h5><i className="fa fa-angle-right" aria-hidden="true"></i> {post.title}</h5>
+                  {post.edited ? <small>{moment.utc(post.timestamp).format("ddd, MMM Do YYYY, h:mm a")}<strong><span className="orange-focus"> - Edited</span></strong></small>
                   :
-                  <small>{moment.utc(this.props.posts[5].timestamp).format("ddd, MMMM Do YYYY, h:mm a")}</small>}
+                  <small>{moment.utc(post.timestamp).format("ddd, MMMM Do YYYY, h:mm a")}</small>}
                 </div>
                 {
-                <p className="mb-1-body">{this.props.posts[5].body}</p>} 
-                <small className="post-details">Author: <strong>{this.props.posts[5].author}</strong> • <strong className="score">{this.props.posts[5].voteScore} {this.props.posts[5].voteScore === 1 || this.props.posts[5].voteScore === -1 ? <span className="post-count">point</span> : <span className="post-count">points</span>}</strong> • <strong><span className="orange-focus"><i className="fa fa-tag" aria-hidden="true"></i> {this.props.posts[5].category}</span></strong> • {this.props.posts[5].comments.length} {this.props.posts[5].comments.length === 1 ? "comment" : "comments"}</small>
+                <p className="mb-1-body">{post.body}</p>} 
+                <small className="post-details">Author: <strong>{post.author}</strong> • <strong className="score">{post.voteScore} {post.voteScore === 1 || post.voteScore === -1 ? <span className="post-count">point</span> : <span className="post-count">points</span>}</strong> • <strong><span className="orange-focus"><i className="fa fa-tag" aria-hidden="true"></i> {post.category}</span></strong> • {post.comments.length} {post.comments.length === 1 ? "comment" : "comments"}</small>
                 <div className="btn-group" role="group" aria-label="up and downvote">
-                  <button type="button" className="button"><i className="fa fa-thumbs-up" aria-hidden="true"></i></button>
-                  <button type="button" className="button"><i className="fa fa-thumbs-down" aria-hidden="true"></i></button>
+                <button onClick={() => this.props.ratePost(UP, post, index)} type="button" className="button"><i className="fa fa-thumbs-up" aria-hidden="true"></i></button>
+                <button onClick={() => this.props.ratePost(DN, post, index)} type="button" className="button"><i className="fa fa-thumbs-down" aria-hidden="true"></i></button>
                 </div>                
                 <div className="btn-group btn-custom" role="group" aria-label="Edit and Delete">
                   <button type="button" className="button"><i className="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                  <button onClick={() => this.props.deletePost(this.props.posts[5].id)}type="button" className="button delete"><i className="fa fa-trash-o" aria-hidden="true"></i></button>
+                  <button onClick={() => this.props.deletePost(post.id)}type="button" className="button delete"><i className="fa fa-trash-o" aria-hidden="true"></i></button>
                 </div>
               </a>
               
             <div>
-            {this.props.posts[5] ? this.props.posts[5].comments.map((comment, index) => 
+            {post.comments.length > 0 ? post.comments.map((comment, index) => 
               <a key={comment.id} className="list-group-item list-group-item-action flex-column align-items-start comments">
                 <div className="d-flex w-100 justify-content-between">
                   <small className="post-details">Comment by: <strong>{comment.author}</strong></small>
@@ -60,9 +66,15 @@ render() {
             </div>
         </div>
         :
+        <div>
         <div className="spinner">
           <div className="cube1"></div>
           <div className="cube2"></div>
+        </div>
+        <div className="error">
+          Looking for your post. If this screen show up for more than 5 seconds, this post might have been deleted.
+          <Link className="error" to="/">Click <strong>here</strong> to go back.</Link>
+        </div>
         </div>
       }
     </div>    
@@ -79,7 +91,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
       ratePost: (rate, id, index)     => dispatch(ratePost(rate, id, index)),
-      deletePost: (id)                => dispatch(deletePost(id))
+      deletePost: (id)                => {
+        dispatch(deletePost(id));
+        setTimeout(function(){ window.location = "/"; }, 500);
+      }
   };
 };
 

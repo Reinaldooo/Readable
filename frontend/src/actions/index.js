@@ -74,7 +74,7 @@ export function getPosts() {
             )
             //.then(posts => dispatch({ type: 'POSTS_FETCH_DATA_SUCCESS', posts }))
             .then((posts) => { 
-                dispatch({ type: 'POSTS_FETCH_SUCCESS', posts: posts.filter((post) => post.deleted === false).sort(sortBy('-voteScore')) });
+                dispatch({ type: 'POSTS_FETCH_SUCCESS', posts: posts.sort(sortBy('-voteScore')) });
                 dispatch({ type: 'POSTS_COUNT', posts });
             })
             .then(() => dispatch(postsAreLoading(false)))
@@ -184,7 +184,7 @@ export function getPostsCategorized(category) {
                 )
             )
             //.then(posts => dispatch({ type: 'POSTS_FETCH_DATA_SUCCESS', posts }))
-            .then((posts) => dispatch({ type: 'CATEGORIZED_FETCH_SUCCESS', posts: posts.filter((post) => post.deleted === false && post.category === category).sort(sortBy('-voteScore')) }))
+            .then((posts) => dispatch({ type: 'CATEGORIZED_FETCH_SUCCESS', posts: posts.filter((post) => post.category === category).sort(sortBy('-voteScore')) }))
             .then(() => dispatch(postsAreLoading(false)));
     };
 }
