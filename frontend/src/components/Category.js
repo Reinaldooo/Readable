@@ -6,20 +6,20 @@ import { Link } from 'react-router-dom'
 
 //import uuidv4 from 'uuid/v4'
 
-class Root extends Component {
+class Category extends Component {
 state = { 
   user: "Guest",
   sortFactor: "-voteScore"
 }
 
-
-
 componentDidMount() {
-    this.props.getPosts()
+    const category = this.props.match.params.category && this.props.match.params.category
+    this.props.getPostsCategorized(category)
     this.props.getCategories()  
 }
 
 render() {
+  
   const UP = {option: "upVote"};
   const DN = {option: "downVote"};
 
@@ -71,26 +71,11 @@ render() {
                       <h6 className="mb-1 orange-focus">Sort By <strong>Comments Number</strong></h6>
                     </div>
                   </a>
-                  <a onClick={this.props.getPosts} className="list-group-item list-group-item-action flex-column align-items-start cursor">
+                  <Link className="list-group-item list-group-item-action flex-column align-items-start cursor" to="/">
                     <div className="d-flex w-100 justify-content-between">
                       <h6 className="mb-1 orange-focus"><i className="fa fa-tag" aria-hidden="true"></i> all</h6>
                     </div>
-                  </a>
-                  {this.props.categoriesAreLoading ?         
-                  <div className="spinner">
-                  <div className="cube1"></div>
-                  <div className="cube2"></div>
-                  </div> :
-                  <div>
-                  {this.props.categories[0] && this.props.categories.map((category, index) =>
-                  <Link className="list-group-item list-group-item-action flex-column align-items-start cursor" key={index} to={`/${category.name}`}>
-                    <div className="d-flex w-100 justify-content-between">
-                      <h6 className="mb-1 orange-focus"><i className="fa fa-tag" aria-hidden="true"></i> {category.name}</h6>
-                    </div>
-                  </Link>  
-                  )}
-                  </div>
-                  }
+                  </Link>
                 </div>
             </div>
         }
@@ -122,4 +107,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Root);
+export default connect(mapStateToProps, mapDispatchToProps)(Category);

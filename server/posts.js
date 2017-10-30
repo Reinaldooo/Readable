@@ -29,7 +29,7 @@ const defaultData = {
     id: '3',
     timestamp: 1507907893799,
     title: 'Should the reviewer approve my project?',
-    body: "Lorem Ipsum é simplesmente uma simulação de texto da indústria tipográfica e de impressos, e vem sendo utilizado desde o século XVI, quando um impressor desconhecido pegou uma bandeja de tipos e os embaralhou para fazer um livro de modelos de tipos. Lorem Ipsum sobreviveu não só a cinco séculos, como também ao salto para a editoração eletrônica, permanecendo essencialmente inalterado. Se popularizou na década de 60, quando a Letraset lançou decalques contendo passagens de Lorem Ipsum, e mais recentemente quando passou a ser integrado a softwares de editoração eletrônica como Aldus PageMaker.",
+    body: "Well i think you should. I worked pretty hard on this, and even added an auto crop at 75 chars.",
     author: 'Student',
     category: 'udacity',
     voteScore: 12,
@@ -38,7 +38,7 @@ const defaultData = {
   },
   "4": {
     id: '4',
-    timestamp: 1507907893799,
+    timestamp: 1500000000000,
     title: "I think you should approve Reinaldo`s project",
     body: "He worked pretty hard.",
     author: 'Reinaldo`s friend',

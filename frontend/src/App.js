@@ -2,8 +2,9 @@ import React, {Component} from 'react'
 import './App.css'
 import { connect } from 'react-redux'
 import Root from './components/Root'
-import {getPosts, getCategories, ratePost, deletePost, getPostsCategorized} from './actions'
+import {getPosts, getCategories, getPostsCategorized} from './actions'
 import PostDetail from './components/PostDetail'
+import Category from './components/Category'
 var ReactRouter = require('react-router-dom')
 var Router = ReactRouter.BrowserRouter
 var Route = ReactRouter.Route
@@ -12,11 +13,6 @@ var Switch = ReactRouter.Switch
 
 class App extends Component {
 
-  componentDidMount() {
-    this.props.getPosts();
-    this.props.getCategories();
-}   
-
 render() {
 
   return (      
@@ -24,7 +20,8 @@ render() {
         <div> 
           <Switch>
             <Route exact path='/' component={Root} />
-            <Route exact path='/:post' component={PostDetail} />
+            <Route exact path='/:category' component={Category} />
+            <Route exact path='/:category/:id' component={PostDetail} />
             <Route render={() => <p className="error">Not found.</p>} />
           </Switch>
         </div>
@@ -49,9 +46,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getPosts: ()                    => dispatch(getPosts()),
     getPostsCategorized: (category) => dispatch(getPostsCategorized(category)),
-    getCategories: ()               => dispatch(getCategories()),
-    ratePost: (rate, id, index)     => dispatch(ratePost(rate, id, index)),
-    deletePost: (id)                => dispatch(deletePost(id))
+    getCategories: ()               => dispatch(getCategories())
   };
 };
 

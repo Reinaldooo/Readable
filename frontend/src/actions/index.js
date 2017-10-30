@@ -74,16 +74,16 @@ export function getPosts() {
                             return comments;
                             })
                             .then((comments) => comments.json())
-                            .then(comments => post.comments = comments.sort(sortBy('-voteScore')))
+                            .then(comments => {
+                                post.comments = comments.sort(sortBy('-voteScore'));
+                                post.commentsNumber = comments.length;
+                            })
                             .then(() => post)
                     )
                 )
             )
             //.then(posts => dispatch({ type: 'POSTS_FETCH_DATA_SUCCESS', posts }))
-            .then((posts) => { 
-                dispatch({ type: 'POSTS_FETCH_SUCCESS', posts });
-                dispatch({ type: 'POSTS_COUNT', posts });
-            })
+            .then((posts) => dispatch({ type: 'POSTS_FETCH_SUCCESS', posts }))
             .then(() => dispatch(postsAreLoading(false)))
     };
 }
@@ -130,7 +130,7 @@ export function getCategories() {
     };
 } */
 
-export function ratePost(rate, id, index) {
+export function ratePost(rate, id, index, sortFactor) {
     return (dispatch) => {
         fetch(`${api}/posts/${id}`, {
             method: 'POST',
@@ -138,7 +138,7 @@ export function ratePost(rate, id, index) {
             body: JSON.stringify(rate)
           })
             .then((response) => response.json())
-            .then((post) => dispatch({ type: 'RATE', newScore: post.voteScore, index }))
+            .then((post) => dispatch({ type: 'RATE', newScore: post.voteScore, index, sortFactor }))
             .catch(() => dispatch(postsHasErrored(true)));
     };
 }
@@ -168,7 +168,7 @@ export function deletePost(id) {
     };
 }
 
-export function deleteComment(id, indexPost) {
+export function deleteComment(id, indexComment, indexPost) {
     return (dispatch) => {
         fetch(`${api}/comments/${id}`, {
             method: 'DELETE',
@@ -184,7 +184,7 @@ export function getPostsCategorized(category) {
     return dispatch => {
         dispatch(postsAreLoading(true));
         
-                fetch("http://localhost:3001/posts", {
+                fetch(`http://localhost:3001/${category}/posts`, {
                     method: 'GET',
                     headers
                   })
@@ -210,13 +210,16 @@ export function getPostsCategorized(category) {
                             return comments;
                             })
                             .then((comments) => comments.json())
-                            .then(comments => post.comments = comments.sort(sortBy('-voteScore')))
+                            .then(comments => {
+                                post.comments = comments.sort(sortBy('-voteScore'));
+                                post.commentsNumber = comments.length;
+                            })
                             .then(() => post)
                     )
                 )
             )
             //.then(posts => dispatch({ type: 'POSTS_FETCH_DATA_SUCCESS', posts }))
-            .then((posts) => dispatch({ type: 'CATEGORIZED_FETCH_SUCCESS', posts: posts.filter((post) => post.category === category).sort(sortBy('-voteScore')) }))
+            .then((posts) => dispatch({ type: 'CATEGORIZED_FETCH_SUCCESS', posts: posts.sort(sortBy('-voteScore')) }))
             .then(() => dispatch(postsAreLoading(false)));
     };
 }

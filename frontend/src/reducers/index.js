@@ -41,17 +41,6 @@ export function categoriesAreLoading(state = false, action) {
     }
 }
 
-export function postsCount(state = {}, action) {
-    switch (action.type) {
-        case 'POSTS_COUNT':
-            return action.posts;
-
-        default:
-            return state;
-}
-}
-
-
 export function posts(state = {}, action) {
     switch (action.type) {
         case 'POSTS_FETCH_SUCCESS':
@@ -61,19 +50,27 @@ export function posts(state = {}, action) {
         return action.posts;
         
         case 'DELETE_POST':
-        return state.filter((post) => post.id !== action.id);
+        return state.slice().filter((post) => post.id !== action.id);
 
         case 'DELETE_COMMENT': {
-            const posts = state;
-            const {indexPost, id} = action;
-            console.log(posts[indexPost].comments);
-            posts[indexPost].comments = posts[indexPost].comments.filter(comment => comment.id !== id );
-            console.log(posts[indexPost].comments);
-            return posts
+            const {id, indexPost} = action;
+            const posts = state;        
+            const updatedPost = posts[indexPost];
+            const updatedVotedPost = {
+              ...updatedPost,
+              comments: updatedPost.comments.filter(comment => comment.id !== id) 
+            };          
+            const updatedPosts = [
+              ...posts.slice(0, indexPost),
+              updatedVotedPost,
+              ...posts.slice(indexPost + 1, posts.length),
+            ];          
+            return updatedPosts
         }
+            
 
         case 'RATE': {
-            const {index, newScore} = action;
+            const {index, newScore, sortFactor} = action;
             const posts = state;        
             const votedPost = posts[index];
             const updatedVotedPost = {
@@ -85,7 +82,7 @@ export function posts(state = {}, action) {
               updatedVotedPost,
               ...posts.slice(index + 1, posts.length),
             ];          
-            return updatedPosts.sort(sortBy('-voteScore'))
+            return updatedPosts.sort(sortBy(sortFactor))
         }
 
         case 'RATE_COMMENT': {
@@ -103,7 +100,7 @@ export function posts(state = {}, action) {
         }
 
         case 'SORT_POSTS': 
-        return state.sort(sortBy(action.sortFactor));
+        return state.slice().sort(sortBy(action.sortFactor))
         
         default:
             return state;
@@ -128,6 +125,5 @@ export default combineReducers({
     postsAreLoading,
     categories,
     categoriesHasErrored,
-    categoriesAreLoading,
-    postsCount
+    categoriesAreLoading
 });

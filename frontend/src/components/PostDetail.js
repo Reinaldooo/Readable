@@ -7,10 +7,17 @@ import { Link } from 'react-router-dom'
 
 class PostDetail extends Component {
 
+  componentDidMount() {
+    if(this.props.posts[0] === undefined) {
+    this.props.getPosts()
+    this.props.getCategories()
+    }  
+} 
+
 
 render() {
 
-  const post = this.props.posts[0] && this.props.posts.find(post => post.id === this.props.match.params.post)
+  const post = this.props.posts[0] && this.props.posts.find(post => post.id === this.props.match.params.id)
   const indexPost = post && this.props.posts.indexOf(post)
   const UP = {option: "upVote"}
   const DN = {option: "downVote"}
@@ -56,7 +63,7 @@ render() {
                 </div>                
                 <div className="btn-group btn-custom" role="group" aria-label="Edit and Delete">
                   <button type="button" className="button"><i className="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                  <button onClick={() => this.props.deleteComment(comment.id, indexPost)} type="button" className="button delete"><i className="fa fa-trash-o" aria-hidden="true"></i></button>
+                  <button onClick={() => this.props.deleteComment(comment.id, indexComment, indexPost)} type="button" className="button delete"><i className="fa fa-trash-o" aria-hidden="true"></i></button>
                 </div>
               </a>
             ) : 
@@ -96,7 +103,7 @@ const mapDispatchToProps = (dispatch) => {
         setTimeout(function(){ window.location = "/"; }, 500);
       },
       rateComment: (rate, id, indexComment, indexPost) => dispatch(rateComment(rate, id, indexComment, indexPost)),
-      deleteComment: (id, indexPost) => dispatch(deleteComment(id, indexPost))
+      deleteComment: (id, indexComment, indexPost) => dispatch(deleteComment(id, indexComment, indexPost))
   };
 };
 
