@@ -21,7 +21,7 @@ const defaultData = {
     body: 'Just kidding. It takes more than 10 minutes to learn technology.',
     author: 'thingone',
     category: 'redux',
-    voteScore: -5,
+    voteScore: 1,
     deleted: false,
     edited: false
   },
@@ -39,7 +39,7 @@ const defaultData = {
   "4": {
     id: '4',
     timestamp: 1500000000000,
-    title: "I think you should approve Reinaldo`s project",
+    title: "I think you should approve Reinaldo's project",
     body: "He worked pretty hard.",
     author: 'Reinaldo`s friend',
     category: 'udacity',

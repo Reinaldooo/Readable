@@ -5,6 +5,7 @@ import Root from './components/Root'
 import {getPosts, getCategories, getPostsCategorized} from './actions'
 import PostDetail from './components/PostDetail'
 import Category from './components/Category'
+import Nav from './components/Nav'
 var ReactRouter = require('react-router-dom')
 var Router = ReactRouter.BrowserRouter
 var Route = ReactRouter.Route
@@ -18,6 +19,7 @@ render() {
   return (      
       <Router>
         <div> 
+          <Nav categories={this.props.categories}/>
           <Switch>
             <Route exact path='/' component={Root} />
             <Route exact path='/:category' component={Category} />
@@ -37,8 +39,7 @@ const mapStateToProps = (state) => {
     postsHasErrored:      state.postsHasErrored,
     postsAreLoading:      state.postsAreLoading,
     categoriesHasErrored: state.categoriesHasErrored,
-    categoriesAreLoading: state.categoriesAreLoading,
-    postsCount:           state.postsCount
+    categoriesAreLoading: state.categoriesAreLoading
   };
 };
 

@@ -33,7 +33,7 @@ render() {
         <div className="row">
         <div className="col-10 list-group">
         {this.props.posts.length > 0 ? this.props.posts.map((post, index) => 
-              <a key={post.id} className="list-group-item list-group-item-action flex-column align-items-start">
+              <div key={post.id} className="list-group-item list-group-item-action flex-column align-items-start">
                 <div className="d-flex w-100 justify-content-between">
                   <Link className="mb-1" to={`/${post.category}/${post.id}`}><h5><i className="fa fa-angle-right" aria-hidden="true"></i> {post.title}</h5></Link>
                   {post.edited ? <small>{moment.utc(post.timestamp).format("ddd, MMM Do YYYY, h:mm a")}<strong><span className="orange-focus"> - Edited</span></strong></small>
@@ -52,7 +52,7 @@ render() {
                   <button type="button" className="button"><i className="fa fa-pencil-square-o" aria-hidden="true"></i></button>
                   <button onClick={() => this.props.deletePost(post.id)}type="button" className="button delete"><i className="fa fa-trash-o" aria-hidden="true"></i></button>
                 </div>
-              </a>
+              </div>
           ) : <div className="error">No posts! Why don't you <Link className="error" to="/addpost"><strong>add</strong> one?</Link></div>}
           </div>                
                 <div className="col list-group">
@@ -91,8 +91,7 @@ const mapStateToProps = (state) => {
       postsHasErrored:      state.postsHasErrored,
       postsAreLoading:      state.postsAreLoading,
       categoriesHasErrored: state.categoriesHasErrored,
-      categoriesAreLoading: state.categoriesAreLoading,
-      postsCount:           state.postsCount
+      categoriesAreLoading: state.categoriesAreLoading
   };
 };
 

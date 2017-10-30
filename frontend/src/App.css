@@ -22,7 +22,7 @@ opacity: .7
 }
 
 .delete {
-  background-color: #EF5350
+  background-color: #FF8A65
 }
 
 .btn-custom {
@@ -34,11 +34,12 @@ opacity: .7
 }
 
 .post-count {
-  font-size: .7em
+  font-size: .7em;
+  color: #FF8A65;
 }
 
 .container-fluid {
-  padding: 3em 6em;
+  padding: 1em 6em;
   }
 
 .orange-focus {
@@ -126,12 +127,15 @@ a:hover {
 }
 
 .post-detail-page {
-  margin: 3em auto
+  margin: 3em auto;
+  border-radius: .3em;
 }
 
 .add-comments {
   padding: .5em;
   background-color: #FF8A65;
+  border-radius: .3em;
+  margin-right: .4em
 }
 
 .add-comments:hover {
@@ -145,27 +149,21 @@ a:hover {
 
 .comments {
   max-width: 95%;
+  margin: .5em 0
 }
 
-.navbar {
- background-color: #FF8A65
+.navCustom {
+  display: flex;
+  margin: 1em 2.55em 0;
 }
 
-.navbar h5 {
-  margin: 0 5em 0 3.2em ;
-  padding: 0;
-  color: white;
-  list-style: none
-}
-.navbar h6 {
-  margin: 0 5em 0 3.2em ;
-  padding: 0;
-  color: white;
-  list-style: none
+.navCustom li {
+  margin-right: 1em;
+  list-style-type: none
 }
 
-.navbar li {
-  float: left
+.activeNav {
+  font-weight: bold
 }
 
 .mb-1 {
@@ -183,4 +181,19 @@ a:hover {
 
 .cursor {
   cursor: pointer;
+}
+
+.add-post {
+  padding: .3em;
+  background-color: #FF8A65;
+  border-radius: .3em;
+  display: flex
+}
+
+.fa-book {
+  margin-left: .5em
+}
+
+.border-radius {
+  border-radius: .3em;
 }

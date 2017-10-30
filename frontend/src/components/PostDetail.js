@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import moment from 'moment'
 import {connect} from 'react-redux'
-import { ratePost, deletePost, rateComment, deleteComment } from '../actions'
+import { ratePost, deletePost, rateComment, deleteComment, getPosts, getCategories } from '../actions'
 import { Link } from 'react-router-dom'
 //import uuidv4 from 'uuid/v4'
 
@@ -28,7 +28,7 @@ render() {
             <div className="post-detail-page">
               <Link className="add-comments" to="/addcomment"><small>Add Comment</small></Link>      
               <Link className="add-comments" to="/"><small>Go Back</small></Link>      
-              <a className="list-group-item list-group-item-action flex-column align-items-start">
+              <a className="list-group-item list-group-item-action flex-column align-items-start border-radius">
                 <div className="d-flex w-100 justify-content-between">
                   <h5><i className="fa fa-angle-right" aria-hidden="true"></i> {post.title}</h5>
                   {post.edited ? <small>{moment.utc(post.timestamp).format("ddd, MMM Do YYYY, h:mm a")}<strong><span className="orange-focus"> - Edited</span></strong></small>
@@ -97,13 +97,15 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      ratePost: (rate, id, index)     => dispatch(ratePost(rate, id, index)),
-      deletePost: (id)                => {
+      ratePost: (rate, id, index)                      => dispatch(ratePost(rate, id, index)),
+      deletePost: (id)                                 => {
         dispatch(deletePost(id));
         setTimeout(function(){ window.location = "/"; }, 500);
       },
       rateComment: (rate, id, indexComment, indexPost) => dispatch(rateComment(rate, id, indexComment, indexPost)),
-      deleteComment: (id, indexComment, indexPost) => dispatch(deleteComment(id, indexComment, indexPost))
+      deleteComment: (id, indexComment, indexPost)     => dispatch(deleteComment(id, indexComment, indexPost)),
+      getPosts: ()                                     => dispatch(getPosts()),
+      getCategories: ()                                => dispatch(getCategories())
   };
 };
 
