@@ -27,7 +27,7 @@ render() {
             {post ?              
             <div className="post-detail-page">
               <Link className="add-comments" to="/addcomment"><small>Add Comment</small></Link>      
-              <Link className="add-comments" to="/"><small>Go Back</small></Link>      
+              <Link className="add-comments" to="/"><small>Home</small></Link>      
               <a className="list-group-item list-group-item-action flex-column align-items-start border-radius">
                 <div className="d-flex w-100 justify-content-between">
                   <h5><i className="fa fa-angle-right" aria-hidden="true"></i> {post.title}</h5>

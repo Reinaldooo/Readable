@@ -31,7 +31,6 @@ render() {
           <div className="cube2"></div>
         </div> :
         <div className="row">
-          {console.log(this.props)}
         <div className="col-10 list-group">
         {this.props.posts.length > 0 ? this.props.posts.map((post, index) => 
               <div key={post.id} className="list-group-item list-group-item-action flex-column align-items-start">
@@ -74,7 +73,7 @@ render() {
                   </a>
                   <a onClick={this.props.getPosts} className="list-group-item list-group-item-action flex-column align-items-start cursor">
                     <div className="d-flex w-100 justify-content-between">
-                      <h6 className="mb-1 orange-focus"><i className="fa fa-tag" aria-hidden="true"></i> all</h6>
+                      <h6 className="mb-1 orange-focus"><i className="fa fa-tag" aria-hidden="true"></i> All Posts</h6>
                     </div>
                   </a>
                   {this.props.categoriesAreLoading ?         
