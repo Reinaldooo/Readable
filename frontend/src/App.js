@@ -6,10 +6,11 @@ import {getPosts, getCategories, getPostsCategorized} from './actions'
 import PostDetail from './components/PostDetail'
 import Category from './components/Category'
 import Nav from './components/Nav'
-var ReactRouter = require('react-router-dom')
-var Router = ReactRouter.BrowserRouter
-var Route = ReactRouter.Route
-var Switch = ReactRouter.Switch
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch
+} from 'react-router-dom'
 //import uuidv4 from 'uuid/v4'
 
 class App extends Component {
