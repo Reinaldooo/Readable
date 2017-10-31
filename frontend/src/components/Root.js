@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import moment from 'moment'
 import {connect} from 'react-redux'
-import {getPosts, getCategories, ratePost, deletePost, getPostsCategorized, sortPosts } from '../actions'
+import {getPosts, getCategories, ratePost, deletePost, getPostsCategorized, sortPosts, addPost, editPost } from '../actions'
 import { Link } from 'react-router-dom'
 import serializeForm from 'form-serialize'
 import uuidv4 from 'uuid/v4'
@@ -10,18 +10,45 @@ class Root extends Component {
 state = { 
   user: "Guest",
   sortFactor: "-voteScore",
-  add: false
+  add: false,
+  edit: false,
+  title: '',
+  body: '',
+  id: ''
 }
 
-handleSubmit = (e) => {
+handleSubmitAdd = (e) => {
   e.preventDefault()
-  const values = serializeForm(e.target, { hash: true })
-  values.timestamp = Date.now()
-  values.id = uuidv4()
-  values.voteScore = 1
-  console.log(values)
-  this.setState({form: false})
+  const post = serializeForm(e.target, { hash: true })
+  post.timestamp = Date.now()
+  post.id = uuidv4()
+  this.props.addPost(post)
+  this.setState({add: false})
 }
+
+handleEdit = (post, index) => {
+  this.setState({edit: true, body: post.body, title: post.title, id: post.id, indexPost: index})
+}
+
+handleChangeTitle(event) {
+  this.setState({title: event.target.value});
+  console.log(this.state.title)
+}
+
+handleChangeBody(event) {
+  this.setState({body: event.target.value});
+  console.log(this.state.body)
+}
+
+handleSubmitEdit = (e) => {
+  e.preventDefault()
+  const post = serializeForm(e.target, { hash: true })
+  post.edited = true
+  console.log(post)
+  this.props.editPost(post, this.state.id, this.state.indexPost)
+  this.setState({edit: false})
+}
+
 
 componentDidMount() {
     this.props.getPosts()
@@ -44,11 +71,11 @@ render() {
 
           {this.state.add && 
           <div className="list-group-item list-group-item-action flex-column align-items-start add-post-form">
-            <form onSubmit={this.handleSubmit} className="create-contact-form">
+            <form onSubmit={this.handleSubmitAdd} className="create-contact-form">
                <div className="create-contact-details">
                   <input type="text" name="author" placeholder="Username"/>
-                  <input type="text" name="title" placeholder="Title"/>
-                    <textarea placeholder="Post content" name="body" rows="5" cols="50" />
+                  <input value={this.state.title} onChange={this.handleChangeTitle} type="text" name="title" placeholder="Title"/>
+                    <textarea value={this.state.body} onChange={this.handleChangeBody} placeholder="Post content" name="body" rows="5" cols="50" />
                   <label>
                     Category:
                     <select name="category">
@@ -59,6 +86,19 @@ render() {
                     </select>
                   </label>
                   <button>Add Post</button>
+                  <button onClick={() => this.setState({add: false})}>Cancel</button>
+              </div>
+            </form>
+          </div>
+          }
+          {this.state.edit && 
+          <div className="list-group-item list-group-item-action flex-column align-items-start add-post-form">
+            <form onSubmit={this.handleSubmitEdit} className="create-contact-form">
+               <div className="create-contact-details">
+                  <input value={this.state.title} onChange={(event) => this.handleChangeTitle(event)} type="text" name="title" placeholder="Title"/>
+                    <textarea value={this.state.body} onChange={(event) => this.handleChangeBody(event)} placeholder="Post content" name="body" rows="5" cols="50" />
+                  <button>Edit Post</button>
+                  <button onClick={() => this.setState({edit: false})}>Cancel</button>
               </div>
             </form>
           </div>
@@ -81,13 +121,18 @@ render() {
                   <button onClick={() => this.props.ratePost(DN, post.id, index, this.state.sortFactor)} type="button" className="button"><i className="fa fa-thumbs-down" aria-hidden="true"></i></button>
                 </div>                
                 <div className="btn-group btn-custom" role="group" aria-label="Edit and Delete">
-                  <button onClick={() => this.setState({form: true})} type="button" className="button"><i className="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                  <button onClick={() => this.handleEdit(post, index)}type="button" className="button"><i className="fa fa-pencil-square-o" aria-hidden="true"></i></button>
                   <button onClick={() => this.props.deletePost(post.id)} type="button" className="button delete"><i className="fa fa-trash-o" aria-hidden="true"></i></button>
                 </div>
               </div>
           ) : <div className="error">No posts! Why don't you <Link className="error" to="/addpost"><strong>add</strong> one?</Link></div>}
           </div>                
                 <div className="col list-group">
+                  <a onClick={() => this.setState({add: true})} className="list-group-item list-group-item-action flex-column align-items-start cursor-focus">
+                    <div>
+                      <h6 className="white mb-1"><strong>Add Post</strong></h6>
+                    </div>
+                  </a>
                   <a onClick={() => { this.setState({sortFactor: "-voteScore"}); this.props.sortPosts("-voteScore")}} className="list-group-item list-group-item-action flex-column align-items-start cursor">
                     <div className="d-flex w-100 justify-content-between">
                       <h6 className="mb-1 orange-focus">Sort By <strong>Score</strong></h6>
@@ -149,7 +194,9 @@ const mapDispatchToProps = (dispatch) => {
       getPostsCategorized: (category) => dispatch(getPostsCategorized(category)),
       getCategories: ()               => dispatch(getCategories()),
       ratePost: (rate, id, index, sortFactor)     => dispatch(ratePost(rate, id, index, sortFactor)),
-      deletePost: (id)                => dispatch(deletePost(id))
+      deletePost: (id)                => dispatch(deletePost(id)),
+      addPost: (post)                 => dispatch(addPost(post)),
+      editPost: (post, id, indexPost)                 => dispatch(editPost(post, id, indexPost))
   };
 };
 

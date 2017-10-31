@@ -12,11 +12,6 @@ class Nav extends Component {
                    <i className="fa fa-book" aria-hidden="true"></i> <strong>Home</strong>
                 </Link>
             </li>            
-            <li>
-                <Link to="/">
-                    Add Post
-                </Link>
-            </li>
             </div>            
         </ul>
     )

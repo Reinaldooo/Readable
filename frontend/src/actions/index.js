@@ -223,3 +223,28 @@ export function getPostsCategorized(category) {
             .then(() => dispatch(postsAreLoading(false)));
     };
 }
+
+export function addPost(post) {
+    return (dispatch) => {
+        fetch(`${api}/posts/`, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify(post)
+          })
+            .then((response) => response.json())
+            .then((post) => dispatch({ type: 'ADD_POST', post }))
+            .catch(() => dispatch(postsHasErrored(true)));
+    };
+}
+
+export function editPost(post, id, indexPost) {
+    return (dispatch) => {
+        fetch(`${api}/posts/${id}`, {
+            method: 'PUT',
+            headers,
+            body: JSON.stringify(post)
+          })
+            .then((response) => response.json())
+            .then((response) => console.log(response))
+    };
+}

@@ -100,8 +100,14 @@ export function posts(state = {}, action) {
         }
 
         case 'SORT_POSTS': 
-        return state.slice().sort(sortBy(action.sortFactor))
+        return state.slice().sort(sortBy(action.sortFactor));
         
+        case 'ADD_POST': {
+            const post = action.post
+            post.comments = [];
+            return state.slice().concat(post)
+        }
+
         default:
             return state;
     }

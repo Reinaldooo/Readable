@@ -183,6 +183,17 @@ a:hover {
   cursor: pointer;
 }
 
+.cursor-focus {
+  cursor: pointer;
+  background-color: #FF8A65;
+  color: white;
+  text-align: center;
+}
+
+.white {
+  color: white
+}
+
 .add-post {
   padding: .3em;
   background-color: #FF8A65;
@@ -239,6 +250,7 @@ a:hover {
 
 .create-contact-details button {
   margin-top: 20px;
+  margin-right: 5px;
   background: #FF8A65;
   padding: 5px;
   font-size: inherit;
