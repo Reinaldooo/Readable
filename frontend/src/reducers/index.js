@@ -108,6 +108,21 @@ export function posts(state = {}, action) {
             return state.slice().concat(post)
         }
 
+        case 'EDIT_POST': {
+            const {indexPost, post} = action;
+            const posts = state;
+            const editedPost = posts[indexPost];
+            editedPost.body = post.body;                
+            editedPost.title = post.title;                
+            editedPost.edited = true;                
+            const updatedPosts = [
+              ...posts.slice(0, indexPost),
+              editedPost,
+              ...posts.slice(indexPost + 1, posts.length),
+            ];          
+            return updatedPosts.sort(sortBy('-voteScore'))
+        }
+
         default:
             return state;
     }

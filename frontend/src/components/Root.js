@@ -46,7 +46,7 @@ handleSubmitEdit = (e) => {
   post.edited = true
   console.log(post)
   this.props.editPost(post, this.state.id, this.state.indexPost)
-  this.setState({edit: false})
+  this.setState({edit: false, body: '', title: '', id: null, indexPost: null})
 }
 
 
@@ -74,8 +74,8 @@ render() {
             <form onSubmit={this.handleSubmitAdd} className="create-contact-form">
                <div className="create-contact-details">
                   <input type="text" name="author" placeholder="Username"/>
-                  <input value={this.state.title} onChange={this.handleChangeTitle} type="text" name="title" placeholder="Title"/>
-                    <textarea value={this.state.body} onChange={this.handleChangeBody} placeholder="Post content" name="body" rows="5" cols="50" />
+                  <input type="text" name="title" placeholder="Title"/>
+                    <textarea placeholder="Post content" name="body" rows="5" cols="50" />
                   <label>
                     Category:
                     <select name="category">

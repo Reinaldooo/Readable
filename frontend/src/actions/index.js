@@ -245,6 +245,7 @@ export function editPost(post, id, indexPost) {
             body: JSON.stringify(post)
           })
             .then((response) => response.json())
-            .then((response) => console.log(response))
+            .then((post) => dispatch({ type: 'EDIT_POST', post, indexPost }))
+            .catch(() => dispatch(postsHasErrored(true)));
     };
 }
