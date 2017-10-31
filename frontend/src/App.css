@@ -190,10 +190,66 @@ a:hover {
   display: flex
 }
 
+.add-post-form {
+  display: flex;
+  align-self: center;
+  margin-bottom: 1px
+}
+
 .fa-book {
   margin-left: .5em
 }
 
 .border-radius {
   border-radius: .3em;
+}
+
+.create-contact-form {
+  padding: 20px;
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+}
+
+.create-contact-details {
+  margin-left: 20px;
+}
+
+.create-contact-details input, textarea {
+  width: 100%;
+  padding: 5px 10px;
+  margin-bottom: 10px;
+  font-size: inherit;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  outline: 0;
+  resize: vertical;
+}
+
+.create-contact-details label {
+  width: 100%;
+  padding: 5px 10px;
+  font-size: inherit;
+  background: transparent;
+  border: none;
+  outline: 0;
+}
+
+
+.create-contact-details button {
+  margin-top: 20px;
+  background: #FF8A65;
+  padding: 5px;
+  font-size: inherit;
+  border: none;
+  border-radius: .3em;
+  color: white;
+  outline: 0;
+  cursor: pointer;
+}
+
+select {
+  margin-left: .5em;
+  border: 1px solid #ccc;
 }

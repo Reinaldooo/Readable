@@ -18,6 +18,13 @@ componentDidMount() {
     this.props.getCategories()  
 }
 
+componentWillReceiveProps(nextProps) {
+  if(this.props.match.params.category !== nextProps.match.params.category) {
+  const category = nextProps.match.params.category
+  this.props.getPostsCategorized(category)
+  this.props.getCategories() }
+}
+
 render() {
   
   const UP = {option: "upVote"};

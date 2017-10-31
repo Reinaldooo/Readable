@@ -3,16 +3,25 @@ import moment from 'moment'
 import {connect} from 'react-redux'
 import {getPosts, getCategories, ratePost, deletePost, getPostsCategorized, sortPosts } from '../actions'
 import { Link } from 'react-router-dom'
-
-//import uuidv4 from 'uuid/v4'
+import serializeForm from 'form-serialize'
+import uuidv4 from 'uuid/v4'
 
 class Root extends Component {
 state = { 
   user: "Guest",
-  sortFactor: "-voteScore"
+  sortFactor: "-voteScore",
+  add: false
 }
 
-
+handleSubmit = (e) => {
+  e.preventDefault()
+  const values = serializeForm(e.target, { hash: true })
+  values.timestamp = Date.now()
+  values.id = uuidv4()
+  values.voteScore = 1
+  console.log(values)
+  this.setState({form: false})
+}
 
 componentDidMount() {
     this.props.getPosts()
@@ -32,6 +41,29 @@ render() {
         </div> :
         <div className="row">
         <div className="col-10 list-group">
+
+          {this.state.add && 
+          <div className="list-group-item list-group-item-action flex-column align-items-start add-post-form">
+            <form onSubmit={this.handleSubmit} className="create-contact-form">
+               <div className="create-contact-details">
+                  <input type="text" name="author" placeholder="Username"/>
+                  <input type="text" name="title" placeholder="Title"/>
+                    <textarea placeholder="Post content" name="body" rows="5" cols="50" />
+                  <label>
+                    Category:
+                    <select name="category">
+                      <option value="react">Category</option>
+                      <option value="react">React</option>
+                      <option value="redux">Redux</option>
+                      <option value="udacity">Udacity</option>
+                    </select>
+                  </label>
+                  <button>Add Post</button>
+              </div>
+            </form>
+          </div>
+          }
+
         {this.props.posts.length > 0 ? this.props.posts.map((post, index) => 
               <div key={post.id} className="list-group-item list-group-item-action flex-column align-items-start">
                 <div className="d-flex w-100 justify-content-between">
@@ -49,8 +81,8 @@ render() {
                   <button onClick={() => this.props.ratePost(DN, post.id, index, this.state.sortFactor)} type="button" className="button"><i className="fa fa-thumbs-down" aria-hidden="true"></i></button>
                 </div>                
                 <div className="btn-group btn-custom" role="group" aria-label="Edit and Delete">
-                  <button type="button" className="button"><i className="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                  <button onClick={() => this.props.deletePost(post.id)}type="button" className="button delete"><i className="fa fa-trash-o" aria-hidden="true"></i></button>
+                  <button onClick={() => this.setState({form: true})} type="button" className="button"><i className="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                  <button onClick={() => this.props.deletePost(post.id)} type="button" className="button delete"><i className="fa fa-trash-o" aria-hidden="true"></i></button>
                 </div>
               </div>
           ) : <div className="error">No posts! Why don't you <Link className="error" to="/addpost"><strong>add</strong> one?</Link></div>}
