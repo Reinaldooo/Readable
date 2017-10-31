@@ -48,26 +48,25 @@ export function getPosts() {
     return dispatch => {
         dispatch(postsAreLoading(true));
         
-                fetch("http://localhost:3001/posts", {
-                    method: 'GET',
-                    headers
-                  })
-                    .then((posts) => {
-                        if (!posts.ok) {
-                            throw Error(posts.statusText);
-                        }
-        
-                        return posts;
-                    })
-                    .then((posts) => posts.json())
+        fetch("http://localhost:3001/posts", {
+            method: 'GET',
+            headers
+          })
+            .then((posts) => {
+                if (!posts.ok) {
+                    throw Error(posts.statusText);
+                }        
+                return posts;
+            })
+            .then((posts) => posts.json())
             .then(posts =>
                 Promise.all(
                     posts.map(post =>
                         fetch(`${api}/posts/${post.id}/comments`, {
                             method: 'GET',
                             headers
-                          })
-                          .then((comments) => {
+                        })
+                        .then((comments) => {
                             if (!comments.ok) {
                                 throw Error(comments.statusText);
                             }
@@ -184,26 +183,25 @@ export function getPostsCategorized(category) {
     return dispatch => {
         dispatch(postsAreLoading(true));
         
-                fetch(`http://localhost:3001/${category}/posts`, {
-                    method: 'GET',
-                    headers
-                  })
-                    .then((posts) => {
-                        if (!posts.ok) {
-                            throw Error(posts.statusText);
-                        }
-        
-                        return posts;
-                    })
-                    .then((posts) => posts.json())
+        fetch(`http://localhost:3001/${category}/posts`, {
+            method: 'GET',
+            headers
+          })
+            .then((posts) => {
+                if (!posts.ok) {
+                    throw Error(posts.statusText);
+                }
+                return posts;
+            })
+            .then((posts) => posts.json())
             .then(posts =>
                 Promise.all(
                     posts.map(post =>
                         fetch(`${api}/posts/${post.id}/comments`, {
                             method: 'GET',
                             headers
-                          })
-                          .then((comments) => {
+                        })
+                        .then((comments) => {
                             if (!comments.ok) {
                                 throw Error(comments.statusText);
                             }
@@ -246,6 +244,19 @@ export function editPost(post, id, indexPost) {
           })
             .then((response) => response.json())
             .then((post) => dispatch({ type: 'EDIT_POST', post, indexPost }))
+            .catch(() => dispatch(postsHasErrored(true)));
+    };
+}
+
+export function addComment(comment, indexPost) {
+    return (dispatch) => {
+        fetch(`${api}/comments`, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify(comment)
+          })
+            .then((response) => response.json())
+            .then((comment) => dispatch({ type: 'ADD_COMMENT', comment, indexPost }))
             .catch(() => dispatch(postsHasErrored(true)));
     };
 }

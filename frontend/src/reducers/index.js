@@ -123,6 +123,19 @@ export function posts(state = {}, action) {
             return updatedPosts.sort(sortBy('-voteScore'))
         }
 
+        case 'ADD_COMMENT': {
+            const { comment, indexPost } = action;
+            const posts = state;
+            const updatedPost = posts[indexPost];
+            updatedPost.comments = updatedPost.comments.concat(comment);
+            const updatedPosts = [
+                ...posts.slice(0, indexPost),
+                updatedPost,
+                ...posts.slice(indexPost + 1, posts.length),
+              ];
+            return updatedPosts;
+        }
+
         default:
             return state;
     }

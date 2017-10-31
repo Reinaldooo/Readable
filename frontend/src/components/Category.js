@@ -1,15 +1,57 @@
 import React, {Component} from 'react'
 import moment from 'moment'
 import {connect} from 'react-redux'
-import {getPosts, getCategories, ratePost, deletePost, getPostsCategorized, sortPosts } from '../actions'
+import {getPosts, getCategories, ratePost, deletePost, getPostsCategorized, sortPosts, addPost, editPost } from '../actions'
 import { Link } from 'react-router-dom'
+import serializeForm from 'form-serialize'
+import uuidv4 from 'uuid/v4'
 
 //import uuidv4 from 'uuid/v4'
 
 class Category extends Component {
 state = { 
-  user: "Guest",
-  sortFactor: "-voteScore"
+  sortFactor: "-voteScore",
+  add: false,
+  edit: false,
+  title: '',
+  body: '',
+  id: ''
+}
+
+handleSubmitAdd = (e) => {
+  e.preventDefault()
+  const post = serializeForm(e.target, { hash: true })
+  post.timestamp = Date.now()
+  post.id = uuidv4()
+  this.props.addPost(post)
+  this.setState({add: false})
+}
+
+handleEdit = (post, index) => {
+  window.scrollTo(0, 0);
+  this.setState({
+    edit: true, 
+    body: post.body, 
+    title: post.title, 
+    id: post.id, 
+    indexPost: index
+  })
+}
+
+handleChange(event, option) {
+  option === "title"
+  ?
+  this.setState({title: event.target.value})
+  :
+  this.setState({body: event.target.value})
+}
+
+handleSubmitEdit = (e) => {
+  e.preventDefault()
+  const post = serializeForm(e.target, { hash: true })
+  post.edited = true
+  this.props.editPost(post, this.state.id, this.state.indexPost)
+  this.setState({edit: false, body: '', title: '', id: null, indexPost: null})
 }
 
 componentDidMount() {
@@ -22,7 +64,8 @@ componentWillReceiveProps(nextProps) {
   if(this.props.match.params.category !== nextProps.match.params.category) {
   const category = nextProps.match.params.category
   this.props.getPostsCategorized(category)
-  this.props.getCategories() }
+  this.props.getCategories() 
+  }
 }
 
 render() {
@@ -39,7 +82,44 @@ render() {
         </div> :
         <div className="row">
         <div className="col-10 list-group">
-        {this.props.posts.length > 0 ? this.props.posts.map((post, index) => 
+
+        {this.state.add && 
+          <div className="list-group-item list-group-item-action flex-column align-items-start add-post-form">
+            <form onSubmit={this.handleSubmitAdd} className="create-post-form">
+               <div className="create-post-details">
+                  <input type="text" name="author" placeholder="Username"/>
+                  <input type="text" name="title" placeholder="Title"/>
+                    <textarea placeholder="Post content" name="body" rows="3" cols="50" />
+                  <label>
+                    Category:
+                    <select name="category">
+                      <option value="react">Category</option>
+                      <option value="react">React</option>
+                      <option value="redux">Redux</option>
+                      <option value="udacity">Udacity</option>
+                    </select>
+                  </label>
+                  <button>Add Post</button>
+                  <button onClick={() => this.setState({add: false})}>Cancel</button>
+              </div>
+            </form>
+          </div>
+          }
+
+          {this.state.edit && 
+          <div className="list-group-item list-group-item-action flex-column align-items-start add-post-form">
+            <form onSubmit={this.handleSubmitEdit} className="create-post-form">
+               <div className="create-post-details">
+                  <input value={this.state.title} onChange={(event) => this.handleChange(event, "title")} type="text" name="title" placeholder="Title"/>
+                    <textarea value={this.state.body} onChange={(event) => this.handleChange(event, "body")} placeholder="Post content" name="body" rows="3" cols="50" />
+                  <button>Edit Post</button>
+                  <button onClick={() => this.setState({edit: false})}>Cancel</button>
+              </div>
+            </form>
+          </div>
+          }
+
+        {this.props.posts.length > 0 ? this.props.posts.filter(post => post.category === this.props.match.params.category).map((post, index) => 
               <div key={post.id} className="list-group-item list-group-item-action flex-column align-items-start">
                 <div className="d-flex w-100 justify-content-between">
                   <Link className="mb-1" to={`/${post.category}/${post.id}`}><h5><i className="fa fa-angle-right" aria-hidden="true"></i> {post.title}</h5></Link>
@@ -56,13 +136,18 @@ render() {
                   <button onClick={() => this.props.ratePost(DN, post.id, index, this.state.sortFactor)} type="button" className="button"><i className="fa fa-thumbs-down" aria-hidden="true"></i></button>
                 </div>                
                 <div className="btn-group btn-custom" role="group" aria-label="Edit and Delete">
-                  <button type="button" className="button"><i className="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                  <button onClick={() => this.handleEdit(post, index)} type="button" className="button"><i className="fa fa-pencil-square-o" aria-hidden="true"></i></button>
                   <button onClick={() => this.props.deletePost(post.id)}type="button" className="button delete"><i className="fa fa-trash-o" aria-hidden="true"></i></button>
                 </div>
               </div>
           ) : <div className="error">No posts! Why don't you <Link className="error" to="/addpost"><strong>add</strong> one?</Link></div>}
           </div>                
                 <div className="col list-group">
+                  <a onClick={() => this.setState({add: true})} className="list-group-item list-group-item-action flex-column align-items-start cursor-focus">
+                    <div>
+                      <h6 className="white mb-1"><strong>Add Post</strong></h6>
+                    </div>
+                  </a>
                   <a onClick={() => { this.setState({sortFactor: "-voteScore"}); this.props.sortPosts("-voteScore")}} className="list-group-item list-group-item-action flex-column align-items-start cursor">
                     <div className="d-flex w-100 justify-content-between">
                       <h6 className="mb-1 orange-focus">Sort By <strong>Score</strong></h6>
@@ -78,26 +163,6 @@ render() {
                       <h6 className="mb-1 orange-focus">Sort By <strong>Comments Number</strong></h6>
                     </div>
                   </a>
-                  <Link className="list-group-item list-group-item-action flex-column align-items-start cursor" to="/">
-                    <div className="d-flex w-100 justify-content-between">
-                      <h6 className="mb-1 orange-focus"><i className="fa fa-tag" aria-hidden="true"></i> All Posts</h6>
-                    </div>
-                  </Link>
-                  {this.props.categoriesAreLoading ?         
-                  <div className="spinner">
-                  <div className="cube1"></div>
-                  <div className="cube2"></div>
-                  </div> :
-                  <div>
-                  {this.props.categories[0] && this.props.categories.map((category, index) =>
-                  <Link className="list-group-item list-group-item-action flex-column align-items-start cursor" key={index} to={`/${category.name}`}>
-                    <div className="d-flex w-100 justify-content-between">
-                      <h6 className="mb-1 orange-focus"><i className="fa fa-tag" aria-hidden="true"></i> {category.name}</h6>
-                    </div>
-                  </Link>  
-                  )}
-                  </div>
-                  }
                 </div>
             </div>
         }
@@ -124,7 +189,9 @@ const mapDispatchToProps = (dispatch) => {
       getPostsCategorized: (category) => dispatch(getPostsCategorized(category)),
       getCategories: ()               => dispatch(getCategories()),
       ratePost: (rate, id, index, sortFactor)     => dispatch(ratePost(rate, id, index, sortFactor)),
-      deletePost: (id)                => dispatch(deletePost(id))
+      deletePost: (id)                => dispatch(deletePost(id)),
+      addPost: (post)                 => dispatch(addPost(post)),
+      editPost: (post, id, indexPost)         => dispatch(editPost(post, id, indexPost))
   };
 };
 

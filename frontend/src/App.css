@@ -127,8 +127,12 @@ a:hover {
 }
 
 .post-detail-page {
-  margin: 3em auto;
+  margin: 1em auto;
   border-radius: .3em;
+}
+
+.post-detail-margin {
+  margin: 1em auto
 }
 
 .add-comments {
@@ -136,6 +140,8 @@ a:hover {
   background-color: #FF8A65;
   border-radius: .3em;
   margin-right: .4em;
+  color: white;
+  cursor: pointer;
 }
 
 .add-comments:hover {
@@ -215,18 +221,18 @@ a:hover {
   border-radius: .3em;
 }
 
-.create-contact-form {
+.create-post-form {
   padding: 20px;
   max-width: 500px;
   margin: 0 auto;
   display: flex;
 }
 
-.create-contact-details {
+.create-post-details {
   margin-left: 20px;
 }
 
-.create-contact-details input, textarea {
+.create-post-details input, textarea {
   width: 100%;
   padding: 5px 10px;
   margin-bottom: 10px;
@@ -238,7 +244,7 @@ a:hover {
   resize: vertical;
 }
 
-.create-contact-details label {
+.create-post-details label {
   width: 100%;
   padding: 5px 10px;
   font-size: inherit;
@@ -248,7 +254,7 @@ a:hover {
 }
 
 
-.create-contact-details button {
+.create-post-details button {
   margin-top: 20px;
   margin-right: 5px;
   background: #FF8A65;
@@ -259,6 +265,17 @@ a:hover {
   color: white;
   outline: 0;
   cursor: pointer;
+}
+
+.close-post-detail {
+  display: block;
+  width: 30px;
+  height: 60px;
+  background-image: url('./icons/arrow-back.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 30px;
+  font-size: 0;
 }
 
 select {

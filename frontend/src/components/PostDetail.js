@@ -1,18 +1,68 @@
 import React, {Component} from 'react'
 import moment from 'moment'
 import {connect} from 'react-redux'
-import { ratePost, deletePost, rateComment, deleteComment, getPosts, getCategories } from '../actions'
+import { ratePost, deletePost, rateComment, deleteComment, getPosts, getCategories, editPost, addComment } from '../actions'
 import { Link } from 'react-router-dom'
-//import uuidv4 from 'uuid/v4'
+import serializeForm from 'form-serialize'
+import uuidv4 from 'uuid/v4'
 
 class PostDetail extends Component {
 
-  componentDidMount() {
-    if(this.props.posts[0] === undefined) {
-    this.props.getPosts()
-    this.props.getCategories()
-    }  
-} 
+state = { 
+    edit: false,
+    title: '',
+    body: '',
+    id: '',
+    addComment: false,
+    backButton: true
+}  
+
+componentDidMount() {
+  if(this.props.posts[0] === undefined) {
+  this.props.getPosts()
+  this.props.getCategories()
+}  
+}
+
+handleSubmitAdd = (e) => {
+  e.preventDefault()
+  const post = this.props.posts.find(post => post.id === this.props.match.params.id)
+  const comment = serializeForm(e.target, { hash: true })
+  const indexPost = this.props.posts.indexOf(post)
+  comment.timestamp = Date.now()
+  comment.id = uuidv4()
+  comment.parentId = this.props.match.params.id
+  this.props.addComment(comment, indexPost)
+  this.setState({addComment: false, backButton: true})
+}
+
+handleEditPost = (post) => {
+  window.scrollTo(0, 0);
+  this.setState({
+    edit: true, 
+    body: post.body, 
+    title: post.title, 
+    id: post.id, 
+    indexPost: this.props.posts.indexOf(post),
+    backButton: false
+  })
+}
+
+handleChange(event, option) {
+  option === "title"
+  ?
+  this.setState({title: event.target.value})
+  :
+  this.setState({body: event.target.value})
+}
+
+handleSubmitEdit = (e) => {
+  e.preventDefault()
+  const post = serializeForm(e.target, { hash: true })
+  post.edited = true
+  this.props.editPost(post, this.state.id, this.state.indexPost)
+  this.setState({edit: false, body: '', title: '', id: null, indexPost: null, backButton:true})
+}
 
 
 render() {
@@ -23,11 +73,40 @@ render() {
   const DN = {option: "downVote"}
 
   return (      
-    <div className="container">
+    <div className="container post-detail-margin">
+      {this.state.addComment && 
+          <div className="list-group-item list-group-item-action flex-column align-items-start add-post-form">
+            <form onSubmit={this.handleSubmitAdd} className="create-post-form">
+               <div className="create-post-details">
+                  <input type="text" name="author" placeholder="Username"/>
+                  <textarea placeholder="Comment" name="body" rows="3" cols="50" />
+                  <button>Add Comment</button>
+                  <button onClick={() => this.setState({addComment: false, backButton: true})}>Cancel</button>
+              </div>
+            </form>
+          </div>
+          }
+
+        {this.state.edit && 
+          <div className="list-group-item list-group-item-action flex-column align-items-start add-post-form">
+            <form onSubmit={this.handleSubmitEdit} className="create-post-form">
+               <div className="create-post-details">
+                  <input value={this.state.title} onChange={(event) => this.handleChange(event, "title")} type="text" name="title" placeholder="Title"/>
+                    <textarea value={this.state.body} onChange={(event) => this.handleChange(event, "body")} placeholder="Post content" name="body" rows="3" cols="50" />
+                  <button>Edit Post</button>
+                  <button onClick={() => this.setState({edit: false, backButton: true})}>Cancel</button>
+              </div>
+            </form>
+          </div>
+          }
             {post ?              
             <div className="post-detail-page">
-              <Link className="add-comments" to="/addcomment"><small>Add Comment</small></Link>      
-              <Link className="add-comments" to="/"><small>Home</small></Link>      
+              {this.state.backButton &&
+              <div>
+              <Link className="close-post-detail" to="/">Close</Link>
+              <small onClick={() => { window.scrollTo(0, 0); this.setState({addComment: true, backButton: false})}} className="add-comments">Add Comment</small>
+              </div>
+              }
               <a className="list-group-item list-group-item-action flex-column align-items-start border-radius">
                 <div className="d-flex w-100 justify-content-between">
                   <h5><i className="fa fa-angle-right" aria-hidden="true"></i> {post.title}</h5>
@@ -43,7 +122,7 @@ render() {
                 <button onClick={() => this.props.ratePost(DN, post.id, indexPost)} type="button" className="button"><i className="fa fa-thumbs-down" aria-hidden="true"></i></button>
                 </div>                
                 <div className="btn-group btn-custom" role="group" aria-label="Edit and Delete">
-                  <button type="button" className="button"><i className="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                  <button onClick={() => this.handleEditPost(post)} type="button" className="button"><i className="fa fa-pencil-square-o" aria-hidden="true"></i></button>
                   <button onClick={() => this.props.deletePost(post.id)}type="button" className="button delete"><i className="fa fa-trash-o" aria-hidden="true"></i></button>
                 </div>
               </a>
@@ -91,7 +170,7 @@ render() {
 
 const mapStateToProps = (state) => {
   return {
-      posts:                state.posts
+      posts: state.posts
   };
 };
 
@@ -105,7 +184,9 @@ const mapDispatchToProps = (dispatch) => {
       rateComment: (rate, id, indexComment, indexPost) => dispatch(rateComment(rate, id, indexComment, indexPost)),
       deleteComment: (id, indexComment, indexPost)     => dispatch(deleteComment(id, indexComment, indexPost)),
       getPosts: ()                                     => dispatch(getPosts()),
-      getCategories: ()                                => dispatch(getCategories())
+      getCategories: ()                                => dispatch(getCategories()),      
+      editPost: (post, id, indexPost)         => dispatch(editPost(post, id, indexPost)),
+      addComment: (comment, indexPost)        => dispatch(addComment(comment, indexPost))
   };
 };
 

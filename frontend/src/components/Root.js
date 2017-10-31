@@ -8,7 +8,6 @@ import uuidv4 from 'uuid/v4'
 
 class Root extends Component {
 state = { 
-  user: "Guest",
   sortFactor: "-voteScore",
   add: false,
   edit: false,
@@ -27,28 +26,31 @@ handleSubmitAdd = (e) => {
 }
 
 handleEdit = (post, index) => {
-  this.setState({edit: true, body: post.body, title: post.title, id: post.id, indexPost: index})
+  window.scrollTo(0, 0);
+  this.setState({
+    edit: true, 
+    body: post.body, 
+    title: post.title, 
+    id: post.id, 
+    indexPost: index
+  })
 }
 
-handleChangeTitle(event) {
-  this.setState({title: event.target.value});
-  console.log(this.state.title)
-}
-
-handleChangeBody(event) {
-  this.setState({body: event.target.value});
-  console.log(this.state.body)
+handleChange(event, option) {
+  option === "title"
+  ?
+  this.setState({title: event.target.value})
+  :
+  this.setState({body: event.target.value})
 }
 
 handleSubmitEdit = (e) => {
   e.preventDefault()
   const post = serializeForm(e.target, { hash: true })
   post.edited = true
-  console.log(post)
   this.props.editPost(post, this.state.id, this.state.indexPost)
   this.setState({edit: false, body: '', title: '', id: null, indexPost: null})
 }
-
 
 componentDidMount() {
     this.props.getPosts()
@@ -56,6 +58,7 @@ componentDidMount() {
 }
 
 render() {
+
   const UP = {option: "upVote"};
   const DN = {option: "downVote"};
 
@@ -65,17 +68,18 @@ render() {
         <div className="spinner">
           <div className="cube1"></div>
           <div className="cube2"></div>
-        </div> :
+        </div>
+        :
         <div className="row">
         <div className="col-10 list-group">
 
           {this.state.add && 
           <div className="list-group-item list-group-item-action flex-column align-items-start add-post-form">
-            <form onSubmit={this.handleSubmitAdd} className="create-contact-form">
-               <div className="create-contact-details">
+            <form onSubmit={this.handleSubmitAdd} className="create-post-form">
+               <div className="create-post-details">
                   <input type="text" name="author" placeholder="Username"/>
                   <input type="text" name="title" placeholder="Title"/>
-                    <textarea placeholder="Post content" name="body" rows="5" cols="50" />
+                    <textarea placeholder="Post content" name="body" rows="3" cols="50" />
                   <label>
                     Category:
                     <select name="category">
@@ -91,12 +95,13 @@ render() {
             </form>
           </div>
           }
+
           {this.state.edit && 
           <div className="list-group-item list-group-item-action flex-column align-items-start add-post-form">
-            <form onSubmit={this.handleSubmitEdit} className="create-contact-form">
-               <div className="create-contact-details">
-                  <input value={this.state.title} onChange={(event) => this.handleChangeTitle(event)} type="text" name="title" placeholder="Title"/>
-                    <textarea value={this.state.body} onChange={(event) => this.handleChangeBody(event)} placeholder="Post content" name="body" rows="5" cols="50" />
+            <form onSubmit={this.handleSubmitEdit} className="create-post-form">
+               <div className="create-post-details">
+                  <input value={this.state.title} onChange={(event) => this.handleChange(event, "title")} type="text" name="title" placeholder="Title"/>
+                    <textarea value={this.state.body} onChange={(event) => this.handleChange(event, "body")} placeholder="Post content" name="body" rows="3" cols="50" />
                   <button>Edit Post</button>
                   <button onClick={() => this.setState({edit: false})}>Cancel</button>
               </div>
@@ -148,26 +153,6 @@ render() {
                       <h6 className="mb-1 orange-focus">Sort By <strong>Comments Number</strong></h6>
                     </div>
                   </a>
-                  <a onClick={this.props.getPosts} className="list-group-item list-group-item-action flex-column align-items-start cursor">
-                    <div className="d-flex w-100 justify-content-between">
-                      <h6 className="mb-1 orange-focus"><i className="fa fa-tag" aria-hidden="true"></i> All Posts</h6>
-                    </div>
-                  </a>
-                  {this.props.categoriesAreLoading ?         
-                  <div className="spinner">
-                  <div className="cube1"></div>
-                  <div className="cube2"></div>
-                  </div> :
-                  <div>
-                  {this.props.categories[0] && this.props.categories.map((category, index) =>
-                  <Link className="list-group-item list-group-item-action flex-column align-items-start cursor" key={index} to={`/${category.name}`}>
-                    <div className="d-flex w-100 justify-content-between">
-                      <h6 className="mb-1 orange-focus"><i className="fa fa-tag" aria-hidden="true"></i> {category.name} • <span className="post-count">{this.props.posts.filter(post => post.category === category.name).length} post(s)</span></h6>
-                    </div>
-                  </Link>  
-                  )}
-                  </div>
-                  }
                 </div>
             </div>
         }
@@ -193,10 +178,10 @@ const mapDispatchToProps = (dispatch) => {
       sortPosts: (sortBy)             => dispatch(sortPosts(sortBy)),
       getPostsCategorized: (category) => dispatch(getPostsCategorized(category)),
       getCategories: ()               => dispatch(getCategories()),
-      ratePost: (rate, id, index, sortFactor)     => dispatch(ratePost(rate, id, index, sortFactor)),
+      ratePost: (rate, id, index, sortFactor) => dispatch(ratePost(rate, id, index, sortFactor)),
       deletePost: (id)                => dispatch(deletePost(id)),
       addPost: (post)                 => dispatch(addPost(post)),
-      editPost: (post, id, indexPost)                 => dispatch(editPost(post, id, indexPost))
+      editPost: (post, id, indexPost)         => dispatch(editPost(post, id, indexPost))
   };
 };
 
