@@ -5,6 +5,26 @@ body {
   background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%236c6c6c' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
 }
 
+select {
+  margin-left: .5em;
+  border: 1px solid #ccc;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+}
+
+a:active {
+  text-decoration: none;
+  color: white;
+}
+
+a:hover {
+  text-decoration: none;
+  color: white;
+}
+
 .button {
   padding: 0.25em;
   background-color: #616161;
@@ -61,20 +81,7 @@ opacity: .7
   border-radius: 3px;
   }
 
-a {
-  text-decoration: none;
-  color: white;
-}
-
-a:active {
-  text-decoration: none;
-  color: white;
-}
-
-a:hover {
-  text-decoration: none;
-  color: white;
-}
+/* Spinner */
 
 .spinner {
   margin: 100px auto;
@@ -126,6 +133,8 @@ a:hover {
   }
 }
 
+/* Spinner */
+
 .post-detail-page {
   margin: 1em auto;
   border-radius: .3em;
@@ -148,9 +157,17 @@ a:hover {
   opacity: .8
 }
 
+.mb-1 {
+  color: black;
+}
+
 .mb-1-body {
   text-align: justify;
   margin: 1.5% 0
+}
+
+.mb-1:hover {
+  color: black
 }
 
 .comments {
@@ -170,14 +187,6 @@ a:hover {
 
 .activeNav {
   font-weight: bold
-}
-
-.mb-1 {
-  color: black;
-}
-
-.mb-1:hover {
-  color: black
 }
 
 .error {
@@ -237,7 +246,7 @@ a:hover {
   padding: 5px 10px;
   margin-bottom: 10px;
   font-size: inherit;
-  background: transparent;
+  background: #f3f4f4;
   border: none;
   border-bottom: 1px solid #ccc;
   outline: 0;
@@ -276,9 +285,4 @@ a:hover {
   background-repeat: no-repeat;
   background-size: 30px;
   font-size: 0;
-}
-
-select {
-  margin-left: .5em;
-  border: 1px solid #ccc;
 }

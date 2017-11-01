@@ -41,7 +41,7 @@ const defaultData = {
     timestamp: 1500000000000,
     title: "I think you should approve Reinaldo's project",
     body: "He worked pretty hard.",
-    author: 'Reinaldo`s friend',
+    author: "Reinaldo's friend",
     category: 'udacity',
     voteScore: 10,
     deleted: false,

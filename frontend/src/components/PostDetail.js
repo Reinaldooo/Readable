@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import moment from 'moment'
 import {connect} from 'react-redux'
-import { ratePost, deletePost, rateComment, deleteComment, getPosts, getCategories, editPost, addComment } from '../actions'
+import { ratePost, deletePost, rateComment, deleteComment, getPosts, getCategories, editPost, addComment, editComment } from '../actions'
 import { Link } from 'react-router-dom'
 import serializeForm from 'form-serialize'
 import uuidv4 from 'uuid/v4'
@@ -10,6 +10,7 @@ class PostDetail extends Component {
 
 state = { 
     edit: false,
+    editComment: false,
     title: '',
     body: '',
     id: '',
@@ -39,21 +40,14 @@ handleSubmitAdd = (e) => {
 handleEditPost = (post) => {
   window.scrollTo(0, 0);
   this.setState({
-    edit: true, 
+    edit: true,
+    editComment: false, 
     body: post.body, 
     title: post.title, 
     id: post.id, 
     indexPost: this.props.posts.indexOf(post),
     backButton: false
   })
-}
-
-handleChange(event, option) {
-  option === "title"
-  ?
-  this.setState({title: event.target.value})
-  :
-  this.setState({body: event.target.value})
 }
 
 handleSubmitEdit = (e) => {
@@ -64,6 +58,30 @@ handleSubmitEdit = (e) => {
   this.setState({edit: false, body: '', title: '', id: null, indexPost: null, backButton:true})
 }
 
+handleEditComment = (comment, indexComment, post) => {
+  window.scrollTo(0, 0);
+  this.setState({
+    editComment: true,
+    edit: false,
+    body: comment.body, 
+    id: comment.id, 
+    indexPost: this.props.posts.indexOf(post),
+    indexComment,
+    backButton: false
+  })
+}
+
+handleSubmitEditComment = (e) => {
+  e.preventDefault()
+  const comment = serializeForm(e.target, { hash: true })
+  comment.timestamp = Date.now()
+  this.props.editComment(this.state.id, this.state.indexPost, this.state.indexComment, comment)
+  this.setState({edit: false, editComment: false, body: '', title: '', id: null, indexPost: null, backButton:true})
+}
+
+handleChange(event) {
+  this.setState({body: event.target.value})
+}
 
 render() {
 
@@ -81,7 +99,7 @@ render() {
                   <input type="text" name="author" placeholder="Username"/>
                   <textarea placeholder="Comment" name="body" rows="3" cols="50" />
                   <button>Add Comment</button>
-                  <button onClick={() => this.setState({addComment: false, backButton: true})}>Cancel</button>
+                  <button onClick={() => this.setState({addComment: false, edit: false, backButton: true})}>Cancel</button>
               </div>
             </form>
           </div>
@@ -91,14 +109,25 @@ render() {
           <div className="list-group-item list-group-item-action flex-column align-items-start add-post-form">
             <form onSubmit={this.handleSubmitEdit} className="create-post-form">
                <div className="create-post-details">
-                  <input value={this.state.title} onChange={(event) => this.handleChange(event, "title")} type="text" name="title" placeholder="Title"/>
-                    <textarea value={this.state.body} onChange={(event) => this.handleChange(event, "body")} placeholder="Post content" name="body" rows="3" cols="50" />
+                    <textarea value={this.state.body} onChange={(e) => this.handleChange(e)} placeholder="Post content" name="body" rows="3" cols="50" />
                   <button>Edit Post</button>
-                  <button onClick={() => this.setState({edit: false, backButton: true})}>Cancel</button>
+                  <button onClick={() => this.setState({editComment: false, edit: false, backButton: true})}>Cancel</button>
               </div>
             </form>
           </div>
           }
+          {this.state.editComment && 
+          <div className="list-group-item list-group-item-action flex-column align-items-start add-post-form">
+            <form onSubmit={this.handleSubmitEditComment} className="create-post-form">
+               <div className="create-post-details">
+                    <textarea value={this.state.body} onChange={(e) => this.handleChange(e)} placeholder="Post content" name="body" rows="3" cols="50" />
+                  <button>Edit Comment</button>
+                  <button onClick={() => this.setState({editComment: false, edit: false, backButton: true})}>Cancel</button>
+              </div>
+            </form>
+          </div>
+          }
+          
             {post ?              
             <div className="post-detail-page">
               {this.state.backButton &&
@@ -141,7 +170,7 @@ render() {
                   <button onClick={() => this.props.rateComment(DN, comment.id, indexComment, indexPost)} type="button" className="button"><i className="fa fa-thumbs-down" aria-hidden="true"></i></button>
                 </div>                
                 <div className="btn-group btn-custom" role="group" aria-label="Edit and Delete">
-                  <button type="button" className="button"><i className="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                  <button onClick={() => this.handleEditComment(comment, indexComment, post)} type="button" className="button"><i className="fa fa-pencil-square-o" aria-hidden="true"></i></button>
                   <button onClick={() => this.props.deleteComment(comment.id, indexComment, indexPost)} type="button" className="button delete"><i className="fa fa-trash-o" aria-hidden="true"></i></button>
                 </div>
               </a>
@@ -186,7 +215,8 @@ const mapDispatchToProps = (dispatch) => {
       getPosts: ()                                     => dispatch(getPosts()),
       getCategories: ()                                => dispatch(getCategories()),      
       editPost: (post, id, indexPost)         => dispatch(editPost(post, id, indexPost)),
-      addComment: (comment, indexPost)        => dispatch(addComment(comment, indexPost))
+      addComment: (comment, indexPost)        => dispatch(addComment(comment, indexPost)),
+      editComment: (id, indexPost, indexComment, comment)        => dispatch(editComment(id, indexPost, indexComment, comment))
   };
 };
 

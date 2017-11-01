@@ -140,7 +140,10 @@ render() {
                   <button onClick={() => this.props.deletePost(post.id)}type="button" className="button delete"><i className="fa fa-trash-o" aria-hidden="true"></i></button>
                 </div>
               </div>
-          ) : <div className="error">No posts! Why don't you <Link className="error" to="/addpost"><strong>add</strong> one?</Link></div>}
+          )
+          :
+          <div className="error">No posts! Why don't you <Link className="error" to="/addpost"><strong>add</strong> one?</Link></div>
+          }
           </div>                
                 <div className="col list-group">
                   <a onClick={() => this.setState({add: true})} className="list-group-item list-group-item-action flex-column align-items-start cursor-focus">
@@ -160,7 +163,7 @@ render() {
                   </a>
                   <a onClick={() => { this.setState({sortFactor: '-commentsNumber'}); this.props.sortPosts('-commentsNumber')}} className="list-group-item list-group-item-action flex-column align-items-start cursor">
                     <div className="d-flex w-100 justify-content-between">
-                      <h6 className="mb-1 orange-focus">Sort By <strong>Comments Number</strong></h6>
+                      <h6 className="mb-1 orange-focus">Sort By <strong>Comments Count</strong></h6>
                     </div>
                   </a>
                 </div>

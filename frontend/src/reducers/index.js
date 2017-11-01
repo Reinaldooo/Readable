@@ -1,9 +1,27 @@
 import { combineReducers } from 'redux';
 import sortBy from 'sort-by'
+import { 
+POSTS_HAS_ERRORED, 
+POSTS_ARE_LOADING,
+CATEGORIES_HAS_ERRORED,
+CATEGORIES_ARE_LOADING,
+SORT_POSTS,
+POSTS_FETCH_SUCCESS,
+CATEGORIES_FETCH_SUCCESS,
+RATE,
+RATE_COMMENT,
+DELETE_POST,
+DELETE_COMMENT,
+CATEGORIZED_FETCH_SUCCESS,
+ADD_POST,
+EDIT_POST,
+ADD_COMMENT,
+EDIT_COMMENT 
+} from '../actions'
 
 export function postsHasErrored(state = false, action) {
     switch (action.type) {
-        case 'POSTS_HAS_ERRORED':
+        case POSTS_HAS_ERRORED:
             return action.hasErrored;
 
         default:
@@ -13,7 +31,7 @@ export function postsHasErrored(state = false, action) {
 
 export function postsAreLoading(state = false, action) {
     switch (action.type) {
-        case 'POSTS_ARE_LOADING':
+        case POSTS_ARE_LOADING:
             return action.isLoading; 
 
         default:
@@ -23,7 +41,7 @@ export function postsAreLoading(state = false, action) {
 
 export function categoriesHasErrored(state = false, action) {
     switch (action.type) {
-        case 'CATEGORIES_HAS_ERRORED':
+        case CATEGORIES_HAS_ERRORED:
             return action.hasErrored;
 
         default:
@@ -33,7 +51,7 @@ export function categoriesHasErrored(state = false, action) {
 
 export function categoriesAreLoading(state = false, action) {
     switch (action.type) {
-        case 'CATEGORIES_ARE_LOADING':
+        case CATEGORIES_ARE_LOADING:
             return action.isLoading; 
 
         default:
@@ -43,16 +61,16 @@ export function categoriesAreLoading(state = false, action) {
 
 export function posts(state = {}, action) {
     switch (action.type) {
-        case 'POSTS_FETCH_SUCCESS':
+        case POSTS_FETCH_SUCCESS:
         return action.posts.sort(sortBy('-voteScore'));
 
-        case 'CATEGORIZED_FETCH_SUCCESS':
+        case CATEGORIZED_FETCH_SUCCESS:
         return action.posts;
         
-        case 'DELETE_POST':
+        case DELETE_POST:
         return state.slice().filter((post) => post.id !== action.id);
 
-        case 'DELETE_COMMENT': {
+        case DELETE_COMMENT: {
             const {id, indexPost} = action;
             const posts = state;        
             const updatedPost = posts[indexPost];
@@ -66,10 +84,9 @@ export function posts(state = {}, action) {
               ...posts.slice(indexPost + 1, posts.length),
             ];          
             return updatedPosts
-        }
-            
+        }            
 
-        case 'RATE': {
+        case RATE: {
             const {index, newScore, sortFactor} = action;
             const posts = state;        
             const votedPost = posts[index];
@@ -85,7 +102,7 @@ export function posts(state = {}, action) {
             return updatedPosts.sort(sortBy(sortFactor))
         }
 
-        case 'RATE_COMMENT': {
+        case RATE_COMMENT: {
             const {indexPost, indexComment, comment} = action;
             const posts = state;        
             const votedPost = posts[indexPost];
@@ -99,16 +116,16 @@ export function posts(state = {}, action) {
             return updatedPosts.sort(sortBy('-voteScore'))
         }
 
-        case 'SORT_POSTS': 
+        case SORT_POSTS: 
         return state.slice().sort(sortBy(action.sortFactor));
         
-        case 'ADD_POST': {
+        case ADD_POST: {
             const post = action.post
             post.comments = [];
             return state.slice().concat(post)
         }
 
-        case 'EDIT_POST': {
+        case EDIT_POST: {
             const {indexPost, post} = action;
             const posts = state;
             const editedPost = posts[indexPost];
@@ -123,7 +140,7 @@ export function posts(state = {}, action) {
             return updatedPosts.sort(sortBy('-voteScore'))
         }
 
-        case 'ADD_COMMENT': {
+        case ADD_COMMENT: {
             const { comment, indexPost } = action;
             const posts = state;
             const updatedPost = posts[indexPost];
@@ -136,6 +153,21 @@ export function posts(state = {}, action) {
             return updatedPosts;
         }
 
+        case EDIT_COMMENT: {
+            const {indexPost, comment, indexComment } = action;
+            const posts = state;
+            const editedPost = posts[indexPost];
+            editedPost.comments[indexComment].body = comment.body;                
+            editedPost.comments[indexComment].timestamp = comment.timestamp;
+            editedPost.comments = editedPost.comments.sort(sortBy('-voteScore'));
+            const updatedPosts = [
+              ...posts.slice(0, indexPost),
+              editedPost,
+              ...posts.slice(indexPost + 1, posts.length),
+            ];          
+            return updatedPosts
+        }
+
         default:
             return state;
     }
@@ -143,7 +175,7 @@ export function posts(state = {}, action) {
 
 export function categories(state = {}, action) {
     switch (action.type) {
-        case 'CATEGORIES_FETCH_SUCCESS':
+        case CATEGORIES_FETCH_SUCCESS:
         return action.categories;
 
         default:
