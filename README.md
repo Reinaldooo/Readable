@@ -1,22 +1,21 @@
-# Readable API Server
+#### React Nanodegree Program
+##### Readable Project
+-----
+This is an forum app entirely build with React and Redux.
+You can read and add posts or comments on multiple categories.
 
-This is the starter project for the final assessment project for Udacity's Redux course where you will build a content and comment web app. Users will be able to post content to predefined categories, comment on their posts and other users' posts, and vote on posts and comments. Users will also be able to edit and delete posts and comments.
+In this project, React its used to build the UI, and Redux its used to manage the global state in a safe, predictable way.
 
-This repository includes the code for the backend API Server that you'll use to develop and interact with the front-end portion of the project.
+To load it in your local machine:
+* Install the latest version of node.js if you don't have it. It comes with npm(node package manager).
+Make sure that you install node with the PATH variable so you can run node anywhere in your command prompt/terminal.
+* Once node.js is installed, install the react package using this command: `npm install -g create-react-app`
+* The environment is now ready. You can now clone this repo and cd into the folder.
+* Open two terminal windows on the the cloned folder, then run `cd server` and `npm install` on the first one to install the dependencies.
+* On the second one, run `cd frontend` and `npm install` to also install the dependencies.
+* Run `npm start` on both windows, and a few seconds later your browser will open up with the app loading.
 
-## Start Developing
-
-To get started developing right away:
-
-* Install and start the API server
-    - `cd api-server`
-    - `npm install`
-    - `node server`
-* In another terminal window, use Create React App to scaffold out the front-end
-    - `create-react-app frontend`
-    - `cd frontend`
-    - `npm start`
-
-## API Server
-
-Information about the API server and how to use it can be found in its [README file](api-server/README.md).
+[Example GIF](/example.gif)
+--
+**Reinaldo Trindade**
+*Web Developer*
