@@ -1,12 +1,10 @@
-#### React Nanodegree Program
-##### Readable Project
+## React Nanodegree Program
+#### Readable Project
 -----
-This is an forum app entirely build with React and Redux.
+This is an forum app entirely build with **React** and **Redux**.
 You can read and add posts or comments on multiple categories.
-
-In this project, React its used to build the UI, and Redux its used to manage the global state in a safe, predictable way.
-
-To load it in your local machine:
+##### In this project, React its used to build the UI, and Redux its used to manage the global state in a safe, predictable way.
+*To load it in your local machine:*
 * Install the latest version of node.js if you don't have it. It comes with npm(node package manager).
 Make sure that you install node with the PATH variable so you can run node anywhere in your command prompt/terminal.
 * Once node.js is installed, install the react package using this command: `npm install -g create-react-app`
