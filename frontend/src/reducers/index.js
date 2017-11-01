@@ -122,6 +122,7 @@ export function posts(state = {}, action) {
         case ADD_POST: {
             const post = action.post
             post.comments = [];
+            post.commentsNumber = 0;
             return state.slice().concat(post)
         }
 
