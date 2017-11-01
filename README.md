@@ -15,7 +15,7 @@ Make sure that you install node with the PATH variable so you can run node anywh
 * On the second one, run `cd frontend` and `npm install` to also install the dependencies.
 * Run `npm start` on both windows, and a few seconds later your browser will open up with the app loading.
 
-[Example GIF](/Example.gif)
+![Example GIF](/Example.gif)
 --
 **Reinaldo Trindade**
 *Web Developer*
