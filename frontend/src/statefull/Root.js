@@ -64,16 +64,17 @@ render() {
 
   return (      
       <div className="container-fluid">
-        {this.props.postsAreLoading ? 
+        {
+        this.props.postsAreLoading ? 
         <div className="spinner">
           <div className="cube1"></div>
           <div className="cube2"></div>
         </div>
         :
         <div className="row">
-          <div className="col-10 list-group">
-
-          {this.state.add && 
+          <div className="posts">
+          {
+            this.state.add && 
           <div className="list-group-item list-group-item-action flex-column align-items-start add-post-form">
             <form onSubmit={this.handleSubmitAdd} className="create-post-form">
                <div className="create-post-details">
@@ -83,7 +84,6 @@ render() {
                   <label>
                     Category:
                     <select name="category">
-                      <option value="react">Category</option>
                       <option value="react">React</option>
                       <option value="redux">Redux</option>
                       <option value="udacity">Udacity</option>
@@ -108,18 +108,20 @@ render() {
             </form>
           </div>
           }
-
-            {this.props.posts.length > 0 ? this.props.posts.map((post, index) => 
-                <div key={post.id} className="list-group-item list-group-item-action flex-column align-items-start">
+            {
+              this.props.posts.length > 0 ? this.props.posts.map((post, index) => 
+                <div key={post.id} className="post">
                   <div className="d-flex w-100 justify-content-between">
                     <Link className="mb-1" to={`/${post.category}/${post.id}`}><h5><i className="fa fa-angle-right" aria-hidden="true"></i> {post.title}</h5></Link>
                     {post.edited ? <small>{moment.utc(post.timestamp).format("ddd, MMM Do YYYY, h:mm a")}<strong><span className="orange-focus"> - Edited</span></strong></small>
                     :
                     <small>{moment.utc(post.timestamp).format("ddd, MMMM Do YYYY, h:mm a")}</small>}
                   </div>
-                  {post.body.length > 75 ? <p className="mb-1">{post.body.substring(0, 75)}... <Link className="orange-focus" to={`/${post.category}/${post.id}`}><small>Read more.</small></Link></p>
+                  {
+                  post.body.length > 75 ? <p className="mb-1">{post.body.substring(0, 75)}... <Link className="orange-focus" to={`/${post.category}/${post.id}`}><small>Read more.</small></Link></p>
                   :
-                  <p className="mb-1">{post.body}</p>} 
+                  <p className="mb-1">{post.body}</p>
+                  } 
                   <small className="post-details">Author: <strong>{post.author}</strong> • <strong className="score">{post.voteScore} {post.voteScore === 1 || post.voteScore === -1 ? <span className="post-count">point</span> : <span className="post-count">points</span>}</strong> • <strong><span className="orange-focus"><i className="fa fa-tag" aria-hidden="true"></i> {post.category}</span></strong> • <Link to={`/${post.category}/${post.id}`}>{post.comments.length} {post.comments.length === 1 ? "comment" : "comments"}</Link></small>
                   <div className="btn-group" role="group" aria-label="up and downvote">
                     <button onClick={() => this.props.ratePost(UP, post.id, index, this.state.sortFactor)} type="button" className="button"><i className="fa fa-thumbs-up" aria-hidden="true"></i></button>
@@ -135,7 +137,7 @@ render() {
               <div className="error">No posts! Why don't you <Link className="error" to="/addpost"><strong>add</strong> one?</Link></div>
             }
           </div>                
-          <div className="col list-group">
+          {/* <div className="col list-group">
             <a onClick={() => this.setState({add: true})} className="list-group-item list-group-item-action flex-column align-items-start cursor-focus">
               <div>
                 <h6 className="white mb-1"><strong>Add Post</strong></h6>
@@ -156,7 +158,7 @@ render() {
                 <h6 className="mb-1 orange-focus">Sort By <strong>Comments Count</strong></h6>
               </div>
             </a>
-          </div>
+          </div> */}
         </div>
         }
       </div>     
