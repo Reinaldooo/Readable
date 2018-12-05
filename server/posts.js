@@ -50,8 +50,8 @@ const defaultData = {
   "5": {
     id: '5',
     timestamp: 1507907000000,
-    title: 'I added four posts on the server',
-    body: 'I hope thats allowed!',
+    title: 'Should we use styled-components?',
+    body: "Yes we should, it's way better to maintain",
     author: 'Student',
     category: 'udacity',
     voteScore: 8,

@@ -1,192 +1,202 @@
-import React, {Component} from 'react'
-import moment from 'moment'
-import {connect} from 'react-redux'
-import {getPosts, getCategories, ratePost, deletePost, getPostsCategorized, sortPosts, addPost, editPost } from '../actions'
+import React, { PureComponent } from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import serializeForm from 'form-serialize'
 import uuidv4 from 'uuid/v4'
+import Select from 'react-select'
+import { getPosts, getCategories, ratePost, deletePost, getPostsCategorized, sortPosts, addPost, editPost } from '../actions'
+import EditPost from './EditPost'
+import AddPost from '../stateless/AddPost'
+import Post from '../stateless/Post'
 
-class Root extends Component {
-state = { 
-  sortFactor: "-voteScore",
-  add: false,
-  edit: false,
-  title: '',
-  body: '',
-  id: ''
-}
+const selectOptions = [
+  { value: '-voteScore', label: 'Score' },
+  { value: '-timestamp', label: 'Date' },
+  { value: '-commentsNumber', label: 'Comments Number' }
+]
+class Root extends PureComponent {
+  state = {
+    sortFactor: "-voteScore",
+    add: false,
+    addButtonText: "Add Post",
+    edit: false,
+    title: '',
+    body: '',
+    id: ''
+  }
 
-handleSubmitAdd = (e) => {
-  e.preventDefault()
-  const post = serializeForm(e.target, { hash: true })
-  post.timestamp = Date.now()
-  post.id = uuidv4()
-  this.props.addPost(post)
-  this.setState({add: false})
-}
+  toggleAdd = () => {
+    this.state.add ?
+      this.setState({
+        add: false,
+        addButtonText: "Add Post"
+      })
+      :
+      this.setState({
+        add: true,
+        edit: false,
+        addButtonText: "Cancel"
+      })
+  }
 
-handleEdit = (post, index) => {
-  window.scrollTo(0, 0);
-  this.setState({
-    edit: true, 
-    body: post.body, 
-    title: post.title, 
-    id: post.id, 
-    indexPost: index
-  })
-}
+  handleSubmitAdd = (e) => {
+    e.preventDefault()
+    const post = serializeForm(e.target, { hash: true })
+    post.timestamp = Date.now()
+    post.id = uuidv4()
+    this.props.addPost(post)
+    this.setState({ add: false })
+  }
 
-handleChange(event, option) {
-  option === "title"
-  ?
-  this.setState({title: event.target.value})
-  :
-  this.setState({body: event.target.value})
-}
+  handleEdit = (post, index) => {
+    window.scrollTo(0, 0);
+    this.setState({
+      edit: true,
+      body: post.body,
+      title: post.title,
+      id: post.id,
+      indexPost: index
+    })
+  }
 
-handleSubmitEdit = (e) => {
-  e.preventDefault()
-  const post = serializeForm(e.target, { hash: true })
-  post.edited = true
-  this.props.editPost(post, this.state.id, this.state.indexPost)
-  this.setState({edit: false, body: '', title: '', id: null, indexPost: null})
-}
+  handleChange = (event, option) => {
+    option === "title"
+      ?
+      this.setState({ title: event.target.value })
+      :
+      this.setState({ body: event.target.value })
+  }
 
-componentDidMount() {
-    this.props.getPosts()
-    this.props.getCategories()  
-}
+  handleSubmitEdit = (e) => {
+    e.preventDefault()
+    const post = serializeForm(e.target, { hash: true })
+    post.edited = true
+    this.props.editPost(post, this.state.id, this.state.indexPost)
+    this.setState({ edit: false, body: '', title: '', id: null, indexPost: null })
+  }
 
-render() {
+  handleSort = (e) => {
+    this.setState({ sortFactor: e.value });
+    this.props.sortPosts(e.value)
+  }
 
-  const UP = {option: "upVote"};
-  const DN = {option: "downVote"};
+  cancelEdit = () => {
+    this.setState({ edit: false })
+  }
 
-  return (      
+  componentDidMount() {
+    if (this.props.category !== "home") {
+      const category = this.props.match.params.category
+      this.props.getPostsCategorized(category)
+      this.props.getCategories()
+    } else {
+      this.props.getPosts()
+      this.props.getCategories()
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const currentCategory = this.props.match.params.category
+    if (this.props.match.params.category !== prevProps.match.params.category) {
+      if (!this.props.match.params.category) {
+        this.props.getPosts()
+      } else {
+        this.props.getPostsCategorized(currentCategory)
+      }
+    }
+  }
+
+  render() {
+
+    return (
       <div className="container-fluid">
+        <div className="options">
+          <div className="add-post" role="button" onClick={this.toggleAdd}>{this.state.addButtonText}</div>
+          <Select
+            onChange={this.handleSort}
+            options={selectOptions}
+            placeholder="Sort by:"
+            className="sort-select"
+            isSearchable={true}
+          />
+        </div>
         {
-        this.props.postsAreLoading ? 
-        <div className="spinner">
-          <div className="cube1"></div>
-          <div className="cube2"></div>
-        </div>
-        :
-        <div className="row">
-          <div className="posts">
-          {
-            this.state.add && 
-          <div className="list-group-item list-group-item-action flex-column align-items-start add-post-form">
-            <form onSubmit={this.handleSubmitAdd} className="create-post-form">
-               <div className="create-post-details">
-                  <input type="text" name="author" placeholder="Username"/>
-                  <input type="text" name="title" placeholder="Title"/>
-                    <textarea placeholder="Post content" name="body" rows="3" cols="50" />
-                  <label>
-                    Category:
-                    <select name="category">
-                      <option value="react">React</option>
-                      <option value="redux">Redux</option>
-                      <option value="udacity">Udacity</option>
-                    </select>
-                  </label>
-                  <button>Add Post</button>
-                  <button onClick={() => this.setState({add: false})}>Cancel</button>
-              </div>
-            </form>
-          </div>
-          }
-
-          {this.state.edit && 
-          <div className="list-group-item list-group-item-action flex-column align-items-start add-post-form">
-            <form onSubmit={this.handleSubmitEdit} className="create-post-form">
-               <div className="create-post-details">
-                  <input value={this.state.title} onChange={(event) => this.handleChange(event, "title")} type="text" name="title" placeholder="Title"/>
-                    <textarea value={this.state.body} onChange={(event) => this.handleChange(event, "body")} placeholder="Post content" name="body" rows="3" cols="50" />
-                  <button>Edit Post</button>
-                  <button onClick={() => this.setState({edit: false})}>Cancel</button>
-              </div>
-            </form>
-          </div>
-          }
-            {
-              this.props.posts.length > 0 ? this.props.posts.map((post, index) => 
-                <div key={post.id} className="post">
-                  <div className="d-flex w-100 justify-content-between">
-                    <Link className="mb-1" to={`/${post.category}/${post.id}`}><h5><i className="fa fa-angle-right" aria-hidden="true"></i> {post.title}</h5></Link>
-                    {post.edited ? <small>{moment.utc(post.timestamp).format("ddd, MMM Do YYYY, h:mm a")}<strong><span className="orange-focus"> - Edited</span></strong></small>
-                    :
-                    <small>{moment.utc(post.timestamp).format("ddd, MMMM Do YYYY, h:mm a")}</small>}
-                  </div>
-                  {
-                  post.body.length > 75 ? <p className="mb-1">{post.body.substring(0, 75)}... <Link className="orange-focus" to={`/${post.category}/${post.id}`}><small>Read more.</small></Link></p>
-                  :
-                  <p className="mb-1">{post.body}</p>
-                  } 
-                  <small className="post-details">Author: <strong>{post.author}</strong> • <strong className="score">{post.voteScore} {post.voteScore === 1 || post.voteScore === -1 ? <span className="post-count">point</span> : <span className="post-count">points</span>}</strong> • <strong><span className="orange-focus"><i className="fa fa-tag" aria-hidden="true"></i> {post.category}</span></strong> • <Link to={`/${post.category}/${post.id}`}>{post.comments.length} {post.comments.length === 1 ? "comment" : "comments"}</Link></small>
-                  <div className="btn-group" role="group" aria-label="up and downvote">
-                    <button onClick={() => this.props.ratePost(UP, post.id, index, this.state.sortFactor)} type="button" className="button"><i className="fa fa-thumbs-up" aria-hidden="true"></i></button>
-                    <button onClick={() => this.props.ratePost(DN, post.id, index, this.state.sortFactor)} type="button" className="button"><i className="fa fa-thumbs-down" aria-hidden="true"></i></button>
-                  </div>                
-                  <div className="btn-group btn-custom" role="group" aria-label="Edit and Delete">
-                    <button onClick={() => this.handleEdit(post, index)}type="button" className="button"><i className="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                    <button onClick={() => this.props.deletePost(post.id)} type="button" className="button delete"><i className="fa fa-trash-o" aria-hidden="true"></i></button>
-                  </div>
-                </div>
-            )
+          this.props.postsAreLoading ?
+            <div className="spinner">
+              <div className="cube1"></div>
+              <div className="cube2"></div>
+            </div>
             :
-              <div className="error">No posts! Why don't you <Link className="error" to="/addpost"><strong>add</strong> one?</Link></div>
-            }
-          </div>                
-          {/* <div className="col list-group">
-            <a onClick={() => this.setState({add: true})} className="list-group-item list-group-item-action flex-column align-items-start cursor-focus">
-              <div>
-                <h6 className="white mb-1"><strong>Add Post</strong></h6>
+            <div className="row">
+              <div className="posts">
+                {
+                  this.state.add &&
+                  <AddPost 
+                    handleSubmitAdd={this.handleSubmitAdd}
+                    toggleAdd={this.toggleAdd}
+                  />
+                }
+                {
+                  this.state.edit &&
+                  <EditPost
+                    handleSubmitEdit={this.handleSubmitEdit}
+                    title={this.state.title}
+                    body={this.state.body}
+                    handleChange={this.handleChange}
+                    cancelEdit={this.cancelEdit}
+                  />
+                }
+                {
+                  (this.props.posts.length > 0 && !this.state.add)
+                  ? this.props.posts.map((post, index) =>
+                    <Post
+                      key={post.id}
+                      post={post}
+                      index={index}
+                      sortFactor={this.state.sortFactor}
+                      ratePost={this.props.ratePost}
+                      handleEdit={this.handleEdit}
+                      deletePost={this.props.deletePost}
+                    />
+                  )
+                  : <div className="error">
+                      {
+                        !this.state.add ?
+                          <div>No posts! Why don't you <Link className="error" to="/addpost"><strong>add</strong> one?</Link></div>
+                          :
+                          null
+                      }
+                    </div>
+                }
               </div>
-            </a>
-            <a onClick={() => { this.setState({sortFactor: "-voteScore"}); this.props.sortPosts("-voteScore")}} className="list-group-item list-group-item-action flex-column align-items-start cursor">
-              <div className="d-flex w-100 justify-content-between">
-                <h6 className="mb-1 orange-focus">Sort By <strong>Score</strong></h6>
-              </div>
-            </a>
-            <a onClick={() => { this.setState({sortFactor: "-timestamp"}); this.props.sortPosts("-timestamp")}} className="list-group-item list-group-item-action flex-column align-items-start cursor">
-              <div className="d-flex w-100 justify-content-between">
-              <h6 className="mb-1 orange-focus">Sort By <strong>Date</strong></h6>
-              </div>
-            </a>
-            <a onClick={() => { this.setState({sortFactor: '-commentsNumber'}); this.props.sortPosts('-commentsNumber')}} className="list-group-item list-group-item-action flex-column align-items-start cursor">
-              <div className="d-flex w-100 justify-content-between">
-                <h6 className="mb-1 orange-focus">Sort By <strong>Comments Count</strong></h6>
-              </div>
-            </a>
-          </div> */}
-        </div>
+            </div>
         }
-      </div>     
+      </div>
     );
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-      posts:                state.posts,
-      categories:           state.categories,
-      postsHasErrored:      state.postsHasErrored,
-      postsAreLoading:      state.postsAreLoading,
-      categoriesHasErrored: state.categoriesHasErrored,
-      categoriesAreLoading: state.categoriesAreLoading
+    posts: state.posts,
+    categories: state.categories,
+    postsHasErrored: state.postsHasErrored,
+    postsAreLoading: state.postsAreLoading,
+    categoriesHasErrored: state.categoriesHasErrored,
+    categoriesAreLoading: state.categoriesAreLoading
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      getPosts: ()                    => dispatch(getPosts()),
-      sortPosts: (sortBy)             => dispatch(sortPosts(sortBy)),
-      getPostsCategorized: (category) => dispatch(getPostsCategorized(category)),
-      getCategories: ()               => dispatch(getCategories()),
-      ratePost: (rate, id, index, sortFactor) => dispatch(ratePost(rate, id, index, sortFactor)),
-      deletePost: (id)                => dispatch(deletePost(id)),
-      addPost: (post)                 => dispatch(addPost(post)),
-      editPost: (post, id, indexPost)         => dispatch(editPost(post, id, indexPost))
+    getPosts: () => dispatch(getPosts()),
+    sortPosts: (sortBy) => dispatch(sortPosts(sortBy)),
+    getPostsCategorized: (category) => dispatch(getPostsCategorized(category)),
+    getCategories: () => dispatch(getCategories()),
+    ratePost: (rate, id, index, sortFactor) => dispatch(ratePost(rate, id, index, sortFactor)),
+    deletePost: (id) => dispatch(deletePost(id)),
+    addPost: (post) => dispatch(addPost(post)),
+    editPost: (post, id, indexPost) => dispatch(editPost(post, id, indexPost))
   };
 };
 

@@ -6,6 +6,7 @@ export const POSTS_ARE_LOADING = 'POSTS_ARE_LOADING';
 export const CATEGORIES_HAS_ERRORED = 'CATEGORIES_HAS_ERRORED';
 export const CATEGORIES_ARE_LOADING = 'CATEGORIES_ARE_LOADING';
 export const SORT_POSTS = 'SORT_POSTS';
+export const FILTER_POSTS = 'FILTER_POSTS';
 export const POSTS_FETCH_SUCCESS = 'POSTS_FETCH_SUCCESS';
 export const CATEGORIES_FETCH_SUCCESS = 'CATEGORIES_FETCH_SUCCESS';
 export const RATE = 'RATE';
@@ -126,26 +127,6 @@ export function getCategories() {
             .catch(() => dispatch(categoriesHasErrored(true)));
     };
 }
-
-/* export function Example() {
-    return dispatch => {
-        ReadableAPI
-            .getPosts()
-            .then(posts =>
-                Promise.all(
-                    posts.map(post =>
-                        ReadableAPI
-                            .getComments(post.id)
-                            .then(comments => post.comments = comments)
-                            .then(() => post)
-                    )
-                )
-            )
-            .then(posts =>
-                dispatch({ type: GET_POSTS, posts })
-            );
-    };
-} */
 
 export function ratePost(rate, id, index, sortFactor) {
     return (dispatch) => {

@@ -4,11 +4,11 @@ import { connect } from 'react-redux'
 
 const Nav = (props) => {
     return (
-        <ul className="navCustom">
-            <div className="add-post">
+        <div className="navCustom">
+            <div className="navItems">
                 <li>
-                    <Link to="/">
-                        <i className="fa fa-book" aria-hidden="true"></i> <strong>Home</strong>
+                    <Link to="/" className="logo">
+                        <i className="fa fa-book" aria-hidden="true"></i> <strong>Readable</strong>
                     </Link>
                 </li>
                 {
@@ -21,7 +21,7 @@ const Nav = (props) => {
                     )
                 }
             </div>
-        </ul>
+        </div>
     )
 }
 

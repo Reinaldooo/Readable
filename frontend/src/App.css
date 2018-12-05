@@ -1,7 +1,13 @@
+html {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   padding: 0;
+  width: 100vw;
   background-color: #282a36;
+  box-sizing: border-box;
 }
 
 select {
@@ -22,6 +28,10 @@ a:active {
 a:hover {
   text-decoration: none;
   color: white;
+}
+
+.app {
+  box-sizing: border-box;
 }
 
 .button {
@@ -58,8 +68,22 @@ opacity: .7
 }
 
 .container-fluid {
-  padding: 1em 6em;
-  }
+  padding: 1em 4em;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  box-sizing: border-box;
+}
+
+.row {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.198);
+}
 
 .orange-focus {
   color: lightcoral;
@@ -67,7 +91,20 @@ opacity: .7
 }
 
 .posts {
-  flex: 1;
+  flex: 1 1 100%;
+}
+
+.options {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.sort-select {
+  flex-basis: 15%;
+  margin-bottom: .5rem;
+  margin-left: .5rem;
+  right: 0;
 }
 
 .post {
@@ -77,6 +114,7 @@ opacity: .7
   margin-bottom: -1px;
   background-color: #fff;
   border: 1px solid rgba(0,0,0,.125);
+  width: 100%;
 }
 
 .post-details {
@@ -189,7 +227,20 @@ opacity: .7
 
 .navCustom {
   display: flex;
-  margin: 1em 2.55em 0;
+  padding: 1em 4rem 0;
+  box-sizing: border-box;
+}
+
+.logo {
+  font-size: 1.2rem;
+}
+
+.navItems {
+  padding: .5em;
+  background-color: lightcoral;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
 }
 
 .navCustom li {
@@ -222,10 +273,17 @@ opacity: .7
 }
 
 .add-post {
-  padding: .3em;
+  padding: 0 0.6rem;
+  height: 2.4rem;
   background-color: lightcoral;
+  color: white;
+  /* font-weight: 600; */
   border-radius: .3em;
-  display: flex
+  display: inline-block;
+  margin-left: .5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 
 .add-post-form {
