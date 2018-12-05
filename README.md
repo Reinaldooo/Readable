@@ -3,7 +3,9 @@
 
 This is an forum app entirely build with **React** and **Redux**.
 You can read and add posts or comments on multiple categories.
+
 --
+
 ![Example GIF](/Example.gif)
 #### In this project, React its used to build the UI, and Redux its used to manage the global state in a safe, predictable way.
 *To load it in your browser:*
@@ -16,5 +18,6 @@ You can read and add posts or comments on multiple categories.
 * Run `npm start` on both terminals, and a few seconds later your browser will open up with the app loading.
 
 --
+
 **Reinaldo Trindade**
 *Web Developer*
