@@ -9,6 +9,10 @@
     "readable",
     "react"
   ],
+  "scripts": {
+    "start": "node server.js",
+    "heroku-postbuild": "cd client && npm install && npm run build"
+  },
   "author": "David Harris",
   "license": "ISC",
   "dependencies": {
