@@ -103,10 +103,10 @@ export function posts(state = {}, action) {
         }
 
         case RATE_COMMENT: {
-            const {indexPost, indexComment, comment} = action;
+            const {indexPost, indexComment, newScore} = action;
             const posts = state;        
             const votedPost = posts[indexPost];
-            votedPost.comments[indexComment] = comment;
+            votedPost.comments[indexComment].voteScore = newScore;
             votedPost.comments = votedPost.comments.sort(sortBy('-voteScore'));                      
             const updatedPosts = [
               ...posts.slice(0, indexPost),

@@ -193,7 +193,7 @@ const mapDispatchToProps = (dispatch) => {
     sortPosts: (sortBy) => dispatch(sortPosts(sortBy)),
     getPostsCategorized: (category) => dispatch(getPostsCategorized(category)),
     getCategories: () => dispatch(getCategories()),
-    ratePost: (rate, id, index, sortFactor) => dispatch(ratePost(rate, id, index, sortFactor)),
+    ratePost: (rate, id, index, sortFactor, newScore) => dispatch(ratePost(rate, id, index, sortFactor, newScore)),
     deletePost: (id) => dispatch(deletePost(id)),
     addPost: (post) => dispatch(addPost(post)),
     editPost: (post, id, indexPost) => dispatch(editPost(post, id, indexPost))

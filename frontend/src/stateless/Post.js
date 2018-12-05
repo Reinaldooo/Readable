@@ -23,8 +23,8 @@ const Post = (props) => {
       }
       <small className="post-details">Author: <strong>{post.author}</strong> • <strong className="score">{post.voteScore} {post.voteScore === 1 || post.voteScore === -1 ? <span className="post-count">point</span> : <span className="post-count">points</span>}</strong> • <strong><span className="orange-focus"><i className="fa fa-tag" aria-hidden="true"></i> {post.category}</span></strong> • <Link to={`/${post.category}/${post.id}`}>{post.comments.length} {post.comments.length === 1 ? "comment" : "comments"}</Link></small>
       <div className="btn-group" role="group" aria-label="up and downvote">
-        <button onClick={() => props.ratePost(UP, post.id, index, props.sortFactor)} type="button" className="button"><i className="fa fa-thumbs-up" aria-hidden="true"></i></button>
-        <button onClick={() => props.ratePost(DN, post.id, index, props.sortFactor)} type="button" className="button"><i className="fa fa-thumbs-down" aria-hidden="true"></i></button>
+        <button onClick={() => props.ratePost(UP, post.id, index, props.sortFactor, post.voteScore + 1)} type="button" className="button"><i className="fa fa-thumbs-up" aria-hidden="true"></i></button>
+        <button onClick={() => props.ratePost(DN, post.id, index, props.sortFactor, post.voteScore - 1)} type="button" className="button"><i className="fa fa-thumbs-down" aria-hidden="true"></i></button>
       </div>
       <div className="btn-group btn-custom" role="group" aria-label="Edit and Delete">
         <button onClick={() => props.handleEdit(post, index)} type="button" className="button"><i className="fa fa-pencil-square-o" aria-hidden="true"></i></button>

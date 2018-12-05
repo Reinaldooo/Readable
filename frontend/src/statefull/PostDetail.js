@@ -150,6 +150,8 @@ class PostDetail extends Component {
               ratePost={this.props.ratePost}
               handleEditPost={this.handleEditPost}
               deletePost={this.props.deletePost}
+              UP={UP}
+              DN={DN}
             />
             <div className="comments">
               {
@@ -199,12 +201,12 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    ratePost: (rate, id, index) => dispatch(ratePost(rate, id, index)),
+    ratePost: (rate, id, index, sortFactor, score) => dispatch(ratePost(rate, id, index, sortFactor, score)),
     deletePost: (id) => {
       dispatch(deletePost(id));
       setTimeout(function () { window.location = "/"; }, 500);
     },
-    rateComment: (rate, id, indexComment, indexPost) => dispatch(rateComment(rate, id, indexComment, indexPost)),
+    rateComment: (rate, id, indexComment, indexPost, newScore) => dispatch(rateComment(rate, id, indexComment, indexPost, newScore)),
     deleteComment: (id, indexComment, indexPost) => dispatch(deleteComment(id, indexComment, indexPost)),
     getPosts: () => dispatch(getPosts()),
     getCategories: () => dispatch(getCategories()),

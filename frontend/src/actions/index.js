@@ -26,8 +26,6 @@ const headers = {
     'Content-Type': 'application/json'
 }
 
-const api = "http://localhost:3001"
-
 export function postsHasErrored(bool) {
     return {
         type: POSTS_HAS_ERRORED,
@@ -67,7 +65,7 @@ export function getPosts() {
     return dispatch => {
         dispatch(postsAreLoading(true));
         
-        fetch("http://localhost:3001/posts", {
+        fetch("/posts", {
             method: 'GET',
             headers
           })
@@ -81,7 +79,7 @@ export function getPosts() {
             .then(posts =>
                 Promise.all(
                     posts.map(post =>
-                        fetch(`${api}/posts/${post.id}/comments`, {
+                        fetch(`/posts/${post.id}/comments`, {
                             method: 'GET',
                             headers
                         })
@@ -111,7 +109,7 @@ export function getCategories() {
     return (dispatch) => {
         dispatch(categoriesAreLoading(true));
 
-        fetch("http://localhost:3001/categories", {
+        fetch("/categories", {
                 method: 'GET',
                 headers
             })
@@ -128,35 +126,34 @@ export function getCategories() {
     };
 }
 
-export function ratePost(rate, id, index, sortFactor) {
+export function ratePost(rate, id, index, sortFactor, newScore) {
     return (dispatch) => {
-        fetch(`${api}/posts/${id}`, {
+        dispatch({ type: RATE, newScore, index, sortFactor })
+        //dispatch before fetch so the state update without waiting for the resolve
+        fetch(`/posts/${id}`, {
             method: 'POST',
             headers,
             body: JSON.stringify(rate)
-          })
-            .then((response) => response.json())
-            .then((post) => dispatch({ type: RATE, newScore: post.voteScore, index, sortFactor }))
-            .catch(() => dispatch(postsHasErrored(true)));
+          }).catch(() => dispatch(postsHasErrored(true)));
     };
 }
 
-export function rateComment(rate, id, indexComment, indexPost) {
+export function rateComment(rate, id, indexComment, indexPost, newScore) {
     return (dispatch) => {
-        fetch(`${api}/comments/${id}`, {
+        dispatch({ type: RATE_COMMENT, indexComment, indexPost, newScore })
+        //dispatch before fetch so the state update without waiting for the resolve
+        fetch(`/comments/${id}`, {
             method: 'POST',
             headers,
             body: JSON.stringify(rate)
           })
-            .then((response) => response.json())
-            .then((comment) => dispatch({ type: RATE_COMMENT, comment, indexComment, indexPost }))
             .catch(() => dispatch(postsHasErrored(true)));
     };
 }
 
 export function deletePost(id) {
     return (dispatch) => {
-        fetch(`${api}/posts/${id}`, {
+        fetch(`/posts/${id}`, {
             method: 'DELETE',
             headers
           })
@@ -168,7 +165,7 @@ export function deletePost(id) {
 
 export function deleteComment(id, indexComment, indexPost) {
     return (dispatch) => {
-        fetch(`${api}/comments/${id}`, {
+        fetch(`/comments/${id}`, {
             method: 'DELETE',
             headers
           })
@@ -182,7 +179,7 @@ export function getPostsCategorized(category) {
     return dispatch => {
         dispatch(postsAreLoading(true));
         
-        fetch(`http://localhost:3001/${category}/posts`, {
+        fetch(`/${category}/posts`, {
             method: 'GET',
             headers
           })
@@ -196,7 +193,7 @@ export function getPostsCategorized(category) {
             .then(posts =>
                 Promise.all(
                     posts.map(post =>
-                        fetch(`${api}/posts/${post.id}/comments`, {
+                        fetch(`/posts/${post.id}/comments`, {
                             method: 'GET',
                             headers
                         })
@@ -223,7 +220,7 @@ export function getPostsCategorized(category) {
 
 export function addPost(post) {
     return (dispatch) => {
-        fetch(`${api}/posts/`, {
+        fetch(`/posts/`, {
             method: 'POST',
             headers,
             body: JSON.stringify(post)
@@ -236,7 +233,7 @@ export function addPost(post) {
 
 export function editPost(post, id, indexPost) {
     return (dispatch) => {
-        fetch(`${api}/posts/${id}`, {
+        fetch(`/posts/${id}`, {
             method: 'PUT',
             headers,
             body: JSON.stringify(post)
@@ -249,7 +246,7 @@ export function editPost(post, id, indexPost) {
 
 export function addComment(comment, indexPost) {
     return (dispatch) => {
-        fetch(`${api}/comments`, {
+        fetch(`/comments`, {
             method: 'POST',
             headers,
             body: JSON.stringify(comment)
@@ -262,7 +259,7 @@ export function addComment(comment, indexPost) {
 
 export function editComment(id, indexPost, indexComment, comment) {
     return (dispatch) => {
-        fetch(`${api}/comments/${id}`, {
+        fetch(`/comments/${id}`, {
             method: 'PUT',
             headers,
             body: JSON.stringify(comment)
