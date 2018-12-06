@@ -15,9 +15,10 @@ You can read and add posts or comments on multiple categories.
 * Install the latest version of [node.js](https://nodejs.org) in case you don't have it. It comes with npm(node package manager).
 * Make sure that you install node with the PATH variable so you can run node anywhere in your command prompt/terminal.
 * You can now clone using `git clone https://github.com/Reinaldooo/Readable.git`.
-* On this terminal run `cd Readable/`, then `cd server` and `npm install` to install the dependencies.
-* Open another terminal on `Readable/frontend`, then run `npm install` to also install the dependencies.
-* Run `npm start` on both terminals, and a few seconds later your browser will open up with the app loading.
+* On this terminal run `cd Readable/`, then `npm run setup` to install all the dependencies.
+* Run `npm start` to start the server.
+* Open another terminal on `Readable/frontend`, then run `npm start` to start the frontend app.
+* A few seconds later your browser will open up with the app.
 
 --
 
