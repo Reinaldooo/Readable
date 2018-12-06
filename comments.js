@@ -38,7 +38,7 @@ const defaultData = {
     parentId: "5",
     timestamp: 1469470005000,
     body: 'I also think you should do it.',
-    author: 'Reinaldo`s other friend',
+    author: 'Other friend',
     voteScore: 2,
     deleted: false,
     parentDeleted: false
