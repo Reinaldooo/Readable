@@ -9,7 +9,7 @@ You can read and add posts or comments on multiple categories.
 ![Example GIF](/Example.gif)
 #### In this project, React its used to build the UI, and Redux its used to manage the global state in a safe, predictable way.
 #### To load it in your browser:
-* Readable is hosted on Heroku, you can visit it by clicking [here](https://readable-reinaldooo.herokuapp.com/udacity).
+* Readable is hosted on Heroku, you can visit it by clicking [here](https://readable-reinaldooo.herokuapp.com).
 
 #### To load it in your local machine:
 * Install the latest version of [node.js](https://nodejs.org) in case you don't have it. It comes with npm(node package manager).
