@@ -8,9 +8,9 @@ const PostDetailed = (props) => {
     <li className="list-group-item list-group-item-action flex-column align-items-start border-radius">
       <div className="d-flex w-100 justify-content-between">
         <h5><i className="fa fa-angle-right" aria-hidden="true"></i> {post.title}</h5>
-        {post.edited ? <small class="timestamp">{moment.utc(post.timestamp).format("ddd, MMM Do YYYY, h:mm a")}<strong><span className="orange-focus"> - Edited</span></strong></small>
+        {post.edited ? <small className="timestamp">{moment.utc(post.timestamp).format("ddd, MMM Do YYYY, h:mm a")}<strong><span className="orange-focus"> - Edited</span></strong></small>
           :
-          <small class="timestamp">{moment.utc(post.timestamp).format("ddd, MMMM Do YYYY, h:mm a")}</small>}
+          <small className="timestamp">{moment.utc(post.timestamp).format("ddd, MMMM Do YYYY, h:mm a")}</small>}
       </div>
       {
         <p className="mb-1-body">{post.body}</p>

@@ -12,9 +12,9 @@ const Post = (props) => {
     <li className="post">
       <div className="d-flex w-100 justify-content-between">
         <Link className="mb-1" to={`/${post.category}/${post.id}`}><h5><i className="fa fa-angle-right" aria-hidden="true"></i> {post.title}</h5></Link>
-        {post.edited ? <small class="timestamp">{moment.utc(post.timestamp).format("ddd, MMM Do YYYY, h:mm a")}<strong><span className="orange-focus"> - Edited</span></strong></small>
+        {post.edited ? <small className="timestamp">{moment.utc(post.timestamp).format("ddd, MMM Do YYYY, h:mm a")}<strong><span className="orange-focus"> - Edited</span></strong></small>
           :
-          <small class="timestamp">{moment.utc(post.timestamp).format("ddd, MMMM Do YYYY, h:mm a")}</small>}
+          <small className="timestamp">{moment.utc(post.timestamp).format("ddd, MMMM Do YYYY, h:mm a")}</small>}
       </div>
       {
         post.body.length > 75 ? <p className="mb-1">{post.body.substring(0, 75)}... <Link className="orange-focus" to={`/${post.category}/${post.id}`}><small>Read more.</small></Link></p>
