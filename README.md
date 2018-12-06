@@ -9,8 +9,9 @@ You can read and add posts or comments on multiple categories.
 ![Example GIF](/Example.gif)
 #### In this project, React its used to build the UI, and Redux its used to manage the global state in a safe, predictable way.
 *To load it in your browser:*
+* Readable is hosted on Heroku, you can visit it by clicking [here](https://readable-reinaldooo.herokuapp.com/udacity).
 *To load it in your local machine:*
-* Install the latest version of node.js in case you don't have it. It comes with npm(node package manager).
+* Install the latest version of [node.js](https://nodejs.org) in case you don't have it. It comes with npm(node package manager).
 * Make sure that you install node with the PATH variable so you can run node anywhere in your command prompt/terminal.
 * You can now clone using `git clone https://github.com/Reinaldooo/Readable.git`.
 * On this terminal run `cd Readable/`, then `cd server` and `npm install` to install the dependencies.
